@@ -1,13 +1,21 @@
 package MianJing;
 
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+
 public class GoogleOA {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args) {
         GoogleOA googleOA = new GoogleOA();
-        System.out.println(googleOA.nextCloestTime("20:59"));
+        //System.out.println(googleOA.nextCloestTime("20:59"));
+
+        int[] flower = {1,3,2,5,6,7,4};
+        googleOA.kBloomedSlots(flower,3);
     }
 
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     int globalMin;
 
     public String nextCloestTime(String time) {
@@ -79,5 +87,77 @@ public class GoogleOA {
         arr[right] = arr[left];
         arr[left] = tmp;
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void kBloomedSlots(int[] flowers, int k) {
+
+        int[] pos = new int[flowers.length];
+        for (int i = 0; i < flowers.length; i++) {
+            pos[i] = flowers[i];
+        }
+
+        // find max val in slide window
+        List<Integer> max = new ArrayList<Integer>();
+        Deque<Integer> deque1 = new LinkedList<>();
+
+        for (int i = 0; i < pos.length; i++) {
+            // poll all of the older and smaller element in the deque if they exist
+            while (!deque1.isEmpty() && pos[deque1.peekLast()] <= pos[i]) {
+                deque1.pollLast();
+            }
+
+            // now, safe to add new element
+            deque1.offerLast(i);
+
+            // handle left most element in the deque, may be their index already out
+            // of the boundary of window, find them and poll them
+            while (!deque1.isEmpty() && deque1.peekFirst() < i - k + 1) {
+                deque1.pollFirst();
+            }
+
+            // now, the largest element in the deque is left most element, that is solution
+            if (i >= k - 1) {
+                max.add(pos[deque1.peekFirst()]);
+            }
+        }
+        System.out.println(max);
+
+        // find min val in slide window
+        List<Integer> min = new ArrayList<>();
+        Deque<Integer> deque2 = new LinkedList<>();
+
+        for (int i = 0; i < pos.length; i++) {
+            // poll all of the older and bigger element in the deque if they exist
+            while (!deque2.isEmpty() && pos[deque2.peekLast()] >= pos[i]) {
+                deque2.pollLast();
+            }
+
+            // now, safe to add new element
+            deque2.offerLast(i);
+
+            // handle left most element in the deque, may be their index already out
+            // of the boundary of window, find them and poll them
+            while (!deque2.isEmpty() && deque2.peekFirst() < i - k + 1) {
+                deque2.pollFirst();
+            }
+
+            // now, the smallest element in the deque is left most element, that is solution
+            if (i >= k - 1) {
+                min.add(pos[deque2.peekFirst()]);
+            }
+        }
+        System.out.println(min);
+
+        //
+        int day = 0;
+        for (int i = 0; i < max.size(); i++) {
+            if (max.get(i) - min.get(i) == k - 1) {
+                day = i + k;
+                System.out.println(day);
+            }
+        }
+
+        System.out.println("last day: " + day);
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
