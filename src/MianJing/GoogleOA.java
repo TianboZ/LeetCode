@@ -7,6 +7,7 @@ public class GoogleOA {
         System.out.println(googleOA.nextCloestTime("20:59"));
     }
 
+
     int globalMin;
 
     public String nextCloestTime(String time) {
