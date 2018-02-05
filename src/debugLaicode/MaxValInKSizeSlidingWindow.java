@@ -3,7 +3,7 @@ package debugLaicode;
 
 import java.util.*;
 
-public class maxValInKSizeSlidingWindow {
+public class MaxValInKSizeSlidingWindow {
     public List<Integer> maxWindows(int[] array, int k) {
         List<Integer> res = new ArrayList<>();
         Queue<Element> maxHeap = new LinkedList<>();
