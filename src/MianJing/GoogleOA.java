@@ -90,6 +90,7 @@ public class GoogleOA {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void kBloomedSlots(int[] flowers, int k) {
 
+
         int[] pos = new int[flowers.length];
         for (int i = 0; i < flowers.length; i++) {
             pos[i] = flowers[i];
