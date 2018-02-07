@@ -1,9 +1,6 @@
 package MianJing;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GoogleOA {
     /*
@@ -12,10 +9,12 @@ public class GoogleOA {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args) {
         GoogleOA googleOA = new GoogleOA();
-        //System.out.println(googleOA.nextCloestTime("20:59"));
+        System.out.println(googleOA.nextCloestTime("12:21"));
 
-        int[] flower = {1,3,2,5,6,7,4};
+        int[] flower = {1,3,2,5,6,7,4,9,8};
         googleOA.kBloomedSlots(flower,3);
+        googleOA.kBloomedSlots1(flower,3);
+        googleOA.solution(flower, 3);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,4 +163,122 @@ public class GoogleOA {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Set<Integer> protectPos = new HashSet<>();
+    public void kBloomedSlots1(int[] flowers, int k) {
+        Set<Integer> set = new HashSet<>();
+        int lastDay = -1;
+        for (int i = 0; i < flowers.length; i++) {
+            set.add(flowers[i]);
+            if(check(set, flowers[i], k)) {
+                System.out.println("true");
+                lastDay = i + 1;
+            }
+        }
+        System.out.println(lastDay);
+    }
+    public boolean check(Set<Integer> set, int pos, int k) {
+        set.add(pos);
+        // look left
+        int left = -1; // left is postion that so far not exist
+        for (int i = 1; i <= k; i++) {
+            if (!set.contains(pos - i)) {
+                left = pos - i;
+                break;
+            }
+        }
+        // look right
+        int right = -1; // right is postion that so far not exist
+        for (int i = 1; i <= k; i++) {
+            if (!set.contains(pos + i)) {
+                right = pos + i;
+                break;
+            }
+        }
+        System.out.println("pos: " + pos + "  left: " + left + "  right: " + right);
+
+        // get protect set
+        if (right - left == k+1) {
+            protectPos.add(left);
+            protectPos.add(right);
+        }
+
+        if (protectPos.contains(pos)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    //
+    private static class Interval implements Comparable<Interval> {
+        int beg;
+        int end;
+        public Interval(int beg, int end) {
+            this.beg = beg;
+            this.end = end;
+        }
+
+        public boolean isIn(int i) {
+            return this.beg <= i && this.end >= i;
+        }
+
+        public int size() {
+            return this.end - this.beg + 1;
+        }
+
+        public List<Interval> insert(int i) {
+            List<Interval> l = new ArrayList<>();
+            if (this.beg == this.end) {
+                return Collections.emptyList();
+            }
+            if (i == this.beg) {
+                l.add(new Interval(beg + 1, end));
+                return l;
+            }
+            if (i == this.end) {
+                l.add(new Interval(beg, end - 1));
+                return l;
+            }
+            l.add(new Interval(beg, i - 1));
+            l.add(new Interval(i + 1, end));
+            return l;
+        }
+        @Override
+        public int compareTo(Interval o) {
+            return Integer.compare(this.beg, o.beg);
+        }
+    }
+    public int solution(int[] P, int K) {
+        TreeSet<Interval> s = new TreeSet<>();
+        s.add(new Interval(0, P.length - 1));
+        int day = 0;
+        for (int i : P) {
+            day++;
+            Interval interval = this.find(i - 1, s);
+            s.remove(interval);
+            s.addAll(interval.insert(i - 1));
+            if (check(K, s)) {
+                return day;
+            }
+        }
+
+        System.out.println("sol from Cao Yi Qun: " + day);
+        return -1;
+    }
+    private boolean check(int K, TreeSet<Interval> s) {
+        for (Interval interval : s) {
+            if (interval.size() == K) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private Interval find(int i, TreeSet<Interval> s) {
+        for (Interval interval : s) {
+            if (interval.isIn(i)) {
+                return interval;
+            }
+        }
+
+        throw new IllegalStateException();
+    }
 }
