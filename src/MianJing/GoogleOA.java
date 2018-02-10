@@ -9,12 +9,15 @@ public class GoogleOA {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args) {
         GoogleOA googleOA = new GoogleOA();
-        System.out.println(googleOA.nextCloestTime("12:21"));
+        System.out.println(googleOA.nextCloestTime("23:09"));
 
-        int[] flower = {1,3,2,5,6,7,4,9,8};
-        googleOA.kBloomedSlots(flower,3);
-        googleOA.kBloomedSlots1(flower,3);
-        googleOA.solution(flower, 3);
+        //int[] flower = {1,3,2,5,6,7,9,8,10,4}; // k =3, lastday = 9;
+        //int[] flower = {3,1,5,4,2}; // k = 3, lastday = 4
+        //int[] flower = {1,2,3,4,5}; // k = 3, lastday = 3
+        int[] flower = {1,3,2,5,6,7,9,8,11,12,10,4};
+        //googleOA.kBloomedSlots(flower,3);
+        googleOA.kBloomedSlots1(flower,5);
+        //googleOA.solution(flower, 3);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +93,7 @@ public class GoogleOA {
         arr[left] = tmp;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void kBloomedSlots(int[] flowers, int k) {
+    /*public void kBloomedSlots(int[] flowers, int k) {
 
 
         int[] pos = new int[flowers.length];
@@ -160,10 +163,10 @@ public class GoogleOA {
         }
 
         System.out.println("last day: " + day);
-    }
+    }*/
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    Set<Integer> protectPos = new HashSet<>();
+    Set<Pair> protectPos = new HashSet<>();
     public void kBloomedSlots1(int[] flowers, int k) {
         Set<Integer> set = new HashSet<>();
         int lastDay = -1;
@@ -172,9 +175,10 @@ public class GoogleOA {
             if(check(set, flowers[i], k)) {
                 System.out.println("true");
                 lastDay = i + 1;
+                System.out.println("lastday: " + lastDay);
             }
         }
-        System.out.println(lastDay);
+        System.out.println("lastday: " + lastDay);
     }
     public boolean check(Set<Integer> set, int pos, int k) {
         set.add(pos);
@@ -198,17 +202,49 @@ public class GoogleOA {
 
         // get protect set
         if (right - left == k+1) {
-            protectPos.add(left);
-            protectPos.add(right);
+            //protectPos.add(left);
+            //protectPos.add(right);
+            protectPos.add(new Pair(left, right));
+
         }
 
-        if (protectPos.contains(pos)) {
-            return false;
-        } else {
+        Iterator<Pair> iter = protectPos.iterator();
+
+        while (iter.hasNext()) {
+            Pair pair = iter.next();
+            if (pair.right == pos || pair.left == pos) {
+                iter.remove();
+            }
+        }
+
+
+        if (protectPos.size() >= 1) {
             return true;
+        } else {
+            return false;
         }
     }
-    //
+    class Pair {
+        int left;
+        int right;
+        public Pair (int left, int right) {
+            this.left = left;
+            this.right = right;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            Pair pair = (Pair) obj;
+            return this.left == pair.left && this.right == pair.right;
+        }
+
+        @Override
+        public int hashCode() {
+            return 1;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static class Interval implements Comparable<Interval> {
         int beg;
         int end;
