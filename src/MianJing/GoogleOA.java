@@ -30,6 +30,7 @@ public class GoogleOA {
         int[] original = new int[4];
         int k = 0;
         for (char character : c) {
+
             if (character == ':') {
                 continue;
             }
