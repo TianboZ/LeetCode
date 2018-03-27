@@ -2,9 +2,9 @@ package debugLaicode;
 
 import java.util.*;
 
-public class Test {
+public class HashCodeAndEquals {
     public static void main(String[] args) {
-        Test test = new Test();
+        HashCodeAndEquals test = new HashCodeAndEquals();
         test.test();
     }
     public void test() {

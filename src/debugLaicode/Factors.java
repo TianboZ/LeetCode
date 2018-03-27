@@ -14,7 +14,7 @@ public class Factors {
         factors.dfs(res, list, arr, 12, 0);
         System.out.println(res);*/
 
-        factors.factors(12);
+        factors.factors(32);
 
     }
 
