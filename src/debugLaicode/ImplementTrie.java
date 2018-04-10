@@ -2,9 +2,7 @@ package debugLaicode;
 
 import sun.text.normalizer.Trie;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ImplementTrie {
 
@@ -29,6 +27,8 @@ public class ImplementTrie {
     }
 
     public void delete(String word) {
+        Map<String, TreeSet<String>> map = new HashMap<>();
+
         TrieNode cur = root;
         for (int i = 0; i < word.length(); i++) {
             TrieNode next = cur.children.get(word.charAt(i));
@@ -163,6 +163,11 @@ public class ImplementTrie {
     public static void main(String[] args) {
         ImplementTrie implementTrie = new ImplementTrie();
 
+        String s = "abc";
+        s.lastIndexOf('c');
+        System.out.println("last index of: " + s.lastIndexOf('c'));
+
+
         implementTrie.insert("leetcode");
         implementTrie.insert("leetcode1");
         implementTrie.insert("leetcode2");
@@ -175,4 +180,7 @@ public class ImplementTrie {
         implementTrie.searchAllWithPrefix("leet");
         implementTrie.findAllWordsWithWildcard("leet?ode?");
     }
+
+
+
 }
