@@ -15,6 +15,7 @@ public class BinaryTreeDiagnoseTraverse {
         TreeNode node7 = new TreeNode(7);
 
 
+
         node1.left = node2;
         node1.right = node3;
         node2.left = node4;

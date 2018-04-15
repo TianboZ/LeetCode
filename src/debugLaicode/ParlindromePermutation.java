@@ -48,6 +48,7 @@ public class ParlindromePermutation {
     }
 
 
+
     private boolean isP(char[] arr) {
         int s = 0;
         int e = arr.length - 1;
