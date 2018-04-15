@@ -6,8 +6,8 @@ import java.util.Queue;
 import java.util.Set;
 
 public class WallsAndGates {
-
-
+    // method 1
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void solve(char[][] board) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
@@ -91,6 +91,63 @@ public class WallsAndGates {
         }
         return false;
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // method 2
+    int[] dx = {-1,1,0,0};
+    int[] dy = {0,0,1,-1};
+
+    public int[][] wallsAndGates(int[][] rooms) {
+        // Write your solution here
+        for (int i = 0; i < rooms.length; i++) {
+            for (int j = 0; j < rooms[0].length; j++) {
+                if (rooms[i][j] == 2147483647 ) {
+                    boolean[][] visited = new boolean[rooms.length][rooms[0].length];
+                    visited[i][j] = true;
+                    rooms[i][j] = dfs(rooms, i, j, visited);
+                }
+            }
+        }
+
+
+        System.out.println(Integer.MAX_VALUE);
+        return rooms;
+
+
+    }
+
+    // try to find the shortest distence from i,j to nearest gate, return distence
+    private int dfs(int[][] room, int i, int j, boolean[][] visited) {
+        // base-case
+        if (room[i][j] == 0) {
+            return 0;
+        }
+        // recursive rule
+        int min = 2147483647;
+        for (int k = 0; k < 4; k++) {
+            int x = dx[k] + i;
+            int y = dy[k] + j;
+            if (x >= 0 && y >=0 && x < room.length && y < room[0].length && !visited[x][y] && room[x][y] != -1) {
+                visited[x][y] = true;
+                min = Math.min(min, dfs(room, x, y, visited) + 1);
+                visited[x][y] = false;
+            }
+        }
+        System.out.println(min);
+        return min ;
+    }
+
+    public static void main(String[] args) {
+
+        int INF = 2147483647;
+
+        //int[][] rooms = {{INF, -1, 0, INF, INF,INF}};
+        int[][] rooms = {{0,2147483647,0,2147483647},
+                         {-1,-1,-1,-1},
+                         {2147483647,2147483647,2147483647,2147483647}};
+        WallsAndGates wallsAndGates = new WallsAndGates();
+        wallsAndGates.wallsAndGates(rooms);
+    }
+
 }
 class Cordinate {
     int x, y;

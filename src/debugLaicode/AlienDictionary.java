@@ -2,16 +2,16 @@ package debugLaicode;
 
 import java.util.*;
 
-public class AlienWord {
+public class AlienDictionary {
 
     public static void main(String[] args) {
-        AlienWord alienWord = new AlienWord();
+        AlienDictionary alienDictionary = new AlienDictionary();
         String[] words = {  "wrt",
                             "wrf",
                             "er",
                             "ett",
                             "rftt"};
-        alienWord.alienOrder(words);
+        alienDictionary.alienOrder(words);
     }
 
     String res;
