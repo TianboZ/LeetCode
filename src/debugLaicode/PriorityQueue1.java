@@ -29,11 +29,12 @@ public class PriorityQueue1 {
         }
         return result;
     }
-}
 
-class CP implements Comparator<Map.Entry<Integer, Integer>> {
-    public int compare(Map.Entry<Integer, Integer> entry1,
-                       Map.Entry<Integer, Integer> entry2) {
-        return entry2.getValue() - entry1.getValue(); // decreasing order
+    class CP implements Comparator<Map.Entry<Integer, Integer>> {
+        public int compare(Map.Entry<Integer, Integer> entry1,
+                           Map.Entry<Integer, Integer> entry2) {
+            return entry2.getValue() - entry1.getValue(); // decreasing order
+        }
     }
 }
+

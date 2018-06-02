@@ -148,27 +148,26 @@ public class WallsAndGates {
         WallsAndGates wallsAndGates = new WallsAndGates();
         wallsAndGates.wallsAndGates(rooms);
     }
-
-}
-class Cordinate {
-    int x, y;
-    Cordinate (int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    // compare
-    @Override
-    public int hashCode() {
-        return 0;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Cordinate)) {
-            return false;
+    class Cordinate {
+        int x, y;
+        Cordinate (int x, int y) {
+            this.x = x;
+            this.y = y;
         }
-        Cordinate compareCordinate = (Cordinate) obj;
-        return ((compareCordinate.x == x)&& (compareCordinate.y == y));
+
+        // compare
+        @Override
+        public int hashCode() {
+            return 0;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof Cordinate)) {
+                return false;
+            }
+            Cordinate compareCordinate = (Cordinate) obj;
+            return ((compareCordinate.x == x)&& (compareCordinate.y == y));
+        }
     }
 }

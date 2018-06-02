@@ -3,14 +3,7 @@ package debugLaicode;
 import java.util.ArrayList;
 import java.util.List;
 
-class ExpNode {
-    ExpNode left;
-    ExpNode right;
-    char val;
-    public ExpNode(char c) {
-        this.val = c;
-    }
-}
+
 public class TerneryExpressionTree {
     public static void main(String[] args) {
         TerneryExpressionTree terneryExpressionTree = new TerneryExpressionTree();
@@ -50,6 +43,14 @@ public class TerneryExpressionTree {
             root.right = buildTree(exp);
         }
         return root;
+    }
+    class ExpNode {
+        ExpNode left;
+        ExpNode right;
+        char val;
+        public ExpNode(char c) {
+            this.val = c;
+        }
     }
 
 

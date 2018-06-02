@@ -5,15 +5,6 @@ package debugLaicode;
 /* A binary tree node has data, pointer to left child
    and a pointer to right child */
 
-class Node1 {
-    int data;
-    Node1 left, right;
-
-    Node1(int item) {
-        data = item;
-        left = right = null;
-    }
-}
 
 public class BoundaryTraverseTree {
 
@@ -99,5 +90,16 @@ public class BoundaryTraverseTree {
         tree.root.right.right = new Node1(25);
         tree.printBoundary(tree.root);
 
+    }
+
+
+    static class Node1 {
+        int data;
+        Node1 left, right;
+
+        Node1(int item) {
+            data = item;
+            left = right = null;
+        }
     }
 }

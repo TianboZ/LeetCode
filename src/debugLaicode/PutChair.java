@@ -84,21 +84,20 @@ public class PutChair {
     }
 
 
-}
+    class Cell {
+        int x;
+        int y;
+        public Cell (int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
 
-class Cell {
-    int x;
-    int y;
-    public Cell (int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 
-}
-
-class Board {
-    List<Integer> disFromEquip;
-    public Board() {
-        this.disFromEquip = new ArrayList<>();
+    class Board {
+        List<Integer> disFromEquip;
+        public Board() {
+            this.disFromEquip = new ArrayList<>();
+        }
     }
 }

@@ -3,19 +3,7 @@ package debugLaicode;
 import java.util.HashMap;
 import java.util.Map;
 
-class Node {
-    Node next;
-    Node child;
-    int val;
-    public Node (int val) {
-        this.val = val;
-    }
-}
-class Pair {
-    Node head;
-    Node tail;
 
-}
 public class FlattenMultilevelLinkedList {
     public static  void main(String[] args) {
         FlattenMultilevelLinkedList flattenMultilevelLinkedList = new FlattenMultilevelLinkedList();
@@ -64,5 +52,19 @@ public class FlattenMultilevelLinkedList {
 
         // go next
         dfs(head.next, map, level);
+    }
+
+    static class Node {
+        Node next;
+        Node child;
+        int val;
+        public Node (int val) {
+            this.val = val;
+        }
+    }
+    class Pair {
+        Node head;
+        Node tail;
+
     }
 }

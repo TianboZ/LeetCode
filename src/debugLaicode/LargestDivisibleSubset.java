@@ -58,26 +58,28 @@ public class LargestDivisibleSubset {
         }
         return result;
     }
-}
 
-class OPT {
-    int count;
-    Set<Integer> set = new HashSet<Integer>();
+    class OPT {
+        int count;
+        Set<Integer> set = new HashSet<Integer>();
 
-    OPT (int count, int index){
-        this.count = count;
-        this.set.add(index);
-    }
+        OPT (int count, int index){
+            this.count = count;
+            this.set.add(index);
+        }
 
-    public void setCount(int newCount) {
-        this.count = newCount;
-    }
+        public void setCount(int newCount) {
+            this.count = newCount;
+        }
 
-    public void setSet(Set newSet) {
-        Set<Integer> set1 = new HashSet<>(newSet);
-        for (Integer i : set1) {
-            this.set.add(i);
+        public void setSet(Set newSet) {
+            Set<Integer> set1 = new HashSet<>(newSet);
+            for (Integer i : set1) {
+                this.set.add(i);
+            }
         }
     }
 }
+
+
 

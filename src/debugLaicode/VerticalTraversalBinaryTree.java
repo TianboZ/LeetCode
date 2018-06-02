@@ -74,13 +74,15 @@ public class VerticalTraversalBinaryTree {
         System.out.println(result.toString());
         return null;
     }
-}
-class Point {
-    TreeNode node;
-    int col;
-    public Point(TreeNode node, int col) {
-        this.node = node;
-        this.col = col;
+
+    class Point {
+        TreeNode node;
+        int col;
+        public Point(TreeNode node, int col) {
+            this.node = node;
+            this.col = col;
+        }
     }
 }
+
 
