@@ -19,7 +19,7 @@ public class PositiveNegtiveInterleave {
             i = i + 2;
             j++;
         }
-        Helper.printIntArray(array);
+        //Helper.printIntArray(array);
         return array;
     }
     // ++++++++++-----
