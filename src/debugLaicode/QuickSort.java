@@ -22,6 +22,7 @@ public class QuickSort {
 
         swap(arr, pivotIndex, right);
 
+        // two bars, three areas
         // [0, i) : < pivot value     (j, last]: >= pivot    [i, j]: unknown area
         while (i <= j) {
             if (arr[i] < pivot) {

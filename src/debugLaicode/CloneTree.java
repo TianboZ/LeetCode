@@ -34,14 +34,15 @@ public class CloneTree {
     public static void main(String[] args) {
 
     }
-}
-class Tree{
-    int data;
-    Tree left,right,random;
-    Tree(int d){
-        data=d;
-        left=null;
-        right=null;
-        random=null;
+
+    class Tree{
+        int data;
+        Tree left,right,random;
+        Tree(int d){
+            data=d;
+            left=null;
+            right=null;
+            random=null;
+        }
     }
 }

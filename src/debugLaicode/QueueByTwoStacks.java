@@ -1,33 +1,34 @@
 package debugLaicode;
 
-import java.util.Stack;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class QueueByTwoStacks {
-    Stack<Integer> in;
-    Stack<Integer> out;
+    Deque<Integer> in;
+    Deque<Integer> out;
     public QueueByTwoStacks() {
         // Write your solution here.
-        this.in = new Stack<>();
-        this.out = new Stack<>();
+        this.in = new LinkedList<>();
+        this.out = new LinkedList<>();
     }
 
     public Integer poll() {
         if (out.isEmpty()) {
             while (!in.isEmpty()) {
-                out.push(in.pop());
+                out.offerFirst(in.pollFirst());
             }
         }
-        return out.isEmpty() ? null : out.pop();
+        return out.isEmpty() ? null : out.pollFirst();
     }
 
     public void offer(int element) {
-        in.push(element);
+        in.offerFirst(element);
     }
 
     public Integer peek() {
         if (out.isEmpty()) {
             while (!in.isEmpty()) {
-                out.push(in.pop());
+                out.offerFirst(in.pollFirst());
             }
         }
         return out.isEmpty() ? null : out.peek();
