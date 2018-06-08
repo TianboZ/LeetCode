@@ -3,6 +3,7 @@ package practice;
 import java.util.NoSuchElementException;
 
 public class MinHeap {
+    // fields
     private int[] array;
     private int size;
 

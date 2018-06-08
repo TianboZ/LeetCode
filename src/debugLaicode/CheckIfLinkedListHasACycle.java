@@ -16,6 +16,13 @@ public class CheckIfLinkedListHasACycle {
             if (slow == fast) {
                 return true;
             }
+
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                return true;
+            }
         }
         return false;
     }

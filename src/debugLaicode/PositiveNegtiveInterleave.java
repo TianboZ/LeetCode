@@ -38,7 +38,6 @@ public class PositiveNegtiveInterleave {
                 right--;
             }
         }
-        Helper.printIntArray(arr);
         firstnegtive = left;
         System.out.println("first negative index: " + firstnegtive);
     }

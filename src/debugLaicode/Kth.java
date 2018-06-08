@@ -69,16 +69,6 @@ class Cor {
         this.dis = dis;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        Cor cor = (Cor) obj;
-        return this.i == cor.i && this.j == cor.j && this.m == cor.m;
-    }
-
-    @Override
-    public int hashCode() {
-        return 1;
-    }
 }
 
 class CP1 implements Comparator<Cor> {

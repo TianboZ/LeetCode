@@ -1,6 +1,7 @@
 package debugLaicode;
 
 public class MergeTwoSortedLinkedList {
+    // iterative
     public ListNode merge(ListNode one, ListNode two) {
         ListNode dummy = new ListNode(0);
         ListNode cur = dummy;
@@ -32,4 +33,26 @@ public class MergeTwoSortedLinkedList {
 
         return dummy.next;
     }
+
+    // recursive
+    // merge two sorted linked list, return the new head
+    public ListNode merge1(ListNode one, ListNode two) {
+        // base-case
+        if (one == null) {
+            return one;
+        }
+        if (two == null) {
+            return two;
+        }
+        // recursive rule
+        if (one.val < two.val) {
+            one.next = merge(one.next, two);
+            return one;
+        } {
+            two.next = merge(one, two.next);
+            return two;
+        }
+    }
+    // time o(n)
+    // space o(n)
 }
