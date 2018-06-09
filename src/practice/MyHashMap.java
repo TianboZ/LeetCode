@@ -1,5 +1,7 @@
 package practice;
 
+import java.util.Queue;
+
 public class MyHashMap<K, V> {
     // inner class
     public static class Node<K, V> {
@@ -179,6 +181,7 @@ public class MyHashMap<K, V> {
         for (int i = 0; i < 20; i++) {
             map.put(i, i + 1);
         }
+
 
         map.remove(19);
         System.out.println(map);

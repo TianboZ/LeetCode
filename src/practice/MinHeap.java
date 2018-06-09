@@ -13,7 +13,7 @@ public class MinHeap {
             throw new IllegalArgumentException("capacity can not be <= 0");
         }
         this.array = new int[capacity];
-        this.size = capacity;
+        this.size = 0;
     }
 
     // constructor, only place uses heapify()
@@ -26,6 +26,7 @@ public class MinHeap {
         heapify();
     }
 
+    // API
     ////////////////////////////////////////////////////////public method///////////////////////////////////////////////
     public int poll() {
         if (size == 0) {
@@ -39,7 +40,7 @@ public class MinHeap {
     }
 
     public void offer(int ele) {
-        // only the 1st time offer an element, need to enlarge the original array
+        // if the size == capacity, array is full now, need to enlarge the original array
         if (size == array.length) {
             System.out.println("enlarging");
             int[] largeArray = new int[size * 2];
@@ -152,10 +153,6 @@ public class MinHeap {
         minHeap.offer(-33);
         minHeap.offer(1111);
         minHeap.offer(100);
-
-//        for (int i = 0; i < minHeap.array.length; i++) {
-//            System.out.println(minHeap.array[i]);
-//        }
 
         while (!minHeap.isEmpty()) {
             System.out.println(minHeap.peek());

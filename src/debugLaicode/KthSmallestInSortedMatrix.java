@@ -59,15 +59,25 @@ public class KthSmallestInSortedMatrix {
             this.val = val;
         }
 
+//        @Override
+//        public boolean equals(Object obj) {
+//            Cell cell = (Cell) obj;
+//            return cell.x == this.x && cell.y == this.y && cell.val == this.val;
+//        }
+
         @Override
-        public boolean equals(Object obj) {
-            Cell cell = (Cell) obj;
-            return cell.x == this.x && cell.y == this.y && cell.val == this.val;
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Cell cell = (Cell) o;
+            return x == cell.x &&
+                    y == cell.y &&
+                    val == cell.val;
         }
 
         @Override
         public int hashCode() {
-            return 31 * x + y;
+            return 31 * 31 * this.x + 31 * this.y + this.val;
         }
 
         @Override
