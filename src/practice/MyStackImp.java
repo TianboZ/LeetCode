@@ -1,6 +1,6 @@
 package practice;
 
-public class MyQueueStackDeque {
+public class MyStackImp {
     static class ListNode {
         // fields
         int val;
@@ -55,49 +55,45 @@ public class MyQueueStackDeque {
         }
     }
 
-    static class MyQueue {
+    static class BoundedStack {
         // fields
-        ListNode head;
-        ListNode tail;
+        Integer[] array;
         int size;
+        int tail;
 
         // constructors
-        public MyQueue() {
-            this.head = null;
-            this.tail = null;
-            this.size = 0;
+        public BoundedStack(int capacity) {
+            this.array = new Integer[capacity];
+            size = 0;
+            tail = 0;
         }
         // APIs
-        public void offer(Integer ele) {
-            if (head == null) {
-                ListNode node = new ListNode(ele);
-                head = node;
-                tail = node;
-                size++;
-            } else {
-                ListNode node = new ListNode(ele);
-                tail.next = node;
-                tail = tail.next;
-                size++;
+        public boolean push(Integer ele) {
+            if (size == array.length) {
+                return false;
             }
+            array[tail] = ele;
+            tail++;
+            size++;
+            return true;
         }
 
-        public Integer poll() {
-            if (head == null) {
+        public Integer pop() {
+            if (size == 0) {
                 return null;
             }
-            ListNode prev = head;
-            head = head.next;
-            prev.next = null;
+            int res = array[tail - 1];
+            tail--;
             size--;
-            return prev.val;
+            return res;
         }
 
-        public Integer peek(Integer ele) {
-            if (head == null) {
+        public Integer peek() {
+            if (size == 0) {
                 return null;
             }
-            return head.val;
+            int res = array[tail - 1];
+            return res;
         }
 
         public boolean isEmpty() {
@@ -116,15 +112,14 @@ public class MyQueueStackDeque {
             System.out.println(stack.pop());
         }
 
-
-        MyQueue queue = new MyQueue();
-        queue.offer(1);
-        queue.offer(2);
-        queue.offer(3);
-        queue.offer(4);
-        System.out.println("queue");
-        while (!queue.isEmpty()) {
-            System.out.println(queue.poll());
+        BoundedStack boundedStack = new BoundedStack(10);
+        boundedStack.push(1);
+        boundedStack.push(2);
+        boundedStack.push(3);
+        boundedStack.push(4);
+        System.out.println("boundedStack");
+        while (!boundedStack.isEmpty()) {
+            System.out.println(boundedStack.pop());
         }
     }
 }
