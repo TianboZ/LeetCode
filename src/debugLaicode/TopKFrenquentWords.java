@@ -22,9 +22,13 @@ public class TopKFrenquentWords {
         Queue<Map.Entry<String, Integer>> minHeap = new PriorityQueue<>(11, new MyComparator());
 
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            // step1: add k candidates
             if (minHeap.size() < k) {
                 minHeap.offer(entry);
-            } else {
+            }
+            // step2: if new element smaller than peek in the heap,
+            // then ignore it; otherwise, poll peek, offer new element
+            else {
                 if (entry.getValue() < minHeap.peek().getValue()) {
                     continue;
                 } else {

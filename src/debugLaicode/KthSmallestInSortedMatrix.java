@@ -29,6 +29,7 @@ public class KthSmallestInSortedMatrix {
         q.offer(new Cell(0, 0, matrix[0][0]));
         visited[0][0] = true;
 
+        // iterate k - 1 rounds
         for (int i = 0; i < k - 1; i++) {
             // expand
             Cell curr = q.poll();

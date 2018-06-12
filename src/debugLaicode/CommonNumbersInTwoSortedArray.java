@@ -14,12 +14,15 @@ public class CommonNumbersInTwoSortedArray {
         while (i < A.size() && j < B.size()) {
             if (A.get(i) == B.get(j)) {
                 res.add(A.get(i));
+                i++;
+                j++;
             } else if (A.get(i) < B.get(j)) {
                 i++;
             } else {
                 j++;
             }
         }
+        System.out.println("sol1: " + res);
         return res;
     }
 
@@ -73,5 +76,6 @@ public class CommonNumbersInTwoSortedArray {
         b.add(1);
 
         commonNumbersInTwoSortedArray.common1(a, b);
+        commonNumbersInTwoSortedArray.common(a, b);
     }
 }
