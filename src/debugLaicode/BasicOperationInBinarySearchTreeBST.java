@@ -1,6 +1,6 @@
 package debugLaicode;
 
-public class BasicOperationInBinaySearchTreeBST {
+public class BasicOperationInBinarySearchTreeBST {
     public TreeNode search(TreeNode root, int target) {
         // base-case
         if (root == null) {
@@ -100,8 +100,8 @@ public class BasicOperationInBinaySearchTreeBST {
 //
 //     2     4
 
-        BasicOperationInBinaySearchTreeBST basicOperationInBinaySearchTreeBST = new BasicOperationInBinaySearchTreeBST();
-        basicOperationInBinaySearchTreeBST.delete(node1, 3);
+        BasicOperationInBinarySearchTreeBST basicOperationInBinarySearchTreeBST = new BasicOperationInBinarySearchTreeBST();
+        basicOperationInBinarySearchTreeBST.delete(node1, 3);
 
     }
 }

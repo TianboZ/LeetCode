@@ -16,7 +16,11 @@ public class Bipartite {
         // the graph can ge represented as a list of GraphNode, no matter if it is connected or not
         // bfs to traverse the graph from each node
         for (GraphNode node : graph) {
-            if (!bfs(node, visited)) {
+//            if (!bfs(node, visited)) {
+//                return false;
+//            }
+
+            if (!dfs(visited, node, 1)) {
                 return false;
             }
         }
@@ -25,7 +29,7 @@ public class Bipartite {
     }
 
     // bfs from node, if it is not bipartite, return false
-    public boolean bfs(GraphNode node, Map<GraphNode, Integer> visited) {
+    private boolean bfs(GraphNode node, Map<GraphNode, Integer> visited) {
         Queue<GraphNode> q = new LinkedList();
         // initial
         q.offer(node);
@@ -55,7 +59,32 @@ public class Bipartite {
         return true;
     }
 
+    private boolean dfs(Map<GraphNode, Integer> visited, GraphNode node, int flag) {
+        // base-case
+        if (visited.containsKey(node)) {
+            return true;
+        }
+        // recursive rule
+        visited.put(node, flag);
+        for (GraphNode nei : node.neighbors) {
+            Integer num = visited.get(nei);
+            if (num == null) {
+                if (!dfs(visited, nei, -1 * flag)) {
+                    return false;
+                }
+            } else if (num == flag) {
+                return false;
+            } else if (num == flag * -1) {
+                continue;
+            }
+        }
+        return true;
+    }
+
     public boolean bfs(Map<GraphNode, Integer> visited, GraphNode node) {
+        if (visited.containsKey(node)) {
+            return true;
+        }
         Queue<GraphNode> queue = new LinkedList<>();
         // initial
         queue.offer(node);
