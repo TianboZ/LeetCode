@@ -147,5 +147,3 @@ public class BinaryTreePathSumToTargetIII {
         System.out.println("list size = " + list.size());
     }
 }
-
-// 对不起啊，怎么说我也做的不对，我看你当时也挺生气的，我所以后来连话也不敢说了。我sb了当时，对不起，希望能得到你的原谅。不用回复我
