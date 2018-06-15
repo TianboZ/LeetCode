@@ -10,7 +10,7 @@ public class SortNumbersInTwoStacks {
             int count = 0;
 
 
-            // try to find the min in s1
+            // try to largestSmaller the min in s1
             for (Integer e : s1) {
                 min = Math.min(min, e);
             }

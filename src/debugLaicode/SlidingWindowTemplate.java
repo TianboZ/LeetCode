@@ -43,7 +43,7 @@ public class SlidingWindowTemplate {
                     if(map.get(tempc) > 0) counter++;//modify the counter according the requirement(different condition).
                 }
 
-                /* save / update(min/max) the result if find a target*/
+                /* save / update(min/max) the result if largestSmaller a target*/
                 // result collections or result int value
 
                 begin++;

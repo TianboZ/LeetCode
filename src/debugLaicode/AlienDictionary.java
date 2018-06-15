@@ -30,7 +30,7 @@ public class AlienDictionary {
         System.out.println(res);
         return res;
     }
-    // find all the path characters
+    // largestSmaller all the path characters
     public void dfs(StringBuilder sb, char c, Map<Character, Set<Character>> map) {
         // base-case
         if (map.get(c).size() == 0) { // character c is last one, no character follows

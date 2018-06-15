@@ -26,7 +26,7 @@ public class PutChairII {
             }
         }
         //System.out.printf("a");
-        // find final sol
+        // largestSmaller final sol
         int min = 100000;
         List<Integer> res = new ArrayList<>();
         for (int i = 0; i < cell.length; i++) {

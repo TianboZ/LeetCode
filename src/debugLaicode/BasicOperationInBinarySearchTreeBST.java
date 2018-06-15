@@ -70,7 +70,7 @@ public class BasicOperationInBinarySearchTreeBST {
         }
         return root;
     }
-    // find the smallest node, return the reference of it
+    // largestSmaller the smallest node, return the reference of it
     private TreeNode findSmallest(TreeNode root) {
         if (root.left == null) {
             return root;

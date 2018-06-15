@@ -31,7 +31,7 @@ public class PutChair {
             }
         }
 
-        // find solution
+        // largestSmaller solution
         int min = 99999999;
         int x = 0, y = 0;
         for (int i = 0; i < gym.length; i++) {

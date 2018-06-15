@@ -116,7 +116,7 @@ public class WallsAndGates {
 
     }
 
-    // try to find the shortest distence from i,j to nearest gate, return distence
+    // try to largestSmaller the shortest distence from i,j to nearest gate, return distence
     private int dfs(int[][] room, int i, int j, boolean[][] visited) {
         // base-case
         if (room[i][j] == 0) {

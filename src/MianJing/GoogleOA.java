@@ -101,7 +101,7 @@ public class GoogleOA {
             pos[i] = flowers[i];
         }
 
-        // find max val in slide window
+        // largestSmaller max val in slide window
         List<Integer> max = new ArrayList<Integer>();
         Deque<Integer> deque1 = new LinkedList<>();
 
@@ -115,7 +115,7 @@ public class GoogleOA {
             deque1.offerLast(i);
 
             // handle left most element in the deque, may be their index already out
-            // of the boundary of window, find them and poll them
+            // of the boundary of window, largestSmaller them and poll them
             while (!deque1.isEmpty() && deque1.peekFirst() < i - k + 1) {
                 deque1.pollFirst();
             }
@@ -127,7 +127,7 @@ public class GoogleOA {
         }
         System.out.println(max);
 
-        // find min val in slide window
+        // largestSmaller min val in slide window
         List<Integer> min = new ArrayList<>();
         Deque<Integer> deque2 = new LinkedList<>();
 
@@ -141,7 +141,7 @@ public class GoogleOA {
             deque2.offerLast(i);
 
             // handle left most element in the deque, may be their index already out
-            // of the boundary of window, find them and poll them
+            // of the boundary of window, largestSmaller them and poll them
             while (!deque2.isEmpty() && deque2.peekFirst() < i - k + 1) {
                 deque2.pollFirst();
             }

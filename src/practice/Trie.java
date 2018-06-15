@@ -1,14 +1,21 @@
-package debugLaicode;
-
+package practice;
 
 import java.util.*;
 
-public class ImplementTrie {
+public class Trie {
 
     public TrieNode root;
 
-    public ImplementTrie() {
+    public Trie() {
         this.root = new TrieNode();
+    }
+
+    public class TrieNode {
+        boolean isWord;
+        Map<Character, TrieNode> children;
+        public TrieNode() {
+            this.children = new HashMap<>();
+        }
     }
 
     public boolean search(String word) {
@@ -21,7 +28,6 @@ public class ImplementTrie {
             cur = next;
 
         }
-
         return cur.isWord;
     }
 
@@ -54,6 +60,7 @@ public class ImplementTrie {
 
         return dfs(cur);
     }
+
     private boolean dfs(TrieNode node) {
         // base-case
         if (node == null) {
@@ -160,7 +167,7 @@ public class ImplementTrie {
         }
     }
     public static void main(String[] args) {
-        ImplementTrie implementTrie = new ImplementTrie();
+        Trie implementTrie = new Trie();
 
         String s = "abc";
         s.lastIndexOf('c');

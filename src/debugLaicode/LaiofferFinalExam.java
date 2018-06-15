@@ -125,7 +125,7 @@ public class LaiofferFinalExam {
     public boolean findCousin(TreeNode node1,
                               TreeNode node2,
                               TreeNode root) {
-        // first levelOrderTraverse, to find the list of values of each
+        // first levelOrderTraverse, to largestSmaller the list of values of each
         // layer
         // now, each level node’s value is represented like
         // 7,8,x,x,x,9 (there are must be even numbers!)
@@ -152,8 +152,8 @@ public class LaiofferFinalExam {
         open.offer(root);
         while(!open.isEmpty()) {
             int size = open.size();
-// left is flag, try to find the left node first, after
-// found left node, then start to find right node
+// left is flag, try to largestSmaller the left node first, after
+// found left node, then start to largestSmaller right node
             boolean left = true;
             boolean found = false;
             int[] index = new int[2];

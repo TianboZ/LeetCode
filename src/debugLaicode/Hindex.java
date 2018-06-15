@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Hindex {
     public int hIndex(int[] citations) {
-        // find max number
+        // largestSmaller max number
         // Map<at least -> max, # of elements>
         // iterate map
         // check k, v

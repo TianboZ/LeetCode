@@ -10,7 +10,7 @@ public class SelectionSort {
             int min = arr[i];
             int index = i;
 
-            // find the min in the rest of array
+            // largestSmaller the min in the rest of array
             for (int j = i + 1; j < arr.length; j++) {
                 if (arr[j] < min) {
                     min = arr[j];

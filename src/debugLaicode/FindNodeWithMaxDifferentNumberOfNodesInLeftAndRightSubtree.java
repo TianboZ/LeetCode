@@ -11,7 +11,7 @@ public class FindNodeWithMaxDifferentNumberOfNodesInLeftAndRightSubtree {
         return res;
     }
 
-    // find total number of nodes in the tree with root
+    // largestSmaller total number of nodes in the tree with root
     private int findMaxDiff(TreeNode root) {
         // base-case
         if (root == null) {

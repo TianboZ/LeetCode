@@ -8,7 +8,7 @@ public class CloestNumberInBinarySearchTree {
         return num;
     }
     // 直上直下
-    // find the cloest number in the tree
+    // largestSmaller the cloest number in the tree
     private void findCloset(TreeNode root, int target) {
         // base-case
         if (root == null) {

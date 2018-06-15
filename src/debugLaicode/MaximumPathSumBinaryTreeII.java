@@ -7,7 +7,7 @@ public class MaximumPathSumBinaryTreeII {
         findPathSum(root);
         return max;
     }
-    // find the max single path  sum（从root开始，到某个点结束） from tree
+    // largestSmaller the max single path  sum（从root开始，到某个点结束） from tree
     private int findPathSum(TreeNode root) {
         // base-case
         if (root == null) {

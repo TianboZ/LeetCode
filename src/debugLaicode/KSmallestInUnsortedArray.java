@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-// try to find the k-th smallest element in unsorted array
+// try to largestSmaller the k-th smallest element in unsorted array
 public class KSmallestInUnsortedArray {
     // online algorithm, use maxHeap
     public int maxHeap(int[] arr, int k) {

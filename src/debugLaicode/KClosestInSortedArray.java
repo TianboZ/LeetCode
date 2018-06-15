@@ -52,7 +52,7 @@ public class KClosestInSortedArray {
             return left;
         }
 
-        // can not find
+        // can not largestSmaller
         return -1;
     }
 

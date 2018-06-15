@@ -8,7 +8,7 @@ public class MaximumPathSumBinaryTreeIII {
         return max;
     }
 
-    // find the max single path（从root到leaf） sum from root to leaf
+    // largestSmaller the max single path（从root到leaf） sum from root to leaf
     private int findMax(TreeNode root) {
         // base-case
         if (root == null) {

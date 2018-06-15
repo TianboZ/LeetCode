@@ -20,7 +20,7 @@ public class LongestIncreasingPathInMatrix {
         return max;
     }
 
-    // find the longest increasing path length from (x, y) point
+    // largestSmaller the longest increasing path length from (x, y) point
     public int dfs(int[][] matrix, int x, int y, int[][] cache) {
         // base-case
         if (cache[x][y] > 0) {
