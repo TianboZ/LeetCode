@@ -13,6 +13,8 @@ public class ReconstructBinaryTreeWithLevelorderAndInorder {
 
         return helper(list);
     }
+
+    // give level order, return the root of constructed tree
     private TreeNode helper(List<Integer> level) {
         // base-case
         if (level.size() == 0) {

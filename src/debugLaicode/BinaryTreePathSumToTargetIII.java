@@ -87,6 +87,7 @@ public class BinaryTreePathSumToTargetIII {
 
 
     private void dfs(TreeNode root, List<TreeNode> path) {
+        // base-case
         if (root == null) {
             return;
         }
@@ -98,13 +99,17 @@ public class BinaryTreePathSumToTargetIII {
             System.out.println();
             path.remove(path.size() - 1);
         }
+        // recursive rule
         path.add(root);
+
         dfs(root.left, path);
         dfs(root.right, path);
+
         path.remove(path.size() - 1);
     }
 
     private void dfs1(TreeNode root, List<TreeNode> path) {
+        // base-case
         if (root == null) {
             return;
         }
@@ -116,7 +121,7 @@ public class BinaryTreePathSumToTargetIII {
             System.out.println();
             path.remove(path.size() - 1);
         }
-
+        // recursive rule
         path.add(root);
         dfs(root.left, path);
         path.remove(path.size() - 1);

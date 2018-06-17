@@ -201,8 +201,4 @@ public class LaiofferFinalExam {
         }
         return false;
     }
-
-/*
-    public boolean levelOrderTraverse1(TreeNode root, TreeNode node1);
-*/
 }
