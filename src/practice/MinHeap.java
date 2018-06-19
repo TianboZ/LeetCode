@@ -16,7 +16,7 @@ public class MinHeap {
         this.size = 0;
     }
 
-    // constructor, only place uses heapify()
+    // constructor, the only place that uses heapify()
     public MinHeap(int[] array) {
         if (array == null || array.length == 0) {
             throw new IllegalArgumentException("input cannot be null or empty");

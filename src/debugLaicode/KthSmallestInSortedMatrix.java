@@ -60,12 +60,6 @@ public class KthSmallestInSortedMatrix {
             this.val = val;
         }
 
-//        @Override
-//        public boolean equals(Object obj) {
-//            Cell cell = (Cell) obj;
-//            return cell.x == this.x && cell.y == this.y && cell.val == this.val;
-//        }
-
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
