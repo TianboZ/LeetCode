@@ -18,7 +18,6 @@ public class MyLinkedList {
     ListNode tail;  //不希望被外界看到
     int size;  //不希望被外界看到
 
-
     // constructors
     public MyLinkedList() {
         dummyHead = new ListNode(0); // it is dummy head
