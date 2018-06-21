@@ -30,7 +30,7 @@ public class RemoveSpaces {
     }
 
     public static void main(String[] args) {
-        RemoveSpace removeSpace = new RemoveSpace();
+        RemoveSpaces removeSpace = new RemoveSpaces();
         String res= removeSpace.removeSpaces("    a b     d  ");
         System.out.println(res);
     }
