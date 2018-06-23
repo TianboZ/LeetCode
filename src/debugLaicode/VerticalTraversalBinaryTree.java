@@ -38,50 +38,54 @@ public class VerticalTraversalBinaryTree {
 
     }
 
-    public String verticalOrder(TreeNode root) {
-        // Write your solution here
-        Queue<Point> queue = new LinkedList<>();
-        queue.offer(new Point(root, 0));
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
         Map<Integer, List<Integer>> map = new TreeMap<>();
+        Queue<Node> q = new LinkedList<>();
+        // initial
+        q.offer(new Node(root, 0));
 
-        while (!queue.isEmpty()) {
+        while (!q.isEmpty()) {
             // expand
-            Point cur = queue.poll();
-            int curCol = cur.col;
-            int curVal = cur.node.key;
+            Node curr = q.poll();
+            int col = curr.col;
+            TreeNode node = curr.node;
 
-            if (map.containsKey(curCol)) {
-                map.get(curCol).add(curVal);
+            if (map.containsKey(col)) {
+                map.get(col).add(node.key);
             } else {
                 List<Integer> list = new ArrayList<>();
-                list.add(curVal);
-                map.put(curCol, list);
+                list.add(node.key);
+                map.put(col, list);
             }
-            // generate rule
-            if (cur.node.left != null) {
-                queue.offer(new Point(cur.node.left, curCol - 1));
+            // generate
+            if (node.left != null) {
+                q.offer(new Node( node.left, col - 1));
             }
-            if (cur.node.right != null) {
-                queue.offer(new Point(cur.node.right, curCol + 1));
+            if (node.right != null) {
+                q.offer(new Node(node.right, col + 1));
             }
         }
-        System.out.println(map);
-        List<List<Integer>> result = new ArrayList<>();
-        //System.out.println(map.get(0).toString());
+
         for (List<Integer> list : map.values()) {
-            result.add(list);
+            res.add(list);
         }
-        System.out.println(result.toString());
-        return null;
+        return res;
     }
 
-    class Point {
+    class Node {
+        // fields
         TreeNode node;
         int col;
-        public Point(TreeNode node, int col) {
+        // constructor
+        public Node (TreeNode node, int col) {
             this.node = node;
             this.col = col;
         }
+        // API
     }
 }
 

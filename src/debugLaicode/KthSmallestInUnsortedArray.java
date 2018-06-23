@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 // try to largestSmaller the k-th smallest element in unsorted array
-public class KSmallestInUnsortedArray {
+public class KthSmallestInUnsortedArray {
     // online algorithm, use maxHeap
     public int maxHeap(int[] arr, int k) {
         Queue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
@@ -49,8 +49,8 @@ public class KSmallestInUnsortedArray {
 
     public static void main(String[] args) {
         int[] arr = {10, 9, 8, 3, -1, 100, -20, -20, -20};
-        KSmallestInUnsortedArray kSmallestInUnsortedArray = new KSmallestInUnsortedArray();
-        int res = kSmallestInUnsortedArray.maxHeap(arr, 3); // should return -20
+        KthSmallestInUnsortedArray kthSmallestInUnsortedArray = new KthSmallestInUnsortedArray();
+        int res = kthSmallestInUnsortedArray.maxHeap(arr, 3); // should return -20
         System.out.println(res);
     }
 }
