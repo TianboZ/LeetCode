@@ -4,108 +4,101 @@ package debugLaicode;
 import java.util.*;
 
 public class PutChairI {
-    public static void main(String[] args) {
-        PutChairI putChairI = new PutChairI();
-        char[][] gym = {{'E', ' ', ' '},
-                {' ', 'E', ' '},
-                {' ', ' ', 'E'}};
-        putChairI.putChair(gym);
-    }
-
+    int[] dx = {1, -1, 0, 0};
+    int[] dy = {0, 0, 1, -1};
     public List<Integer> putChair(char[][] gym) {
-        // Write your solution here
-        List<Integer> res = new ArrayList<>();
         if (gym.length == 0 || gym[0].length == 0) {
-            return res;
+            return null;
         }
-        Board[][] board = new Board[gym.length][gym[0].length];
-
-        for (int i = 0; i < gym.length; i++) {
-            for (int j = 0; j < gym[0].length; j++) {
-                board[i][j] = new Board();
+        // initial cell
+        Cell[][] cell = new Cell[gym.length][gym[0].length];
+        for (int i = 0; i < cell.length; i++) {
+            for (int j = 0; j < cell[0].length; j++) {
+                cell[i][j] = new Cell();
             }
         }
 
-        for (int i = 0; i < gym.length; i++) {
-            for (int j = 0; j < gym[0].length; j++) {
+        for (int i = 0; i < cell.length; i++) {
+            for (int j = 0; j < cell[0].length; j++) {
                 if (gym[i][j] == 'E') {
-                    bfs(gym, board, i, j);
+                    bfs(gym, cell, i, j);
                 }
             }
         }
 
-        int min = 10000;
-        int x = 0;
-        int y = 0;
-        for (int i = 0; i < gym.length; i++) {
-            for (int j = 0; j < gym[0].length; j++) {
-                if (gym[i][j] == ' ' || gym[i][j] == 'E') {
-                    int sum = 0;
-                    for (Integer dis : board[i][j].list) {
-                        sum = sum + dis;
-                    }
+        int min = Integer.MAX_VALUE;
+        int x = -1;
+        int y = -1;
+        for (int i = 0; i < cell.length; i++) {
+            for (int j = 0; j < cell[0].length; j++) {
+                if (gym[i][j] == 'C') {
+                    int sum = getSum(cell[i][j].path);
                     if (sum < min) {
                         min = sum;
                         x = i;
                         y = j;
                     }
-
                 }
             }
         }
+
+        List<Integer> res = new ArrayList<>();
         res.add(x);
         res.add(y);
+        //return res.size() > 0 ? res : null;
         return res;
-
     }
-
-    public void bfs(char[][] gym, Board[][] board, int x, int y) {
-        int[] dy = {1, -1, 0, 0};
-        int[] dx = {0, 0, 1, -1};
+    private int getSum(List<Integer> list) {
+        int sum = 0;
+        for (Integer i : list) {
+            sum = sum + i;
+        }
+        return sum;
+    }
+    private void bfs(char[][] gym, Cell[][] cell, int x, int y) {
         Queue<Point> queue = new LinkedList<>();
         boolean[][] visited = new boolean[gym.length][gym[0].length];
-        int dis = 0;
+        // initial
         queue.offer(new Point(x, y));
         visited[x][y] = true;
-        board[x][y].list.add(dis);
-        dis++;
+        int dis = 0;
 
         while (!queue.isEmpty()) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
                 // expand
                 Point cur = queue.poll();
-
-                // generate rule
+                cell[cur.x][cur.y].path.add(dis);
+                // generate
                 for (int k = 0; k < 4; k++) {
-                    int curX = cur.x + dx[k];
-                    int curY = cur.y + dy[k];
-                    if (curX >= 0 && curX < gym.length && curY >= 0 && curY < gym[0].length && !visited[curX][curY]) {
-                        queue.offer(new Point(curX, curY));
-                        visited[curX][curY] = true;
-                        board[curX][curY].list.add(dis);
+                    int newX = cur.x + dx[k];
+                    int newY = cur.y + dy[k];
+                    if (newX >= 0
+                            && newY >= 0
+                            && newX < gym.length
+                            && newY < gym[0].length
+                            && !visited[newX][newY]
+                            && gym[newX][newY] != 'O') {
+                        queue.offer(new Point(newX, newY));
+                        visited[newX][newY] = true;
                     }
                 }
             }
             dis++;
         }
     }
-
-    class Board {
-        List<Integer> list;
-
-        public Board() {
-            this.list = new ArrayList<>();
-        }
-    }
-
     class Point {
         int x;
         int y;
-
         public Point(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+    }
+    class Cell {
+        List<Integer> path;
+        public Cell() {
+            this.path = new ArrayList<>();
         }
     }
 }

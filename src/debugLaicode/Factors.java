@@ -9,9 +9,9 @@ public class Factors {
         //System.out.println(ref.factorcombo(12));
         Factors factors= new Factors();
         /*int arr[] = factors.getFactor(12);
-        List<Integer> list = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
         List<List<Integer>> res = new ArrayList<List<Integer>>();
-        factors.dfs(res, list, arr, 12, 0);
+        factors.dfs(res, path, arr, 12, 0);
         System.out.println(res);*/
 
         factors.factors(32);

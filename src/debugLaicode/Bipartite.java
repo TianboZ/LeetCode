@@ -13,7 +13,7 @@ public class Bipartite {
         Map<GraphNode, Integer> visited = new HashMap<>();
 
 
-        // the graph can ge represented as a list of GraphNode, no matter if it is connected or not
+        // the graph can ge represented as a path of GraphNode, no matter if it is connected or not
         // bfs to traverse the graph from each node
         for (GraphNode node : graph) {
 //            if (!bfs(node, visited)) {

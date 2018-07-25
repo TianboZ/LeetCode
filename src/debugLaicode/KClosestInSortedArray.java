@@ -47,8 +47,7 @@ public class KClosestInSortedArray {
         // post processing
         if (target >= array[right]) {
             return right;
-        }
-        if (target >= array[left]) {
+        } else if (target >= array[left]) {
             return left;
         }
 

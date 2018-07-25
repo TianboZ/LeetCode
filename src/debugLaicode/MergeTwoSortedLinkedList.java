@@ -35,7 +35,7 @@ public class MergeTwoSortedLinkedList {
     }
 
     // recursive
-    // merge two sorted linked list, return the new head
+    // merge two sorted linked path, return the new head
     public ListNode merge1(ListNode one, ListNode two) {
         // base-case
         if (one == null) {

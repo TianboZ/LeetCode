@@ -45,7 +45,7 @@ public class ComparableComparatorEqualHashCode {
 
     // if E already implements Comparable<E> class, but still I provide a Comparator, PQ will chose the order
     // that specified in Comparator
-    static class MyComparator implements Comparator<Cell> {
+    private static class MyComparator implements Comparator<Cell> {
         @Override
         public int compare(Cell c1, Cell c2) {
             if (c1.val == c2.val) {

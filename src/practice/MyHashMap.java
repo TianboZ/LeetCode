@@ -1,14 +1,12 @@
 package practice;
 
-import java.util.Queue;
-
 public class MyHashMap<K, V> {
-    // inner class
-    public static class Node<K, V> {
+    // helper class
+    private static class Node<K, V> {
         // fields
         private K key;
         private V value;
-        public Node<K, V> next = null;
+        private Node<K, V> next = null;  // it is a linked list
 
         // constructors
         public Node(K key, V value) {
@@ -29,11 +27,11 @@ public class MyHashMap<K, V> {
             value = v;
         }
     }
+
     // fields
     private static final int INIT_CAPACITY = 16;
     private static final double LOAD_FACTOR = 0.7;
-
-    private Node<K, V>[] array;
+    private Node<K, V>[] array; // bucket array
     private int size;
 
     // constructor
@@ -48,10 +46,6 @@ public class MyHashMap<K, V> {
 
     public boolean isEmpty() {
         return size == 0;
-    }
-
-    public void clear() {
-
     }
 
     public V get(K key) {
@@ -73,6 +67,7 @@ public class MyHashMap<K, V> {
         Node<K, V> node = array[index];
         while (node != null) {
             if (equalsKey(node.getKey(), key)) {
+                // found the key
                 return true;
             }
             node = node.next;
@@ -88,6 +83,7 @@ public class MyHashMap<K, V> {
         // case1, this pair already exist, then just need to update value
         while (node != null) {
             if (equalsKey(node.getKey(), key)) {
+                // found the key
                 V ondValue = node.getValue();
                 node.setValue(value);
                 return ondValue;
@@ -132,7 +128,7 @@ public class MyHashMap<K, V> {
             return 0;
         }
         int code = key.hashCode();
-        return code & 0x7fffffff;
+        return code & 0x7fffffff; // make sure it is positive
     }
     private int index(K key) {
         return hash(key) % array.length;
@@ -182,8 +178,12 @@ public class MyHashMap<K, V> {
             map.put(i, i + 1);
         }
 
-
         map.remove(19);
         System.out.println(map);
+
+
+        Integer a = 1;
+        a++;
+        System.out.println(a);
     }
 }

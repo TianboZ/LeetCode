@@ -6,14 +6,15 @@ import java.util.Map;
 import java.util.Set;
 
 public class FirstNonRepeatingCharacterInStream {
-    // field:
+    // field
     // each node is double linked list node
     // and it contains one distinct character
-    static class Node {
+    private class Node {
         // field
         Character c;
         Node next;
         Node prev;
+
         // constructor
         public Node(Character c) {
             this.c = c;
@@ -69,8 +70,7 @@ public class FirstNonRepeatingCharacterInStream {
     private void remove(Node node) {
         singled.remove(node.c);
         repeated.add(node.c);
-        // use sentinel node so that some of the corner cases will be eliminated
-
+        // use dummy node so that some of the corner cases will be eliminated
         if (node == tail) {
             tail = node.prev;
             tail.next = null;
@@ -84,6 +84,8 @@ public class FirstNonRepeatingCharacterInStream {
         }
 
     }
+
+    // this api time is o(1)
     public Character firstNonRepeating() {
         // when head == tail, means only dummy node in the list
         if (head == tail) {

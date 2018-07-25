@@ -1,7 +1,7 @@
 package debugLaicode;
 
 public class ReverseLinkedListPairByPair {
-    // return new head of reversed linked list
+    // return new head of reversed linked path
     public ListNode reverseInPairs(ListNode head) {
         // Write your solution here
         // base-case

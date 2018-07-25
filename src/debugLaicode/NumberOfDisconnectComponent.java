@@ -8,7 +8,7 @@ class NumberOfDisconnectComponent {
     public static void main(String[] args) {
         NumberOfDisconnectComponent numberOfDisconnectComponent = new NumberOfDisconnectComponent();
         int[][] edges = {{2, 3}, {1, 2}, {1, 3}};
-        //System.out.println(list);
+        //System.out.println(path);
         numberOfDisconnectComponent.countComponents(4, edges);
     }
 

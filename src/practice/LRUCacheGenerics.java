@@ -6,7 +6,7 @@ import java.util.Map;
 public class LRUCacheGenerics<K, V> {
     // fields
     // each node contains the key, value pair, and it also is a double linked list node
-    static class Node<K, V> {
+    private class Node<K, V> {
         // fields
         Node<K, V> next;
         Node<K, V> prev;

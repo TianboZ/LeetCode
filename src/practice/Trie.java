@@ -3,21 +3,30 @@ package practice;
 import java.util.*;
 
 public class Trie {
+    // helper class
+    private class TrieNode {
+        // fields
+        boolean isWord;
+        Map<Character, TrieNode> children;
 
-    public TrieNode root;
+        // constructor
+        private TrieNode() {
+            this.children = new HashMap<>();
+        }
 
+        // API
+    }
+
+    // fields
+    private TrieNode root;
+
+    // constructor
     public Trie() {
         this.root = new TrieNode();
     }
 
-    public class TrieNode {
-        boolean isWord;
-        Map<Character, TrieNode> children;
-        public TrieNode() {
-            this.children = new HashMap<>();
-        }
-    }
-
+    // API
+    // 踩着石头过河
     public boolean search(String word) {
         TrieNode cur = root;
         for (int i = 0; i < word.length(); i++) {
@@ -26,167 +35,148 @@ public class Trie {
                 return false;
             }
             cur = next;
-
         }
-        return cur.isWord;
+        return cur.isWord; // important!!! check if it is word
     }
 
-    public void delete(String word) {
-        Map<String, TreeSet<String>> map = new HashMap<>();
-
-        TrieNode cur = root;
-        for (int i = 0; i < word.length(); i++) {
-            TrieNode next = cur.children.get(word.charAt(i));
-            if (next == null) {
-                return;
-            }
-            cur = next;
-
-        }
-
-        cur.isWord = false;
-    }
-
-    public boolean startWith(String word) {
-        TrieNode cur = root;
-        for (int i = 0; i < word.length(); i++) {
-            TrieNode next = cur.children.get(word.charAt(i));
-            if (next == null) {
-                return false;
-            }
-            cur = next;
-
-        }
-
-        return dfs(cur);
-    }
-
-    private boolean dfs(TrieNode node) {
-        // base-case
-        if (node == null) {
-            return false;
-        }
-        if (node.isWord) {
-            return true;
-        }
-        // recursive rule
-
-        for (Map.Entry<Character, TrieNode> entry : node.children.entrySet()) {
-            if (dfs(entry.getValue())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
+    // 踩着石头过河，如果踩空了，退回来，放一块新石头，继续采石头过河
     public void insert(String word) {
         TrieNode cur = root;
         for (int i = 0; i < word.length(); i++) {
             TrieNode next = cur.children.get(word.charAt(i));
             if (next == null) {
+                // new TireNode
                 next = new TrieNode();
                 cur.children.put(word.charAt(i), next);
             }
             cur = next;
-
         }
+        // set isWord
         cur.isWord = true;
     }
 
+    // simple version, if find the word, then just set isWord false
+    // drawback: space waste
+    public void delete(String word) {
+        TrieNode cur = root;
+        for (int i = 0; i < word.length(); i++) {
+            TrieNode next = cur.children.get(word.charAt(i));
+            if (next == null) {
+                return;
+            }
+            cur = next;
+        }
+        // set isWord false
+        cur.isWord = false;
+    }
 
-    public void searchAllWithPrefix(String prefix) {
+    // Trie is basic data structure!!! because of search engine!!!
+
+    // question1: find all the words with a given prefix
+    // e.g. searchAllWithPrefix("ca") = ["cat", "catty", "cathy"]
+    public List<String> searchAllWithPrefix(String prefix) {
+        List<String> res = new ArrayList<>();
+
         // step1: search prefix
         TrieNode cur = root;
         for (int i = 0; i < prefix.length(); i++) {
             TrieNode next = cur.children.get(prefix.charAt(i));
             if (next == null) {
-                return;
+                return res;
+            } else {
+                cur = next;
             }
-            cur = next;
-
         }
-        // step2: largestSmaller all words with this prefix
-        List<String> res = new ArrayList<>();
+
+        // step2: find all words with given prefix
         StringBuilder sb = new StringBuilder(prefix);
         searchAllWithPrefix(cur, res, sb);
-        System.out.println(sb.toString());
         System.out.println(res);
+        return res;
     }
-    private void searchAllWithPrefix(TrieNode node, List<String> res, StringBuilder sb) {
+
+    private void searchAllWithPrefix(TrieNode node, List<String> res, StringBuilder path) {
         // baes-caes
-        if (node == null) {
+        if (node.children.size() == 0) {
+            if (node.isWord) {
+                res.add(path.toString());
+            }
             return;
         }
 
         // recursive rule
         if (node.isWord) {
-            res.add(sb.toString());
+            res.add(path.toString());
         }
         for (Map.Entry<Character, TrieNode> entry : node.children.entrySet()) {
-            sb.append(entry.getKey());
-            searchAllWithPrefix(entry.getValue(), res, sb);
-            sb.deleteCharAt(sb.length() - 1);
+            path.append(entry.getKey());
+            searchAllWithPrefix(entry.getValue(), res, path);
+            path.deleteCharAt(path.length() - 1);
         }
 
     }
 
-    public void findAllWordsWithWildcard(String target) {
+    // question2: find all the words with wildcard
+    // e.g. findAllWordsWithWildcard("ca?") = ["cat", "cap"]
+    public List<String> findAllWordsWithWildcard(String target) {
+        List<String> res = new ArrayList<>();
         if (target == null || target.length() == 0) {
-            return;
+            return res;
         }
         StringBuilder sb = new StringBuilder();
-        List<String> res = new ArrayList<>();
         TrieNode cur = root;
         findAllWordsWithWildcard(target, 0, sb, res, cur);
         System.out.println(res);
+        return res;
     }
-    private void findAllWordsWithWildcard(String target, int index, StringBuilder sb, List<String> res, TrieNode cur) {
+
+    // find all words from root node
+    private void findAllWordsWithWildcard(String target, int index,
+                                          StringBuilder path, List<String> res, TrieNode root) {
         // base-case
         if (index == target.length()) {
-            if (cur.isWord) {
-                res.add(sb.toString());
+            if (root.isWord) {
+                // dont forget, it is a word!!!
+                res.add(path.toString());
             }
             return;
         }
         // recursive rule
         char toMatch = target.charAt(index);
         if (toMatch == '?') {
-            for (Map.Entry<Character, TrieNode> entry : cur.children.entrySet()) {
-                sb.append(entry.getKey());
-                findAllWordsWithWildcard(target, index + 1, sb, res, entry.getValue());
-                sb.deleteCharAt(sb.length() - 1);
+            for (Map.Entry<Character, TrieNode> child : root.children.entrySet()) {
+                path.append(child.getKey());
+                findAllWordsWithWildcard(target, index + 1, path, res, child.getValue());
+                path.deleteCharAt(path.length() - 1);
             }
         } else {
-            TrieNode next = cur.children.get(toMatch);
+            TrieNode next = root.children.get(toMatch);
             if (next != null) {
-                sb.append(toMatch);
-                findAllWordsWithWildcard(target, index + 1, sb, res, next);
-                sb.deleteCharAt(sb.length() - 1);
+                path.append(toMatch);
+                findAllWordsWithWildcard(target, index + 1, path, res, next);
+                path.deleteCharAt(path.length() - 1);
             }
         }
     }
+
     public static void main(String[] args) {
-        Trie implementTrie = new Trie();
+        // usually used operation: search, delete, add
+        Trie trie = new Trie();
+        trie.insert("cat");
+        trie.insert("catty");
+        trie.insert("catch");
+        trie.insert("cater");
+        trie.insert("cc");
 
-        String s = "abc";
-        s.lastIndexOf('c');
-        System.out.println("last index of: " + s.lastIndexOf('c'));
+        System.out.println(trie.search("cat"));
 
+        trie.searchAllWithPrefix("ca");
 
-        implementTrie.insert("leetcode");
-        implementTrie.insert("leetcode1");
-        implementTrie.insert("leetcode2");
-        implementTrie.insert("leetcode3");
-        System.out.println(implementTrie.search("leet"));
-        System.out.println(implementTrie.startWith("leet"));
-        //implementTrie.delete("leetcode");
-        System.out.println(implementTrie.startWith("leet"));
-        System.out.println(implementTrie.search("leetcode"));
-        implementTrie.searchAllWithPrefix("leet");
-        implementTrie.findAllWordsWithWildcard("leet?ode?");
+        trie.findAllWordsWithWildcard("catt?");
+
+        boolean res = trie.search("catt");
+
+        trie.delete("cat");
+        trie.searchAllWithPrefix("ca");
     }
-
-
-
 }

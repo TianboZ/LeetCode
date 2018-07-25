@@ -21,8 +21,10 @@ public class Generics {
     }
 
     public static void main(String[] args) {
-        Node<Integer, String, Integer> node = new Node<>(1, "abc", 2);
-        System.out.println(node.key + node.value + node.name);
-    }
+        Node<Integer, String, Integer> node1 = new Node<>(1, "abc", 2);
+        Node<Integer, String, Integer> node2 = new Node<>(3, "xyz", 4);
+        node1.next = node2;
+        node2.prev = node1;
 
+    }
 }

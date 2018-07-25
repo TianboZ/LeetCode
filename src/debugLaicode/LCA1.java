@@ -1,7 +1,8 @@
 package debugLaicode;
 
 public class LCA1 {
-    // largestSmaller the lca of a and b, return the lca node. if did not largestSmaller the node a or b, return null
+    // try to find lca of a and b, if did not find both of them, return null
+    // if find either of them, then return it
     public TreeNode lca(TreeNode root, TreeNode a, TreeNode b) {
         // baase-case
         if (root == null) {
@@ -14,13 +15,9 @@ public class LCA1 {
         TreeNode left = lca(root.left, a, b);
         TreeNode right = lca(root.right, a, b);
 
-        if (left == null && right == null) {
-            return null;
-        } else if (left != null && right != null) {
+        if (left != null && right != null) {
             return root;
-        } else if (left == null || right == null) {
-            return left == null ? right : left;
         }
-        return null;
+        return left == null ? right : left;
     }
 }

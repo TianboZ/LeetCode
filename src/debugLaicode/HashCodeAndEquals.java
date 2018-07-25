@@ -9,8 +9,8 @@ public class HashCodeAndEquals {
     }
     public void test() {
         Set<Cell> set = new HashSet<>();
-        //List<Integer> list = new ArrayList<>();
-        //list.add(1);
+        //List<Integer> path = new ArrayList<>();
+        //path.add(1);
         set.add(new Cell(1,2));
         set.add(new Cell(2,3));
         set.add(new Cell(1,2));

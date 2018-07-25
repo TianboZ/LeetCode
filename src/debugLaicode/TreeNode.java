@@ -1,12 +1,13 @@
 package debugLaicode;
 
 public class TreeNode {
-    int key;
-    TreeNode left;
-    TreeNode right;
+    // fields
+    public int key;
+    public TreeNode left;
+    public TreeNode right;
 
     // constructor
-    TreeNode(int x) {
+    public TreeNode(int x) {
         this.key = x;
     }
 }

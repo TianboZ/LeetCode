@@ -147,8 +147,8 @@ public class BinaryTreePathSumToTargetIII {
         node4.right = node6;
 
         List<TreeNode> list = new ArrayList<>();
-        //binaryTreePathSumToTargetIII.dfs(node1, list);
+        //binaryTreePathSumToTargetIII.dfs(node1, path);
         binaryTreePathSumToTargetIII.dfs1(node1, list);
-        System.out.println("list size = " + list.size());
+        System.out.println("path size = " + list.size());
     }
 }
