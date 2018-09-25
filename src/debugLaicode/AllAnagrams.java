@@ -14,7 +14,7 @@ public class AllAnagrams {
         if (s.length() > l.length()) {
             return res;
         }
-        // key: character value: number of it
+        // key: character       value: frequency
         Map<Character, Integer> map = countMap(s);
         // record how many distinct characters have been matched, only when all distinct characters are matched
         // match == map.size(), we find an anagram
@@ -48,6 +48,7 @@ public class AllAnagrams {
                 res.add(i - s.length() + 1);
             }
         }
+        System.out.println(res);
         return res;
     }
     private Map<Character, Integer> countMap(String s) {
@@ -61,6 +62,11 @@ public class AllAnagrams {
             }
         }
         return map;
+    }
+
+    public static void main(String[] args) {
+        AllAnagrams allAnagrams = new AllAnagrams();
+        allAnagrams.allAnagrams("abcdadccdbcadccad", "abc");
     }
 
 }

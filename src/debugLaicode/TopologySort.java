@@ -1,81 +1,85 @@
 package debugLaicode;
 
-// A Java program to print topological sorting of a DAG
-import java.io.*;
 import java.util.*;
 
 // This class represents a directed graph using adjacency
 // path representation
 public class TopologySort {
-    private int V;   // No. of vertices
-    private LinkedList<Integer> adj[]; // Adjacency List
-
-    //Constructor
-    TopologySort(int v)
-    {
-        V = v;
-        adj = new LinkedList[v];
-        for (int i=0; i<v; ++i)
-            adj[i] = new LinkedList();
+    private static class Node {
+        int val;
+        Set<Node> neighbors;
+        Node(int val) {
+            this.val = val;
+            this.neighbors = new HashSet<>();
+        }
     }
 
-    // Function to add an edge into the graph
-    void addEdge(int v,int w) { adj[v].add(w); }
-
-    // A recursive function used by topologicalSort
-    void topologicalSortUtil(int v, boolean visited[], Stack stack) {
-        // Mark the current node as visited.
-        visited[v] = true;
-        Integer i;
-
-        // Recur for all the vertices adjacent to this
-        // vertex
-        Iterator<Integer> it = adj[v].iterator();
-        while (it.hasNext()) {
-            i = it.next();
-            if (!visited[i])
-                topologicalSortUtil(i, visited, stack);
+    private boolean topologySort(Node node, Deque<Node> stack, Map<Node, Integer> state) {
+        // base-case
+        if (state.containsKey(node)) {
+            if (state.get(node) == 0) return true;
+            if (state.get(node) == 1) return false;
         }
 
-        // Push current vertex to stack which stores result
-        stack.push(new Integer(v));
+        // recursive rule
+        state.put(node, 1); // visiting a node
+        for (Node nei: node.neighbors) {
+            if (!topologySort(nei, stack, state)) return false;
+        }
+        stack.offerFirst(node);
+        state.put(node, 0); // finished visiting a ndoe
+        return true;
     }
 
-    // The function to do Topological Sort. It uses
-    // recursive topologicalSortUtil()
-    void topologicalSort() {
-        Stack stack = new Stack();
-
-        // Mark all the vertices as not visited
-        boolean visited[] = new boolean[V];
-        for (int i = 0; i < V; i++)
-            visited[i] = false;
-
-        // Call the recursive helper function to store
-        // Topological Sort starting from all vertices
-        // one by one
-        for (int i = 0; i < V; i++)
-            if (visited[i] == false)
-                topologicalSortUtil(i, visited, stack);
-
-        // Print contents of stack
-        while (stack.empty()==false)
-            System.out.print(stack.pop() + " ");
+    // get only one valid topology sort
+    public List<Node> tpSort(List<Node> nodes) {
+        Deque<Node> stack = new LinkedList<>();
+        Map<Node, Integer> state = new HashMap<>();
+        for (Node node: nodes) {
+            System.out.println("node is " + node.val);
+            if (!topologySort(node, stack, state)) {
+                System.out.println("cycle detected!");
+            }
+        }
+        List<Node> res = new ArrayList<>();
+        while (!stack.isEmpty()) {
+            res.add(stack.pop());
+        }
+        for (Node node : res) {
+            System.out.println(node.val);
+        }
+        return res;
     }
 
-    // Driver method
-    public static void main(String args[])
-    {
-        // Create a graph given in the above diagram
-        TopologySort g = new TopologySort(6);
-        g.addEdge(5, 2);
-        g.addEdge(5, 0);
-        g.addEdge(4, 0);
-        g.addEdge(4, 1);
-        g.addEdge(2, 3);
-        g.addEdge(3, 1);
+    // get all the valid topology sort
+//    public List<List<Node>> tpSort1(List<Node> nodes) {
+//
+//    }
 
-        System.out.println("Following is a Topological " + "sort of the given graph");
-        g.topologicalSort();
+    public static void main(String[] args) {
+        Node node0 = new Node(0);
+        Node node1 = new Node(1);
+        Node node2 = new Node(2);
+        Node node3 = new Node(3);
+        Node node4 = new Node(4);
+        Node node5 = new Node(5);
+
+        node2.neighbors.add(node3);
+        node3.neighbors.add(node1);
+        node5.neighbors.add(node2);
+        node5.neighbors.add(node0);
+        node4.neighbors.add(node0);
+        node4.neighbors.add(node1);
+
+        List<Node> nodes = new ArrayList<>();
+        nodes.add(node0);
+        nodes.add(node1);
+        nodes.add(node2);
+        nodes.add(node3);
+        nodes.add(node4);
+        nodes.add(node5);
+
+        TopologySort topologySort = new TopologySort();
+        topologySort.tpSort(nodes);
     }
 }

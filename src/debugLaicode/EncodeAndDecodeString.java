@@ -1,5 +1,7 @@
 package debugLaicode;
 
+import java.util.*;
+
 public class EncodeAndDecodeString {
     public String encode(String s) {
         StringBuilder sb = new StringBuilder();
@@ -46,10 +48,43 @@ public class EncodeAndDecodeString {
         return sb.toString();
     }
 
+    private List<String> decode1(String s) {
+        StringBuilder sb = new StringBuilder();
+        List<String> list = new ArrayList<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '[') {
+                if (s.charAt(i + 1) == '#') {
+                    list.add("[");
+                } else {
+                    sb.append(s.charAt(i));
+                }
+                i++;
+            } else if (s.charAt(i) == ']') {
+                if (s.charAt(i + 1) == '#') {
+                    list.add(sb.toString());
+                    sb.setLength(0); // clear stringbuilder sb
+                    list.add("]");
+                } else {
+                    sb.append(s.charAt(i));
+                }
+                i++;
+            } else {
+                sb.append(s.charAt(i));
+            }
+        }
+        for (String s1 : list) {
+            System.out.println(s1);
+        }
+        return list;
+    }
+
+
     public static void main(String[] args) {
         EncodeAndDecodeString encodeAndDecodeString = new EncodeAndDecodeString();
         String encoded = encodeAndDecodeString.encode("111111abbbb551");
-        String decoded = encodeAndDecodeString.decode("1#6,a#1,b#4,5#2,1#1,a#0,");
-        System.out.println(decoded.equals("111111abbbb551")); // true
+        //String decoded = encodeAndDecodeString.decode("1#6,a#1,b#4,5#2,1#1,a#0,");
+        List<String> res = encodeAndDecodeString.decode1("[#[[#892sldjfl@]]]#");
+        //System.out.println(res);
     }
 }

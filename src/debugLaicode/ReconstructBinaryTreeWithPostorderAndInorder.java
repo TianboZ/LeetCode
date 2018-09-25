@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReconstructBinaryTreeWithPostorderAndInorder {
-    public TreeNode reconstruct(int[] in, int[] post) {
+    public TreeNode reconstruct(int[] inorder, int[] postorder) {
         // key: in[index]    value: index
         Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < in.length; i++) {
-            map.put(in[i], i);
+        for (int i = 0; i < inorder.length; i++) {
+            map.put(inorder[i], i);
         }
-        return reconstruct(in, 0, in.length - 1, post, 0, post.length - 1, map);
+        return reconstruct(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1, map);
     }
     // input inorder and preorder array, return reconstructed tree's root
     private TreeNode reconstruct(int[] in, int inL, int inR, int[] post, int postL, int postR, Map<Integer, Integer> map) {

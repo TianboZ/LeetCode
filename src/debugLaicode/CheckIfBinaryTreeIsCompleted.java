@@ -17,35 +17,33 @@ public class CheckIfBinaryTreeIsCompleted {
         // initial
         q.offer(root);
 
+
         while (!q.isEmpty()) {
-            // how many nodes on this layer
             int size = q.size();
             for (int i = 0; i < size; i++) {
                 // expand
                 TreeNode curr = q.poll();
-
-                // generate
-                if (curr.left == null) {
-                    flag = true;
-                } else if (flag) {
-                    // if the flag is true, then this node still can generate child, then tree is not completed
+                // generate rule
+                // left node
+                if (curr.left != null && flag) {
                     return false;
-                } else {
-                    // the flag is not set, and this node has left child
+                } else if (curr.left != null && !flag) {
                     q.offer(curr.left);
+                } else {
+                    flag = true;
                 }
 
-                // same logic applied to the right child
-                if (curr.right == null) {
-                    flag = true;
-                } else if (flag) {
+                // right node
+                if (curr.right != null && flag) {
                     return false;
-                } else {
+                } else if (curr.right != null && !flag) {
                     q.offer(curr.right);
+                } else {
+                    flag = true;
                 }
             }
-
         }
+
 
         return true;
     }

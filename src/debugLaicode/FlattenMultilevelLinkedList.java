@@ -24,27 +24,30 @@ public class FlattenMultilevelLinkedList {
         node5.next = node6;
         node5.child = node8;
 
-        // key: level          value: head and tail of linkedlist
+        // key: level    value: head and tail of linkedlist
         Map<Integer, Pair> map = new HashMap<>();
         flattenMultilevelLinkedList.dfs(node1, map, 0);
         System.out.println("aaa");
 
     }
-    public  void  dfs(Node head, Map<Integer, Pair> map, int level) {
+
+    // start from the node, copy it
+    private void dfs(Node head, Map<Integer, Pair> map, int level) {
         // base-case
         if (head == null) {
             return;
         }
         // recursive rule
         Node copyN = new Node(head.val);
-        if (map.containsKey(level)) {
-            map.get(level).tail.next = copyN;
-            map.get(level).tail = copyN;
-        } else {
-            Pair pair = new Pair();
+        Pair pair = map.get(level);
+        if (pair == null) {
+            pair = new Pair();
             pair.head = copyN;
             pair.tail = copyN;
             map.put(level, pair);
+        } else {
+            map.get(level).tail.next = copyN;
+            map.get(level).tail = copyN;
         }
 
         // go child

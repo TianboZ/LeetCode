@@ -25,14 +25,17 @@ public class BinaryTreeDiagnoseTraverse {
 
         List<Integer> list = new ArrayList<>();
         System.out.println(list.size() < 0);
-        binaryTreeDiagnoseTraverse.diagonalSum(node1);
+        binaryTreeDiagnoseTraverse.diagonalTraversal(node1);
+        binaryTreeDiagnoseTraverse.iterative(node1);
     }
 
-    public void diagonalSum(TreeNode root) {
+    public List<List<Integer>> diagonalTraversal(TreeNode root) {
         // Write your solution here
         List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
+
         dfs(root, res, 0);
-        System.out.println(res);
+        return res;
     }
     private void dfs(TreeNode root, List<List<Integer>> res, int level) {
         // base-case
@@ -40,12 +43,58 @@ public class BinaryTreeDiagnoseTraverse {
             return;
         }
         // recursive rule
-        System.out.println(level);
         if (res.size() < level + 1) {
             res.add(new ArrayList<>());
         }
         res.get(level).add(root.key);
-        dfs(root.right, res, level);
         dfs(root.left, res, level + 1);
+        dfs(root.right, res, level);
+    }
+
+    private void iterative(TreeNode root) {
+        // base case
+        if (root == null)
+            return;
+
+        // inbuilt
+        Queue<TreeNode> q = new LinkedList<>();
+
+        // push root
+        q.offer(root);
+
+        // push delimiter
+        q.offer(null);
+
+        // terminate condition
+        while (!q.isEmpty()) {
+            // expand
+            TreeNode curr = q.poll();
+
+            // if current is delimiter then insert another
+            // for next diagonal and continue nextline
+            if (curr == null) {
+                // if queue is empty return
+                if (q.isEmpty())
+                    return;
+
+                // output nextline
+                System.out.println("");
+
+                // push delimiter again
+                q.offer(null);
+            } else {
+                while (curr != null) {
+                    System.out.format("%d ", curr.key);
+
+                    // if left child is present
+                    // push into queue
+                    if (curr.left != null)
+                        q.offer(curr.left);
+
+                    // current equals to right child
+                    curr = curr.right;
+                }
+            }
+        }
     }
 }
