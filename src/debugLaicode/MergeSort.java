@@ -10,7 +10,7 @@ public class MergeSort {
         int mid = left + (right - left) / 2;
         mergeSort(arr, left, mid);
         mergeSort(arr, mid + 1, right);
-        merge(arr, left, mid, right);
+        merge1(arr, left, mid, right);
     }
     private void merge(int[] arr, int left, int mid, int right) {
         int[] tmp = new int[arr.length];
@@ -39,6 +39,41 @@ public class MergeSort {
             index++;
         }
     }
+
+    private void merge1(int[] arr, int left, int mid, int right){
+        int[] tmpt = new int[arr.length];
+        for (int i = left; i<= right; i++) {
+            tmpt[i] = arr[i];
+        }
+
+        // move the pointer with smaller value
+        int l = left;
+        int r = mid + 1;
+        int i = left;
+        while (l <= mid && r <= right) {
+            if (tmpt[l] < tmpt[r]) {
+                arr[i] = tmpt[l];
+                i++;
+                l++;
+            } else {
+                arr[i] = tmpt[r];
+                i++;
+                r++;
+            }
+        }
+        // remaining
+        while (l <= mid) {
+            arr[i] = tmpt[l];
+            i++;
+            l++;
+        }
+        while (r <= right) {
+            arr[i] = tmpt[r];
+            i++;
+            r++;
+        }
+    }
+
     public static void main(String[] args) {
         MergeSort mergeSort = new MergeSort();
         int[] arr = {1,3,4,5,-1,-6,100};

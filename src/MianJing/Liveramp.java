@@ -1,6 +1,10 @@
 package MianJing;
 
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Liveramp {
     // helper class
@@ -23,6 +27,7 @@ public class Liveramp {
 
     //API
     public void addLink(String id1, String id2) {
+        System.out.println();
         Node node1 = graph.get(id1);
         Node node2 = graph.get(id2);
 
@@ -98,8 +103,115 @@ public class Liveramp {
         //boolean res = liveramp.isLinked("5","5");
         //System.out.println(res);
         liveramp.removeID("3");
-        System.out.println("----------------------");
+        liveramp.removeID("2");
+        System.out.println("----------------------------");
         liveramp.printGraph();
     }
+}
 
+class Solution {
+
+    private static class Node {
+        String val;
+        Set<Node> neighbors;
+        Node(String s) {
+            this.val = s;
+            this.neighbors = new HashSet<>();
+        }
+    }
+
+    private static Map<String, Node> graph = new HashMap<>();;
+
+    Solution() {
+        this.graph = new HashMap<>();
+    }
+
+    private static void addLink(String id1, String id2){
+        System.out.println(graph);
+        Node node1 = graph.get(id1);
+        Node node2 = graph.get(id2);
+
+        if (node1 == null) graph.put(id1, new Node(id1));
+        if (node2 == null) graph.put(id2, new Node(id2));
+
+        node1 = graph.get(id1);
+        node2 = graph.get(id2);
+
+        node1.neighbors.add(node2);
+        node2.neighbors.add(node1);
+    }
+
+    private static boolean isLinked(String id1, String id2){
+        Node node1 = graph.get(id1);
+        Node node2 = graph.get(id2);
+
+        if(node1 == null || node2 == null) return false;
+        if (node1 == node2) return true;
+
+        Set<Node> visited = new HashSet<>();
+        return dfs(node1, node2, visited);
+    }
+
+    //
+    private static boolean dfs(Node node, Node target, Set<Node> visited) {
+        // baseccase
+        if (visited.contains(node)) return false;
+        // recursive rule
+        visited.add(node);
+        if(node == target) return true;
+        for (Node nei: node.neighbors) {
+            if (dfs(nei, target, visited)) return true;
+        }
+        return false;
+    }
+
+    private static void removeId(String id){
+        Node node = graph.get(id);
+        // node not even exist
+        if (node == null) return;
+
+        // node exist
+        //System.out.println(node.val);
+        Set<Node> nei = new HashSet<>(node.neighbors);
+        graph.remove(id);
+
+        for (Map.Entry<String, Node> entry : graph.entrySet()) {
+            entry.getValue().neighbors.remove(node);
+        }
+
+        for (Node oldNei: nei) {
+            for (Node newNei: nei) {
+                if (oldNei != newNei) {
+                    graph.get(oldNei).neighbors.add(newNei);
+                }
+            }
+
+        }
+    }
+
+    // Boilerplate below to emulate successive API calls.
+    // Do not change
+    public static boolean[] solution(long[] operationsToPerform, String[] firstArgs, String[] secondArgs) {
+        boolean[] isLinkedResults = new boolean[operationsToPerform.length];
+
+        for (int opNum = 0; opNum < operationsToPerform.length; opNum++) {
+            isLinkedResults[opNum] = callOperation(operationsToPerform[opNum], firstArgs[opNum], secondArgs[opNum]);
+        }
+
+        return isLinkedResults;
+    }
+
+    private static boolean callOperation(long operationType, String firstArg, String secondArg) {
+        if (operationType == 0) {
+            addLink(firstArg, secondArg);
+        } else if (operationType == 1) {
+            return isLinked(firstArg, secondArg);
+        } else if (operationType == 2) {
+            removeId(firstArg);
+        } else {
+            throw new RuntimeException("Unrecognized operation type.");
+        }
+
+        return true;
+    }
 }

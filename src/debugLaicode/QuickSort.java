@@ -8,7 +8,7 @@ public class QuickSort {
         }
 
         // recursive rule
-        int index = partition(arr, left, right);
+        int index = partition1(arr, left, right);
         quickSort(arr, left, index - 1);
         quickSort(arr, index + 1, right);
     }
@@ -39,6 +39,32 @@ public class QuickSort {
         // swap back
         swap(arr, right, i);
 
+        return i;
+    }
+
+    private int partition1(int[] arr, int left, int right) {
+        int pivotIndex = findPivot(arr, left, right);
+        int pivot = arr[pivotIndex];
+        // swap the pivot to the right boundary
+        swap(arr, pivotIndex, right);
+
+        // [left, i), all the elements before index i < pivot
+        // (j, right], all the elements after index j >= pivot
+        int i = left;
+        int j = right - 1;
+        while (i <= j) {
+            if (arr[i] < pivot) {
+                i++;
+            } else if (arr[j] >= pivot) {
+                j--;
+            } else {
+                swap(arr, i, j);
+
+            }
+        }
+
+        // swap the pivot to the original position, then left elements < pivot, right elements >= pivot
+        swap(arr, i, right);
         return i;
     }
 

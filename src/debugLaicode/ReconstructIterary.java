@@ -5,29 +5,28 @@ import java.util.*;
 public class ReconstructIterary {
     boolean found = false;
     List<String> res = null;
+    String START = "JFK";
 
     public List<String> findItinerary(String[][] tickets) {
-        // build graph, key: start airport  value: set of destination
-        Map<String, List<String>> map = new HashMap<>();
-
-        for (int i = 0; i < tickets.length; i++) {
-            if (!map.containsKey(tickets[i][0])) {
-                map.put(tickets[i][0], new ArrayList<>());
-            }
-            map.get(tickets[i][0]).add(tickets[i][1]);
-        }
-
-        for (List<String> list : map.values()) {
-            Collections.sort(list);
-        }
-
+        // build graph, key: start airport  value: set of next stop
+        Map<String, List<Node>> map = new HashMap<>();
+        buildGraph(tickets, map);
         List<String> path = new ArrayList<>();
-        path.add("JFK");
-        dfs(path, map, "JFK", tickets.length + 1);
+        path.add(START);
+        dfs(path, map, START, tickets.length + 1);
         return res;
     }
 
-    private void dfs(List<String> path, Map<String, List<String>> map, String start, int size) {
+    class Node{
+        String airport;
+        boolean used;
+        Node (String airport, boolean used) {
+            this.airport = airport;
+            this.used = used;
+        }
+    }
+
+    private void dfs(List<String> path, Map<String, List<Node>> map, String start, int size) {
         // base-case
         if (found) return;
 
@@ -37,16 +36,57 @@ public class ReconstructIterary {
             return;
         }
         // recursive rule
-        if (map.containsKey(start)) {
-            List<String> next = map.get(start);
-            for (int i = 0; i < next.size(); i++) {
-                String dest = next.get(i);
-                path.add(dest);
-                next.remove(i);
-                dfs(path, map, dest, size);
+        List<Node> nexts = map.get(start);
+        if (nexts != null) {
+            for (Node next : nexts) {
+                if (next.used) continue;
+
+                path.add(next.airport);
+                next.used = true;
+                dfs(path, map, next.airport, size);
                 path.remove(path.size() - 1);
-                next.add(i, dest);
+                next.used = false;
             }
         }
+
     }
+
+    private void buildGraph(String[][] tickets, Map<String, List<Node>> map) {
+        for (int i = 0; i < tickets.length; i++) {
+
+            if (!map.containsKey(tickets[i][0])) {
+                map.put(tickets[i][0], new ArrayList<>());
+            }
+            map.get(tickets[i][0]).add(new Node(tickets[i][1], false));
+        }
+        for (Map.Entry<String, List<Node>> entry : map.entrySet()) {
+            Collections.sort(entry.getValue(), new MyCp());
+        }
+    }
+
+    class MyCp implements Comparator<Node> {
+        @Override
+        public int compare(Node n1, Node n2) {
+            return n1.airport.compareTo(n2.airport);
+        }
+    }
+
+    public static void main(String[] args) {
+        Set<Integer> set = new TreeSet<>();
+        set.add(2);
+        set.add(3);
+        set.add(0);
+        set.add(100);
+
+        for (Integer i : set) {
+            int a = i;
+            System.out.println(a);
+        }
+
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+        }
+    }
+
 }

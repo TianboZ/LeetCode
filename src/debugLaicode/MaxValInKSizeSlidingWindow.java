@@ -33,6 +33,29 @@ public class MaxValInKSizeSlidingWindow {
             this.index = index;
         }
     }
+
+    // sol2:
+    // use deque
+    public List<Integer> maxWindows1(int[] array, int k) {
+        List<Integer> max = new ArrayList<>();
+        Deque<Integer> deque = new LinkedList<>();
+        for (int i = 0; i < array.length; i++) {
+            while (!deque.isEmpty() && array[deque.peekLast()] <= array[i]) {
+                deque.pollLast();
+            }
+
+            if (!deque.isEmpty() && deque.peekFirst() <= i - k) {
+                deque.pollFirst();
+            }
+
+            deque.offerLast(i);
+
+            if (i - k + 1 >= 0) {
+                max.add(array[deque.peekFirst()]);
+            }
+        }
+        return max;
+    }
 }
 
 
