@@ -4,55 +4,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpiralOrderTraverseII {
-    public List<Integer> spiral(int[][] matrix) {
-        // Write your solution here.
-        List<Integer> res = new ArrayList<>();
-        if (matrix.length == 0 || matrix[0].length == 0) {
-            return res;
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> list = new ArrayList<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return list;
         }
 
-        dfs(res, 0, matrix, matrix.length, matrix[0].length);
-        return res;
-    }
+        int m = matrix.length;
+        int n = matrix[0].length;
 
-    private void dfs(List<Integer> res, int offset, int[][] a, int rowSize, int colSize) {
-        // base-case
-        if (rowSize == colSize && rowSize == 0) {
-            return;
-        }
-        if (rowSize == colSize && rowSize == 1) {
-            res.add(a[offset][offset]);
-            return;
-        }
+        int left = 0;
+        int right = n - 1;
+        int up = 0;
+        int down = m - 1;
 
-        // column left
-        if (rowSize != colSize && rowSize == 1) {
-            for (int i = 0; i < colSize; i++) {
-                res.add(a[offset][offset + i]);
+        while (left < right && up < down) {
+            for (int i = left; i <= right; i++) {
+                list.add(matrix[up][i]);
             }
-            return;
-        }
-
-        // row left
-        if (rowSize != colSize && colSize == 1) {
-            for (int i = 0; i < rowSize; i++) {
-                res.add(a[offset + i][offset]);
+            for (int i = up + 1; i <= down - 1; i++) {
+                list.add(matrix[i][right]);
             }
-            return;
+
+            for (int i = right; i >= left; i--) {
+                list.add(matrix[down][i]);
+            }
+            for (int i = down - 1; i >= up + 1; i--) {
+                list.add(matrix[i][left]);
+            }
+            left++;
+            right--;
+            up++;
+            down--;
         }
-        // recursive rule
-        for (int i = 0; i < colSize - 1; i++) {
-            res.add(a[offset][offset + i]);
+        // nothing left
+        if (left > right || up > down) {
+            return list;
         }
-        for (int i = 0; i < rowSize - 1; i++) {
-            res.add(a[offset + i][offset + colSize - 1]);
+        // one column left
+        if (left == right) {
+            for (int i = up; i <= down; i++) {
+                list.add(matrix[i][left]);
+            }
+        } else {
+            // one row left
+            for (int i = left; i <= right; i++) {
+                list.add(matrix[up][i]);
+            }
         }
-        for (int i = colSize - 1; i >= 1; i--) {
-            res.add(a[offset + rowSize - 1][offset + i]);
-        }
-        for (int i = rowSize - 1; i >= 1; i--) {
-            res.add(a[offset + i][offset]);
-        }
-        dfs(res, offset + 1, a, rowSize - 2, colSize - 2);
+        return list;
     }
 }

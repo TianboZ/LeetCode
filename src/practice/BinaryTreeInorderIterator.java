@@ -24,14 +24,16 @@ public class BinaryTreeInorderIterator {
     }
 
     public TreeNode next() {
-        TreeNode res = stack.pollFirst();
-        TreeNode curr = res;
-        curr = curr.right;
-        while (curr != null) {
-            stack.offerFirst(curr);
-            curr = curr.left;
+        TreeNode curr = stack.pollFirst();
+        pushLeft(curr.right, stack);
+        return curr;
+    }
+
+    private void pushLeft(TreeNode node, Deque<TreeNode> stack) {
+        while (node != null) {
+            stack.offerFirst(node);
+            node = node.left;
         }
-        return res;
     }
 
     public static void main(String[] args) {

@@ -5,30 +5,28 @@ public class StringAbbreviationMatching {
 
     // iterative
     public boolean match(String input, String pattern) {
-        int i = 0;
-        int j = 0;
+        // Write your solution here
+        int i = 0; // input index
+        int j = 0; // pattern index
+
         while (i < input.length() && j < pattern.length()) {
-            if (pattern.charAt(j) >= 'a' &&  pattern.charAt(j) <= 'z') {
-                if (pattern.charAt(j) != input.charAt(i)) {
-                    return false;
+            // case1, start with digit
+            if (pattern.charAt(j) >= '0' && pattern.charAt(j) <= '9') {
+                int tmpt = j;
+                while (j < pattern.length() && pattern.charAt(j) >= '0' && pattern.charAt(j) <= '9') {
+                    j++;
                 }
+                // j is char now
+                int num = Integer.parseInt(pattern.substring(tmpt, j));
+                i = i + num;
+            } else {
+                // case2, start with char
+                if (pattern.charAt(j) != input.charAt(i)) return false;
                 i++;
                 j++;
-            } else {
-                int curr = j;
-                while (curr < pattern.length() && pattern.charAt(curr) >= '0' && pattern.charAt(curr) <= '9') {
-                    curr++;
-                }
-                int num = Integer.parseInt(pattern.substring(j, curr));
-                j = curr;
-                i = i + num;
             }
         }
-        if (i != input.length() || j  != pattern.length()) {
-            return false;
-        } else {
-            return true;
-        }
+        return i == input.length() && j == pattern.length();
     }
 
     // recursive

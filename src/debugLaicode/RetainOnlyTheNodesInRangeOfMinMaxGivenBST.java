@@ -1,4 +1,4 @@
-package xiaoban;
+package debugLaicode;
 
 public class RetainOnlyTheNodesInRangeOfMinMaxGivenBST {
 }

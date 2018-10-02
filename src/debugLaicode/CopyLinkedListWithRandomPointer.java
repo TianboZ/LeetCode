@@ -14,6 +14,7 @@ public class CopyLinkedListWithRandomPointer {
         }
     }
 
+    // sol1:
     public RandomListNode copy(RandomListNode head) {
         // Write your solution here.
         if (head == null) {
@@ -52,6 +53,38 @@ public class CopyLinkedListWithRandomPointer {
             head = head.next;
         }
         return lookup.get(original);
+    }
+
+    // sol2:
+    // method:
+    // use Map<Node, Node> map, key: original node, value: copied node
+    // map is used to record the nodes that is already copied!
+    public RandomListNode copy1(RandomListNode head) {
+        // Write your solution here.
+        RandomListNode ori = head;
+        Map<RandomListNode, RandomListNode> map = new HashMap<>();
+        // first pass, to record all the nodes
+        while (head != null) {
+            RandomListNode copy = map.get(head);
+            if (copy == null) {
+                RandomListNode node = new RandomListNode(head.value);
+                map.put(head, node);
+            }
+            head = head.next;
+        }
+        // second pass, link copied nodes
+        head = ori;
+        while (head != null) {
+            if (head.next != null) {
+                map.get(head).next = map.get(head.next);
+            }
+            if (head.random != null) {
+                map.get(head).random = map.get(head.random);
+            }
+            head = head.next;
+        }
+
+        return map.get(ori);
     }
 }
 

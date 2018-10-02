@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class wordSearch2 {
+public class WordSearch2 {
     int[] dx = {1, -1, 0, 0};
     int[] dy = {0, 0, 1, -1};
 
     public List<String> findWords(char[][] board, String[] words) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (String word : words) {
             for (int i = 0; i < board.length; i++) {
                 for (int j = 0; j < board[0].length; j++) {

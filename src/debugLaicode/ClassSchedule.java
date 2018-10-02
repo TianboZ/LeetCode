@@ -9,7 +9,7 @@ public class ClassSchedule {
         classSchedule.canFinish(2, prerequisites);
     }
 
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
+    private boolean canFinish(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < prerequisites.length; i++) {
             if (map.containsKey(prerequisites[i][1])) {
@@ -40,20 +40,18 @@ public class ClassSchedule {
 
         return true;
     }
-    public boolean dfs(Map<Integer, List<Integer>> map, Map<Integer, Integer> visit, Stack<Integer> stack, int node) {
+
+    // return false if find the cycle
+    private boolean dfs(Map<Integer, List<Integer>> map, Map<Integer, Integer> visit, Stack<Integer> stack, int node) {
         // base-case
         // 0: visited
         // 1: visiting, means detect cycle!
 
-        System.out.println("dfs, visit: " + visit);
-
-        if (visit.containsKey(node)) {
-            if (visit.get(node) == 0) {
-                return true;
-            }
-            if (visit.get(node) == 1) {
-                return false;
-            }
+        //System.out.println("dfs, visit: " + visit);
+        Integer num = visit.get(node);
+        if (num != null) {
+            if (num == 0) return true;
+            if (num == 1) return false;
         }
 
         // recursive rule

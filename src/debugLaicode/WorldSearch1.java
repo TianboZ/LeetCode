@@ -1,6 +1,6 @@
 package debugLaicode;
 
-public class worldSearch1 {
+public class WorldSearch1 {
     int[] dx = {0, 0, 1, -1};
     int[] dy = {1, -1, 0, 0};
     public boolean exist(char[][] board, String word) {

@@ -1,6 +1,4 @@
-package xiaoban;
-
-import debugLaicode.TreeNode;
+package debugLaicode;
 
 public class BinaryTreeRemoveAllZeroSubtrees {
     public static void main(String[] args) {

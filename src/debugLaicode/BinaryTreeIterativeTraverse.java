@@ -3,16 +3,17 @@ package debugLaicode;
 import java.util.*;
 
 public class BinaryTreeIterativeTraverse {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     public List<TreeNode> preOrder1(TreeNode root) {
-        List<TreeNode> list = new ArrayList<>();
+        List<TreeNode> res = new ArrayList<>();
         if (root == null) {
-            return list;
+            return res;
         }
         Deque<TreeNode> stack = new LinkedList<>();
         stack.offerFirst(root);
         while (!stack.isEmpty()) {
             TreeNode curr = stack.pollFirst();
-            list.add(curr);
+            res.add(curr);
             // the left subtree should be traversed before right subtree,
             // since stack is LIFO, we should push right into the stack first,
             // so for the next step the top element of the stack is the left sub-tree
@@ -23,58 +24,60 @@ public class BinaryTreeIterativeTraverse {
                 stack.offerFirst(curr.left);
             }
         }
-        return list;
+        return res;
     }
-
-    public List<TreeNode> inOrder(TreeNode root) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    public List<TreeNode> inOrder1(TreeNode root) {
         List<TreeNode> list = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
-        TreeNode curr = root;
-        while (curr != null || !stack.isEmpty()) {
-            // always try go to the left side to see if there is any node
-            // should be traversed before the cur node, cur node is stored
-            // on stack since it has not been traversed yet.
-            if (curr != null) {
-                stack.offerFirst(curr);
-                curr = curr.left;
-            } else {
-                // if can not go left, meaning all the nodes on the left side
-                // of the top node on stack have been traversed, the next traversal
-                // node should be the top node on stack
-                curr = stack.pollFirst();
-                list.add(curr);
-                // the next subtree we want to traverse is cur.right
-                curr = curr.right;
-            }
+
+        pushLeft(root, stack);
+        while (!stack.isEmpty()) {
+            TreeNode curr = stack.pollFirst();
+            list.add(curr);
+            pushLeft(curr.right, stack);
         }
         return list;
     }
 
-    // bad method
-    public List<TreeNode> postOrder(TreeNode root) {
-        List<TreeNode> list = new ArrayList<>();
-        if (root == null) {
-            return list;
+    private void pushLeft(TreeNode node, Deque<TreeNode> stack) {
+        while (node != null) {
+            stack.offerFirst(node);
+            node = node.left;
         }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // online solution
+    public List<Integer> postOrder1(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
         Deque<TreeNode> stack = new LinkedList<>();
         stack.offerFirst(root);
-
+        // to record the previous node on the way of DFS so that we can determine the direction
+        TreeNode prev = null;
         while (!stack.isEmpty()) {
-            TreeNode cur = stack.pollFirst();
-            // pre-order: root, left, right
-            // post-order: left, right, root.
-            // root, right, left => reverse() => left, right, root
-            if (cur.left != null) {
-                stack.offerFirst(cur.left);
+            TreeNode curr = stack.peekFirst();
+            if (prev == null || curr == prev.left || curr == prev.right) {
+                if (curr.left != null) {
+                    stack.offerFirst(curr.left);
+                } else if (curr.right != null) {
+                    stack.offerFirst(curr.right);
+                } else {
+                    // if we can go either away, meaning curr is leaf node
+                    stack.pollFirst();
+                    res.add(curr.key);
+                }
+            } else if (prev == curr.right || prev == curr.left && curr.right == null) {
+                // if we are going up from the r right side or going up from the left side
+                // but we can not go right afterwards
+                stack.pollFirst();
+                res.add(curr.key);
+            } else {
+                // otherwise, we are going up from the left side and we can go down right side
+                stack.offerFirst(curr.right);
             }
-
-            if (cur.right != null) {
-                stack.offerFirst(cur.right);
-            }
-            list.add(cur);
+            prev = curr;
         }
-        // root, right, left => reverse() => left, right, root
-        Collections.reverse(list);
-        return list;
+        return res;
     }
 }
