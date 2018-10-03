@@ -37,4 +37,28 @@ public class LargestNumberSmallerInBinarySearchTree {
         }
         return res;
     }
+
+//                    4
+//                  /   \
+//                 2     7
+//                / \      \
+//               1   3     10
+//                         /  \
+//                       9.9  11
+//          target = 9
+
+    public int smallestLarger(TreeNode root, int target) {
+        int res = Integer.MAX_VALUE;
+        while (root != null) {
+            if (root.key > target) {
+                res = root.key;
+                root = root.left;
+
+            } else {
+                // target >= root.key
+                root = root.right;
+            }
+        }
+        return res;
+    }
 }
