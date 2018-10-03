@@ -13,7 +13,6 @@ public class MaximumPathSumBinaryTreeI {
         return max;
     }
 
-    // largestSmaller the max path sum from root to leaf, return int
     private int findRootToLeafPathSum(TreeNode root) {
         // base-caes
         if (root == null) {
