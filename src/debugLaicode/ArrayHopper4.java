@@ -22,7 +22,6 @@ public class ArrayHopper4 {
             if (pos == array.length - 1) {
                 return jumps;
             }
-
             // generate rule
             int maxJumps = array[pos];
             // go left

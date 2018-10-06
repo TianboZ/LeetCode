@@ -10,7 +10,7 @@ use cases:
 1. we need to find out quickly if an entry is in the cache or not --> hashmap
 2. we need to quickly insert an entry into the cache --> linkedlist
 3. we need to quickly delete an entry from the cache --> linkedlist
-4. we need to quickly adjust the priority of each entry in the cache, whick means to remove the current node and append it to the head of linledlist --> double linkedlist, head, tail
+4. we need to quickly adjust the priority of each entry in the cache, which means to remove the current node and append it to the head of linledlist --> double linkedlist, head, tail
 
 HashMap<key: Integer, value: ListNode reference>
 
@@ -23,7 +23,7 @@ class ListNode {
 
 assumptions:
 if the entry not exist, return Integer.MAX_VALUE
-
+<key, value> : Integer, Integer
 
 */
 
