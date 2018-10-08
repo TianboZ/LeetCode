@@ -1,0 +1,9 @@
+http://www.1point3acres.com/bbs/thread-305008-1-1.html
+
+在领英上找的thumbtack全职sde内推。领英上他们家的员工和我说，今年的sde基本招满了，但还是帮我推上去了叫我试试。
+之后收到HR邮件，给了OA链接。这个OA给了2个星期时间准备，做题时间是2小时。页面地址链接是codefight，不是hackerrank。
+如果是hackerrank，应该是老题（数据库），但这个code fight是新题。-google 1point3acres
+刚刚做完，一共有3道题。第一题稍微正常一点，核心是把一个map按照value从大到小排序，比较简单，我就没截图，如果想提前准备的话就把sort map练习一下。. From 1point 3acres bbs
+然后第二题和第三题都显得很没有诚意。读题目就最少需要10分钟，再理解理解又5分钟，我最后只做完了第一题和第三题，关掉OA后又花了半个多小时才自己在本地把第二题写完。但是大家不用怕题目太长，因为聪明的楼主已经将这两道题目复制粘贴，上传附件。
+第二题我的思路是先建一个Relevance class，里面有两个attributes，一个string，一个score。然后用一个Map<String, PriorityQueue<Relevance>>统计。
+第三题网上有代码，可以搜到，但是那个人写的很复杂，建议大家别抄他的，有不少地方可以优化。

@@ -2,9 +2,7 @@ package debugLaicode;
 
 import java.util.*;
 
-import static sun.text.normalizer.NormalizerImpl.convert;
-
-public class ShortestDistanceFromAllPoints {
+public class ShortestDistanceFromAllBuildings {
     int[] dx = {0,0,1,-1};
     int[] dy = {-1,1,0,0};
 
@@ -27,8 +25,6 @@ public class ShortestDistanceFromAllPoints {
             }
         }
 
-
-
         int min = Integer.MAX_VALUE;
         // on each empty land, get sum of distance to all houses, find the min
         for (int i = 0; i < grid.length; i++) {
@@ -44,7 +40,6 @@ public class ShortestDistanceFromAllPoints {
         }
         return min == Integer.MAX_VALUE ? -1 : min;
     }
-
     private void bfs(int i, int j, int[][] grid, Cell[][] cell) {
         Queue<Point> q = new LinkedList<>();
         boolean[][] visited = new boolean[grid.length][grid[0].length];
@@ -93,12 +88,5 @@ public class ShortestDistanceFromAllPoints {
             this.x = x;
             this.y = y;
         }
-    }
-
-    public static void main(String[] args) {
-        ShortestDistanceFromAllPoints shortestDistanceFromAllPoints = new ShortestDistanceFromAllPoints();
-        shortestDistanceFromAllPoints.shortestDistance(new int[][]{{0,2,1},{1,0,2},{0,1,0}});
-
-
     }
 }

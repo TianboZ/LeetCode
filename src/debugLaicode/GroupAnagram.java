@@ -29,34 +29,45 @@ public class GroupAnagram {
     }
 
     // sol2:
-    // each string can be represents as Map<key: char, value: frequency> map, then we can get map.hashcode()
-    // use another Map<key: hashcode, value: set of strings> to store
-    // time O(mn) n = # of strings, m = each string length
-    // space o(mn)
-    public List<List<String>> groupAnagrams1(String[] strs) {
-        Map<Integer, List<String>> map = new HashMap<>();
+    // time O(nm)   n = strs.length()     m = each string length
+    public List<List<String>> groupAnagrams2(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
+
+        // key: string     value: list of  e.g. a3b2c4
+        Map<String, List<String>> map = new HashMap<>();
         for (String s : strs) {
-            int code = hashCode(s);
-            List<String> set = map.get(code);
-            if (set == null) {
-                set = new ArrayList<>();
-                map.put(code, set);
+            // key: char  value: frequency
+            Map<Character, Integer> string = new HashMap<>();
+
+            StringBuilder sb = new StringBuilder();
+            // count each string char frequency
+            for (int i = 0; i < s.length(); i++) {
+                Integer count = string.get(s.charAt(i));
+                if (count == null) {
+                    string.put(s.charAt(i), 1);
+                } else {
+                    string.put(s.charAt(i), count + 1);
+                }
             }
-            set.add(s);
-        }
-        List<List<String>> res = new ArrayList<>(map.values());
-        return res;
-    }
-    private int hashCode(String s) {
-        Map<Character, Integer> map = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            Integer count = map.get(s.charAt(i));
-            if (count == null) {
-                map.put(s.charAt(i), 1);
-            } else {
-                map.put(s.charAt(i), count + 1);
+            for (int i = 0; i <= 25; i++) {
+                char c = (char)('a' + i);
+                Integer count = string.get(c);
+                if (count != null) {
+                    sb.append(c).append(count);
+                }
             }
+            String str = sb.toString();
+
+            List<String> list = map.get(str);
+            if (list == null) {
+                list = new ArrayList<>();
+                map.put(str, list);
+            }
+            list.add(s);
         }
-        return map.hashCode();
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            result.add(entry.getValue());
+        }
+        return result;
     }
 }

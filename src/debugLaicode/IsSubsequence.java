@@ -15,6 +15,9 @@ public class IsSubsequence {
     // g: 3
     // d: 4
     // Map<key: char, value: treeset<index>>
+
+
+    // time o(nlogn + mlogn)   m = s.length  n = t.length
     public boolean isSubsequence(String s, String t) {
         Map<Character, TreeSet<Integer>> map = new HashMap<>();
         for (int i = 0; i < t.length(); i++) {
@@ -39,5 +42,17 @@ public class IsSubsequence {
             }
         }
         return true;
+    }
+
+    // sol2:
+    public boolean isSubsequence1(String s, String t) {
+        int j = 0;
+        for (int i = 0; i < t.length(); i++) {
+            if (t.charAt(i) == s.charAt(j)) {
+                j++;
+                if (j == s.length()) return true;
+            }
+        }
+        return false;
     }
 }

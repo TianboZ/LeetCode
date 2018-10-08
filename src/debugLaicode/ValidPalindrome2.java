@@ -1,5 +1,8 @@
 package debugLaicode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ValidPalindrome2 {
     public boolean validPalindrome(String s) {
         int left = 0;
@@ -25,4 +28,5 @@ public class ValidPalindrome2 {
         }
         return true;
     }
+
 }
