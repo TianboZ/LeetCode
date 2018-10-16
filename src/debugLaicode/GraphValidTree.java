@@ -2,57 +2,49 @@ package debugLaicode;
 
 import java.util.*;
 
-public class GraphValidTree {
+class GraphValidTree {
     public boolean validTree(int n, int[][] edges) {
         // key: parent       value： list of neighbors
-        Map<Integer, Set<Integer>> graph = buildGraph(edges, n);
-        // each node has three state   unvisited     visited : 0      visiting : 1
-        Map<Integer, Integer> state = new HashMap<>();
-        int count = 0; // count the component area
+        Map<Integer, List<Integer>> graph = buildGraph(edges, n);
 
+        // mark visited
+        List<Integer> visited = new ArrayList<>();
+
+        // count the component area
+        int count = 0;
+
+        // iterate each node
         for (int i = 0; i < n; i++) {
-            if (state.get(i) == null) {
+            if (!visited.contains(i)) {
                 count++;
-                if(!dfs(graph, state, i, null)) {
+                if(hasCycle(graph, visited, i, null)) {
                     return false;
                 }
             }
         }
-        System.out.println(count);
+        //System.out.println(count);
         return count == 1; // if only one component area, then it is tree
     }
 
-    // if no cycle, return true;
-    private boolean dfs(Map<Integer, Set<Integer>> graph, Map<Integer, Integer> state, int curr, Integer parent) {
+    private boolean hasCycle(Map<Integer, List<Integer>> graph, List<Integer> visited, Integer curr, Integer prev) {
         // base-case
-        if (state.containsKey(curr)) {
-            if (state.get(curr) == 1) {
-                return false;
-            }
-            if (state.get(curr) == 0) {
-                return true;
-            }
-        }
+        if (visited.contains(curr)) return true;
 
         // recursive rule
-        state.put(curr, 1);
+        visited.add(curr);
         for (Integer nei : graph.get(curr)) {
-            // if the neighbor is parent, then skip it
-            if (parent != null && parent == nei) continue;
-            if(!dfs(graph, state, nei, curr)) {
-                return false;
-            }
+            if (prev != nei && hasCycle(graph, visited, nei, curr)) return true;
         }
-        state.put(curr, 0);
-        return true;
+        return false;
     }
-    // build graph
-    private Map<Integer, Set<Integer>> buildGraph(int[][] edges, int n) {
-        Map<Integer, Set<Integer>> graph = new HashMap<>();
-        for (int i = 0; i < n; i++) {
-            graph.put(i, new HashSet<>());
-        }
 
+
+    // build graph
+    private Map<Integer, List<Integer>> buildGraph(int[][] edges, int n) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new ArrayList<>());
+        }
         // build grpah
         for (int[] edge : edges) {
             graph.get(edge[0]).add(edge[1]);
@@ -61,3 +53,6 @@ public class GraphValidTree {
         return graph;
     }
 }
+
+// time o(V + E)   V == n
+// space O(V)

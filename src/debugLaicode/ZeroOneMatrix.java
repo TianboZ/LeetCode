@@ -3,65 +3,55 @@ package debugLaicode;
 import java.util.LinkedList;
 import java.util.Queue;
 
+
+/*
+find shortest path for all 1 point to any 0 point <==> shortest path for any 0 point to all 1 point
+BFS time O(v+e) v = m * n   e = m * n * 4
+
+*/
 public class ZeroOneMatrix {
-
-    int[] dx = {-1,1,0,0};
-    int[] dy = {0, 0,-1,1};
-
-    // sol1:
-    // naive
-
-    /*
-    for each 1 point, run BFS to find the shortest distance to 0 point, then update 1 point value
-    */
+    int[] dx = {1, -1, 0, 0};
+    int[] dy = {0, 0, 1, -1};
     public int[][] updateMatrix(int[][] matrix) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (matrix[i][j] == 1) {
-                    int dis = bfs(i, j, matrix);
-                    matrix[i][j] = dis;
-                }
+        // sanity check
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return matrix;
 
+        int dis = 0;
+        boolean[][] visited = new boolean[matrix.length][matrix[0].length];
+        Queue<Cell> q = new LinkedList<>();
+        // intial
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    q.offer(new Cell(i, j));
+                    visited[i][j] = true;
+                }
             }
         }
-        return matrix;
-    }
-    private int bfs(int x, int y, int[][] m) {
-        Queue<Cell> q = new LinkedList<>();
-        boolean[][] visited = new boolean[m.length][m[0].length];
-        // initial
-        q.offer(new Cell(x, y));
-        visited[x][y] = true;
-        int dis = 0;
 
-        // terminate condiiton
-        while (!q.isEmpty()) {
+        // terminate condition
+        while(!q.isEmpty()) {
             int size = q.size();
             for (int i = 0; i < size; i++) {
                 // expand
                 Cell curr = q.poll();
-                //System.out.println("x :" + x + " y" + y);
-                if (m[curr.x][curr.y] == 0) {
-                    //ystem.out.println(dis);
-                    return dis;
+                if (matrix[curr.x][curr.y] == 1) {
+                    matrix[curr.x][curr.y] = dis;
                 }
-
                 // generate
                 for (int k = 0; k < 4; k++) {
                     int newx = curr.x + dx[k];
                     int newy = curr.y + dy[k];
-
-                    if (newx >= 0 && newy >= 0 && newx < m.length && newy < m[0].length && !visited[newx][newy]) {
-                        visited[newx][newy] = true;
+                    if (newx >= 0 && newy >= 0 && newx < matrix.length && newy < matrix[0].length && !visited[newx][newy]) {
                         q.offer(new Cell(newx, newy));
+                        visited[newx][newy] = true;
                     }
                 }
             }
             dis++;
         }
-        return dis;
+
+        return matrix;
     }
     class Cell {
         int x;
@@ -70,44 +60,5 @@ public class ZeroOneMatrix {
             this.x = x;
             this.y = y;
         }
-    }
-    // time o(mn * (v + e))   v = mn    e = mn * 4    --> total time o(mn(5mn)) == o(5m^2 * n ^ 2) == o(m^2 * n^2)
-
-
-    // sol2:
-    public int[][] updateMatrix1(int[][] matrix) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-        int[][] dis = new int[m][n];
-        boolean[][] visited = new boolean[m][n];
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (matrix[i][j] == 1) {
-                    matrix[i][j] = dfs(i, j, matrix, visited, dis);
-                }
-            }
-        }
-        return matrix;
-    }
-    // find the shortest path from current point to 0 point
-    private int dfs(int x, int y, int[][] m, boolean[][] visited, int[][] dis) {
-        // base-case
-        if (dis[x][y] > 0) return dis[x][y];
-        if (m[x][y] == 0) return 0;
-        if (visited[x][y]) return Integer.MAX_VALUE;
-
-        // recursive rule
-        visited[x][y] = true;
-        dis[x][y] = Integer.MAX_VALUE;
-        for (int i = 0; i<4; i++) {
-            int newx = x + dx[i];
-            int newy = y + dy[i];
-            if (newx >= 0 && newy >= 0 && newx< m.length && newy < m[0].length) {
-                dis[x][y] = Math.min(dis[x][y], dfs(newx, newy, m, visited, dis) + 1);
-            }
-        }
-        visited[x][y] = false;
-        return dis[x][y];
     }
 }

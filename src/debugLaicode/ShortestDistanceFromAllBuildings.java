@@ -2,89 +2,97 @@ package debugLaicode;
 
 import java.util.*;
 
-public class ShortestDistanceFromAllBuildings {
-    int[] dx = {0,0,1,-1};
-    int[] dy = {-1,1,0,0};
+/*
+shortest path sum
+sol1:
+for each 0 point:
+    one initial state to all goals(1) shortest path problem
 
+time: O(# of 0 * BFS)
+
+sol2:
+for each 1 point:
+    one initial state to all goals(0) shortest path problem
+
+time: O(# of 1 * BFS)
+
+time of BFS: O(V + E)  V==m*n  E = 4 * V^2 = 4*m*n
+assume that # of 1 is smaller
+
+*/
+
+public class ShortestDistanceFromAllBuildings {
+    int[] dx = {1, -1, 0, 0};
+    int[] dy = {0, 0, 1, -1};
     public int shortestDistance(int[][] grid) {
-        // initial cell
-        Cell[][] cell = new Cell[grid.length][grid[0].length];
+
+        int count = 0; // count houses
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                cell[i][j] = new Cell();
-            }
-        }
-        int house = 0;
-        // run bfs on each house
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] == 1) {
-                    bfs(i, j, grid, cell);
-                    house++;
-                }
+                if (grid[i][j] == 1) count++;
             }
         }
 
         int min = Integer.MAX_VALUE;
-        // on each empty land, get sum of distance to all houses, find the min
+        // for each 0 point
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] == 0 && cell[i][j].list.size() == house) {
-                    int sum = 0;
-                    for (Integer e : cell[i][j].list) {
-                        sum = sum + e;
-                    }
-                    min = Math.min(min, sum);
+                if (grid[i][j] == 0) {
+                    int res = bfs(grid, i, j, count);
+                    if (res == 0) continue; // this point cannot reach to all houses
+                    min = Math.min(min, res);
                 }
             }
         }
         return min == Integer.MAX_VALUE ? -1 : min;
     }
-    private void bfs(int i, int j, int[][] grid, Cell[][] cell) {
-        Queue<Point> q = new LinkedList<>();
-        boolean[][] visited = new boolean[grid.length][grid[0].length];
-        int dis = 0;
-        // initial
-        q.offer(new Point(i, j));
-        visited[i][j] = true;
 
+    // return path sum from 0 point to all 1 point
+    private int bfs(int[][] m, int x, int y, int count) {
+        boolean[][] visited = new boolean[m.length][m[0].length];
+        Queue<Cell> q = new LinkedList<>();
+        int dis = 0;
+        int total = 0;
+
+        // initial
+        q.offer(new Cell(x, y));
+        visited[x][y] = true;
+
+        // terminiate
         while (!q.isEmpty()) {
             int size = q.size();
-            for (int k = 0; k < size; k++) {
+            for (int i = 0; i < size; i++) {
                 // expand
-                Point curr = q.poll();
-                cell[curr.x][curr.y].list.add(dis);
-                // generate
-                for (int c = 0; c < 4; c++) {
-                    int newX = curr.x + dx[c];
-                    int newY= curr.y + dy[c];
-                    if (newX >= 0 && newY >= 0 && newX < cell.length && newY < cell[0].length && !visited[newX][newY] && grid[newX][newY] == 0) {
-                        q.offer(new Point(newX, newY));
-                        visited[newX][newY] = true;
+                Cell curr = q.poll();
 
+                // generate
+                for (int k = 0; k < 4; k++) {
+                    int newx = curr.x + dx[k];
+                    int newy = curr.y + dy[k];
+
+                    if (newx >= 0 && newy >=0 && newx < m.length && newy <m[0].length && !visited[newx][newy]) {
+                        // empty land
+                        if ( m[newx][newy] == 0) {
+                            q.offer(new Cell(newx, newy));
+                            visited[newx][newy] = true;
+                        }
+                        // house
+                        if ( m[newx][newy] == 1) {
+                            total = total + dis + 1;
+                            visited[newx][newy] = true;
+                            count--; // every time reach a house, count--
+                        }
                     }
                 }
             }
             dis++;
         }
+        return count == 0? total : 0;
     }
-    private class Cell {
-        // fields
-        private List<Integer> list;
-
-        // constructor
-        private Cell() {
-            this.list = new ArrayList<>();
-        }
-    }
-
-    private class Point {
-        // fields
-        private int x;
-        private int y;
-
-        // constructor
-        private Point(int x, int y) {
+    class Cell{
+        int x;
+        int y;
+        Cell(int x, int y) {
             this.x = x;
             this.y = y;
         }
