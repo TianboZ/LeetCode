@@ -3,6 +3,18 @@ package MianJing.thumbtack;
 import java.util.*;
 
 public class TopSumPair {
+    // naive
+    public static List<Integer> topMSum1(int[] arr, int l, int m) {
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i + l + 1; j < arr.length; j++) {
+                res.add(arr[i] + arr[j]);
+            }
+        }
+        Collections.sort(res);
+        System.out.println(res);
+        return res;
+    }
     public static List<Integer> topMSum(int[] arr, int l, int m) {
         Queue<Integer> minHeap1 = new PriorityQueue<>();
         Queue<Integer> minHeap2 = new PriorityQueue<>();
@@ -22,6 +34,7 @@ public class TopSumPair {
             Iterator iter = minHeap1.iterator();
             while (iter.hasNext()) {
                 int sum = (int)iter.next() + arr[j];
+                System.out.println(sum);
                 if (minHeap2.size() < m) {
                     minHeap2.offer(sum);
                 } else {
@@ -39,8 +52,13 @@ public class TopSumPair {
         System.out.println(res);
         return res;
     }
-    
+
+
     public static void main(String[] args) {
-        topMSum(new int[] {8, 5, 12 ,3 ,4 , 5, 10, 9}, 2, 4);
+        int[] arr =  {8, 5, 12, 3, 4, 5, 10, 10};
+        int k = 3;
+        int l = 2;
+        topMSum(arr, l, k);
+        topMSum1(arr, l, k);
     }
 }

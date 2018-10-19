@@ -22,7 +22,7 @@ public class CorrectMispelledWordDict {
         dict.add("YelloW");
         dict.add("aaa");
         dict.add("aa");
-        System.out.println(correctMispelling(dict, "Red"));
+        System.out.println(correctMispelling(dict, "yellow"));
 
     }
     public static Set<String> correctMispelling(Set<String> dict, String input) {
