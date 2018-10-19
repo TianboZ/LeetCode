@@ -1,11 +1,13 @@
-package practice;
+package MianJing.thumbtack;
+
+import practice.Trie1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Trie1 {
+public class Trie {
     // helper class
     private class TrieNode {
         // fields
@@ -16,14 +18,13 @@ public class Trie1 {
         public TrieNode() {
             this.children = new HashMap<>();
         }
-        // api
     }
 
     // fiedls
     private TrieNode root;
 
     // construtor
-    public Trie1() {
+    public Trie() {
         this.root = new TrieNode();
     }
 
@@ -173,3 +174,5 @@ public class Trie1 {
         trie1.wordsStartWithPrefix("ca");
     }
 }
+
+

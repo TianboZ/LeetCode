@@ -1,3 +1,5 @@
+package debugLaicode;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -12,7 +14,7 @@ public class TheMaze {
         boolean[][] visited = new boolean[maze.length][maze[0].length];
         // initial
         q.offer(new Cell(start[0], start[1]));
-        visited[start[0]][start[1]] = true;;
+        visited[start[0]][start[1]] = true;
 
         // terminate
         while (!q.isEmpty()) {

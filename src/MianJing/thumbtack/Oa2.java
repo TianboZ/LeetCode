@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Thumbtack2 {
+public class Oa2 {
     int max = 0;
 
     class Pro {
@@ -212,8 +212,8 @@ public class Thumbtack2 {
     }
 
     public static void main(String[] args) {
-        Thumbtack2 thumbtack2 = new Thumbtack2();
-        thumbtack2.userProMatching(
+        Oa2 Oa2 = new Oa2();
+        Oa2.userProMatching(
             new int[][]{
                     new int[]{0, 0, 5, 0},
                     new int[]{1, 2, 8, 1},
@@ -239,7 +239,7 @@ public class Thumbtack2 {
             );
 
         // timeOnRoad, projTime, proRange, projRange) {
-//        boolean res = thumbtack2.isMatch(0, 240, new Range(17 * 60, 23 * 60 + 30), new Range(16 * 60 + 30, 21 * 60));
+//        boolean res = Oa2.isMatch(0, 240, new Range(17 * 60, 23 * 60 + 30), new Range(16 * 60 + 30, 21 * 60));
 //        System.out.println(res);
     }
 }
