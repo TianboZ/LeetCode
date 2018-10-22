@@ -2,54 +2,92 @@ package debugLaicode;
 
 import java.util.*;
 
+/*
+
+solution:
+steps:
+1. count each character's frequency       map<key: char, value: frenquency>
+2. if there is more than one char that its frequency is odd, then there is no palindrome for input string
+3. we create a half length of input string
+    e.g. if input is "aabbcccc" , then we can get "abcc"
+    then we get all the permutation of "abcc"
+    for each permutation, reverse it, and connect original and reversed string. e.g. "abcc" + "ccba" = "abccccba"
+
+time O((n/2)!)
+sapce O(n)
+
+n is s.length()
+*/
+
 public class PalindromePermutation2 {
-    public String[] generatePalindromes(String s) {
-        // Write your solution here
+    public List<String> generatePalindromes(String s) {
         List<String> res = new ArrayList<>();
-        char[] arr = s.toCharArray();
-        dfs(res, arr, 0);
-        Collections.sort(res);
-        String[] ans = new String[res.size()];
-        for (int i = 0; i < ans.length; i++) {
-            ans[i] = res.get(i);
+        // sanity check
+        if (s == null || s.length() == 0) return res;
+
+        // key: char  value: frequency
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            Integer count = map.get(c);
+            if (count == null) {
+                map.put(c, 1);
+            } else {
+                map.put(c, 1 + count);
+            }
         }
-        return ans;
+
+        int num = 0;
+        for (Map.Entry<Character, Integer> entry: map.entrySet()) {
+            if (entry.getValue() % 2 != 0) num++;
+        }
+        if (num > 1) return res; // input s cannot be palindrome
+
+        StringBuilder sb = new StringBuilder();
+        char c = '!';
+
+        for (Map.Entry<Character, Integer> entry: map.entrySet()) {
+            int count = entry.getValue();
+            if (count % 2 != 0) {
+                c = entry.getKey();
+            }
+            count = count / 2;
+            for (int i = 0; i < count; i++) {
+                sb.append(entry.getKey());
+            }
+        }
+
+        char[] arr = sb.toString().toCharArray();
+        dfs(arr, 0, res, c);
+        return res;
     }
-    private void dfs(List<String> res, char[] arr, int index) {
+    private void dfs(char[] arr, int index, List<String> res, char c) {
         // base-case
         if (index == arr.length) {
-            if (isP(arr)) {
-                res.add(new String(arr));
+            String left = new String(arr);
+            StringBuilder tmpt = new StringBuilder(left);
+            String right = tmpt.reverse().toString();
+
+            if (c == '!') {
+                res.add(left + right);
+            } else {
+                res.add(left + Character.toString(c) + right);
             }
             return;
         }
-        // rule
+        // recursive rule
         Set<Character> set = new HashSet<>();
         for (int i = index; i < arr.length; i++) {
-            if (!set.contains(arr[i])) {
-                set.add(arr[i]);
+            if (set.add(arr[i])) {
                 swap(arr, i, index);
-                dfs(res, arr, index + 1);
+                dfs(arr, index + 1, res, c);
                 swap(arr, i, index);
             }
         }
     }
-    private void swap(char[] arr, int s, int e) {
-        char tmp = arr[e];
-        arr[e] = arr[s];
-        arr[s] = tmp;
-    }
-
-    private boolean isP(char[] arr) {
-        int s = 0;
-        int e = arr.length - 1;
-        while (s < e) {
-            if (arr[s] != arr[e]) {
-                return false;
-            }
-            s++;
-            e--;
-        }
-        return true;
+    private void swap(char[] arr, int i, int j) {
+        char c = arr[i];
+        arr[i] = arr[j];
+        arr[j] = c;
     }
 }

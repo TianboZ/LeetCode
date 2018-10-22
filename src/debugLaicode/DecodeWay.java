@@ -1,7 +1,7 @@
 package debugLaicode;
 
 
-public class DecodeWay {
+public class  DecodeWay {
     public static void main(String[] args) {
         DecodeWay decodeWay = new DecodeWay();
 

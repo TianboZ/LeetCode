@@ -1,5 +1,19 @@
 package debugLaicode;
 
+/*
+
+
+            1
+           / \
+          2   1
+         /\   /\
+        2  2  1 1
+       /\  /\
+       2 2 2 2
+
+
+* */
+
 public class CountCompleteTreeNodes {
     public int countNodes(TreeNode root) {
         // Write your solution here

@@ -5,52 +5,47 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class PalindromePermutation1 {
-    public boolean canPermutePalindrome(String input) {
-        // Write your solution here
-        List<String> res = new ArrayList<>();
-        char[] arr = input.toCharArray();
-        return dfs(res, arr, 0);
-    }
-    private boolean dfs(List<String> res, char[] arr, int index) {
-        // base-case
-        if (index == arr.length) {
-            if (isP(arr)) {
-                res.add(new String(arr));
-                return true;
-            }
-            return false;
-        }
-        // rule
-        Set<Character> set = new HashSet<>();
-        for (int i = index; i < arr.length; i++) {
-            if (!set.contains(arr[i])) {
-                set.add(arr[i]);
-                swap(arr, i, index);
-                if (dfs(res, arr, index + 1)) {
-                    return true;
-                }
-                swap(arr, i, index);
-            }
-        }
-        return false;
-    }
-    private void swap(char[] arr, int s, int e) {
-        char tmp = arr[e];
-        arr[e] = arr[s];
-        arr[s] = tmp;
-    }
+/*
 
-    private boolean isP(char[] arr) {
-        int s = 0;
-        int e = arr.length - 1;
-        while (s < e) {
-            if (arr[s] != arr[e]) {
-                return false;
+sol0:
+get all permutation of string, check if there exist a palindrome  time o(n!) space o(n)
+
+sol1:
+case1 s.length == odd
+only one character, its frequency % 2 == 1  e.g. 111
+else it is not
+
+case2 s.length == even
+for all character, its frequency % 2 must == 0  e.g. 1236666321
+else it is not
+
+
+map<key: char, value: frequency>  time o(n)   space o(n)
+
+sol2:
+use hashset
+iterate each character in the string
+    if the character not in the set, add to set
+    else remove it from the set
+
+at last, if input string can form palindrome, then there should be <= 1 element left in the set
+time O(n) space O(n)
+
+*/
+public class PalindromePermutation1 {
+    public boolean canPermutePalindrome(String s) {
+        // sanity check
+        if (s == null || s.length() == 0) return false;
+
+        Set<Character> set =new  HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!set.contains(c)) {
+                set.add(c);
+            } else {
+                set.remove(c);
             }
-            s++;
-            e--;
         }
-        return true;
+        return set.size() <= 1;
     }
 }
