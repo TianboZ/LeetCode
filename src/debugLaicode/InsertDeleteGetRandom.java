@@ -2,96 +2,70 @@ package debugLaicode;
 
 import java.util.*;
 
-public class InsertDeleteGetRandom {
-    // Design a data structure that supports all following operations in average O(1) time.
-    private class Node {
-        int val;
-        Node prev;
-        Node next;
-        Node(int val) {
-            this.val = val;
-        }
-    }
-    private Node head;
-    private Node tail;
-    private int len = 0;
-    Map<Integer, List<Node>> map;
+/*
 
+solutions:
+
+insert element: if the element not exist before, append new element to the tail of ArrayList
+
+remove element: first find its index in the ArrayList, then swap it to the tail, remove tail element of ArrayList
+    use HashMap<key: element, value: index>
+
+getRandom: generate a random number, use it as index, get the element in ArrayList
+
+all operation, time O(1)
+
+*/
+public class InsertDeleteGetRandom {
+    Map<Integer, Integer> map;
+    Random random;
+    List<Integer> list;
     /** Initialize your data structure here. */
     public InsertDeleteGetRandom() {
-        this.map = new HashMap<>();
+        map = new HashMap<>();
+        random = new Random();
+        list = new ArrayList<>();
     }
 
-    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
-        List<Node> nodes = map.get(val);
-        if (nodes == null) {
-            nodes = new ArrayList<>();
-            map.put(val, nodes);
+        int index = list.size();
+        if (!map.containsKey(val)) {
+            map.put(val, index);
+            list.add(val);
+            return true;
         }
-        Node node = new Node(val);
-        nodes.add(node);
-
-        // append to the tail of DDL
-        if (head == null && tail == null) {
-            head = node;
-            tail = node;
-        } else {
-            tail.next = node;
-            node.prev = tail;
-            tail = tail.next;
-        }
-
-        len++;
-        return true;
+        return false;
     }
 
-    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
     public boolean remove(int val) {
         if (map.containsKey(val)) {
-            List<Node> nodes = map.get(val);
-            Node node = nodes.get(nodes.size() - 1);
-            nodes.remove(nodes.size() - 1);
-            if (nodes.size() == 0) map.remove(val);
-
-            if (node.prev != null && node.next != null) {
-                // node in the middle of DDL
-                node.prev.next = node.next;
-                node.next.prev = node.prev;
-                node.next = null;
-                node.prev = null;
-            } else if (node.next == null && node.prev != null) {
-                // node is tail
-                tail = node.prev;
-                tail.next = null;
-                node.prev = null;
-            } else if (node.next != null && node.prev == null) {
-                // node is head
-                head = node.next;
-                head.prev = null;
-                node.next = null;
-            } else {
-                // node is only element in DDL
-                head = null;
-                tail = null;
+            int index = map.get(val);
+            // to be deleted element is NOT the last one in the list, swap it to the tail
+            if (index != list.size() - 1) {
+                int lastone = list.get(list.size() - 1);
+                map.put(lastone, index); // update lastone's index
+                list.set(index, lastone);
             }
-            len--;
+            map.remove(val);
+            list.remove(list.size() - 1);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
-    /** Get a random element from the collection. */
+    /** Get a random element from the set. */
     public int getRandom() {
-        Random random = new Random();
-        int count = random.nextInt(len);
-        Node curr = head;
-
-        while (count > 0) {
-            curr = curr.next;
-            count--;
-        }
-        return curr.val;
+        int index = random.nextInt(list.size());
+        return list.get(index);
     }
 }
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet obj = new RandomizedSet();
+ * boolean param_1 = obj.insert(val);
+ * boolean param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */

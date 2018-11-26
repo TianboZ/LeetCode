@@ -3,34 +3,60 @@ package MianJing.thumbtack;
 import java.util.HashSet;
 import java.util.Set;
 
+/*
+
+case1: odd
+e.g.980
+case1.1 take first half: "98", get the reverse of "98", which is "89".
+    connect "98" and "89" like "989". middle character is overlapped
+case1.2 take first half: "97", get the reverse of "97", which is "79".
+    connect "97" and "79" like "979". middle character is overlapped
+case1.3 take first half: "99", get the reverse of "99", which is "99".
+    connect "99" and "99" like "999". middle character is overlapped
+
+case2: even
+e.g. 9800
+case2.1 take first half: "98", get the reverse of "98", which is "89".
+    connect "98" and "89" like "9889"
+case2.2 ...
+case2.3 ...
+
+
+solution:
+
+get first half of string, convert it to integer, store it as num1
+
+num = num - 1
+num = num + 0
+num = num + 1
+
+for each cases, convert num to string, store it as left, then revese it, call it right
+try all the possible way to concatenate left + right
+
+
+time is constant
+
+*/
+
 public class ClosestPalindrome {
+    public String nearestPalindromic(String n) {
+        // corner cases:
+        long x = Long.parseLong(n);
+        if (x <= 10) {
+            x--;
+            return Long.toString(x);
+        }
+        if (x == 11) {
+            x = 9;
+            return Long.toString(x);
+        }
 
-    public static void main(String[] args) {
-        System.out.println(nearestPalindromic("0"));
-        System.out.println(nearestPalindromic("1"));
-        System.out.println(nearestPalindromic("6"));
-        System.out.println(nearestPalindromic("9"));
-        System.out.println(nearestPalindromic("10"));
-        System.out.println(nearestPalindromic("11"));
-        System.out.println(nearestPalindromic("12"));
-        System.out.println(nearestPalindromic("71"));
-        System.out.println(nearestPalindromic("74"));
-        System.out.println(nearestPalindromic("79"));
-        System.out.println(nearestPalindromic("99"));
-        System.out.println(nearestPalindromic("100"));
-        System.out.println(nearestPalindromic("101"));
-        System.out.println(nearestPalindromic("999"));
-        System.out.println(nearestPalindromic("1993"));
-        System.out.println(nearestPalindromic( "1999"));
-        System.out.println(nearestPalindromic("9900"));
-        System.out.println(nearestPalindromic("999000"));
-    }
+        if (isPower10(x)) {
+            x--;
+            return Long.toString(x);
+        }
 
-    public static  String nearestPalindromic(String n) {
-        // corner case
-        if (n.equals("0")) return Integer.toString(1);
-
-        Set<Integer> set = new HashSet<>(); // store all candidates palindrome integer
+        Set<Long> set = new HashSet<>();
 
         int len = 0; // first half lenght
         if(n.length() % 2 == 0) {
@@ -40,39 +66,47 @@ public class ClosestPalindrome {
         }
 
         String s1 = n.substring(0, len); // first half
-        int num1 = Integer.parseInt(s1); // first half value
-        //System.out.println(num1);
+        long num1 = Long.parseLong(s1); // first half value
         for (int i = -1; i <= 1; i++) {
-            int newNum1 = num1 + i;
-            //System.out.println(newNum1);
-            String newS1 = Integer.toString(newNum1);
-            String s2 = reverse(newS1); // second half
-            if (n.length() % 2 == 0) {
-                String str = newS1 + s2;
-                set.add(Integer.parseInt(str));
-            } else {
-                String str = newS1.substring(0, newS1.length()-1) + s2;
-                //System.out.println("new str:" + str);
-                set.add(Integer.parseInt(str));
-            }
+            long num2 = num1 + i;
+            String left = Long.toString(num2);
+            String right = reverse(left); // second half
+
+            // try all the possible concatenate way
+            String str1 = left + right;
+            String str2 =  left.substring(0, left.length()-1) + right;
+
+            set.add(Long.parseLong(str1));
+            set.add(Long.parseLong(str2));
         }
 
-        set.remove(Integer.parseInt(n)); // remove the number itseft
+        set.remove(Long.parseLong(n)); // remove the number itseft
 
-        int res = 0;
-        int num  = Integer.parseInt(n);
+        long num  = Long.parseLong(n);
+        long res = Integer.MAX_VALUE;
+        long diff = Integer.MAX_VALUE;
         // find the cloeset num in the set
-        int diff = Integer.MAX_VALUE;
-        for (Integer i : set) {
+        for (Long i : set) {
+            System.out.println(i);
             if (Math.abs(i - num) < diff) {
                 diff = Math.abs(i - num);
                 res = i;
             }
         }
-        //System.out.println(res);
-        return Integer.toString(res);
+        // check if there exist tie
+        if (res > num && set.contains(num - (res - num))) {
+            res = num - (res - num);
+        }
+        return Long.toString(res);
     }
-    private static String reverse(String s) {
+
+    public  boolean isPower10(long x) {
+        while (x > 9 && x % 10 == 0) {
+            x /= 10;
+        }
+        return x == 1;
+    }
+    private  String reverse(String s) {
         StringBuilder sb = new StringBuilder(s);
         return sb.reverse().toString();
     }

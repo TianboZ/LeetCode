@@ -1,14 +1,28 @@
 package debugLaicode;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/*
+solution:
+sort intervals by start
+iterate each interval
+case1: overlap with prev
+    next.start <= curr.end
+        curr.end = Math.max(curr.end, next.end)
+case2: not overlap with prev
+    curr.end < next.start
+        put curr interval into result
+        curr = next;
+
+
+time O(nlogn)   n is intervals length
+
+*/
+
 class MergeInterval {
-
-
     private class Interval {
         public int start;
         public int end;
@@ -17,34 +31,38 @@ class MergeInterval {
             this.end = end;
         }
     }
-    public int length(List<Interval> intervals) {
-        // Write your solution here.
-        Collections.sort(intervals, new MyComparator());
+    public List<Interval> merge(List<Interval> intervals) {
+        if (intervals.size() <= 1) return intervals;
+        List<Interval> res = new ArrayList<>();
 
-        List<Interval> merged = new ArrayList<>();
-        for (Interval interval : intervals) {
-            // if the list of merged intervals is empty or if the current
-            // interval does not overlap with the previous, simply append it.
-            if (merged.isEmpty() || merged.get(merged.size() - 1).end < interval.start) {
-                merged.add(interval);
-            }
-            // otherwise, there is overlap, so we merge the current and previous
-            // intervals.
-            else {
-                merged.get(merged.size() - 1).end = Math.max(merged.get(merged.size() - 1).end, interval.end);
+        // sort by start
+        Collections.sort(intervals, new CP());
+        int start = intervals.get(0).start;
+        int end = intervals.get(0).end;
+
+        for (Interval i : intervals) {
+            if (i.start <= end) {
+                // overlap
+                end = Math.max(end, i.end);
+            } else {
+                // not overlap
+                res.add(new Interval(start, end));
+
+                // start from a new interval
+                start = i.start;
+                end = i.end;
             }
         }
 
-        return 0;
+        // add the last interval
+        res.add(new Interval(start, end));
+        return res;
     }
-    // sort based on start
-    private class MyComparator implements Comparator<Interval> {
+    class CP implements Comparator<Interval> {
         @Override
-        public int compare(Interval a, Interval b) {
-            if (a.start == b.start) {
-                return 0;
-            }
-            return a.start < b.start ? -1: 1;
+        public int compare(Interval i1, Interval i2) {
+            if (i1.start == i2.start) return 0;
+            return i1.start < i2.start ? -1: 1; // sort by start, increasing order
         }
     }
 }

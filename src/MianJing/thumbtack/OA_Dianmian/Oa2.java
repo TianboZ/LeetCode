@@ -1,4 +1,4 @@
-package MianJing.thumbtack;
+package MianJing.thumbtack.OA_Dianmian;
 
 import java.util.ArrayList;
 import java.util.HashSet;

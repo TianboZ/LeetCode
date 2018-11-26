@@ -2,19 +2,30 @@ package MianJing.thumbtack;
 
 import java.util.*;
 
+/*
+
+        8, 5, 12, 3, 4, 5, 10, 10
+                  j-->
+        i
+
+
+        for each j, find largest m arr[i]
+                for each arr[i], compute the sum arr[i] + arr[j]
+
+
+        use two data-structures:
+        minheap1:  find the top m largest elements before index i, including i
+        minheap2:  find the top m largest sum pair arr[i] + arr[j]
+
+
+        time o(n *  mlgm)   n is array length
+
+
+*/
+
+
 public class TopSumPair {
-    // naive
-    public static List<Integer> topMSum1(int[] arr, int l, int m) {
-        List<Integer> res = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = i + l + 1; j < arr.length; j++) {
-                res.add(arr[i] + arr[j]);
-            }
-        }
-        Collections.sort(res);
-        System.out.println(res);
-        return res;
-    }
+
     public static List<Integer> topMSum(int[] arr, int l, int m) {
         Queue<Integer> minHeap1 = new PriorityQueue<>();
         Queue<Integer> minHeap2 = new PriorityQueue<>();
@@ -59,6 +70,5 @@ public class TopSumPair {
         int k = 3;
         int l = 2;
         topMSum(arr, l, k);
-        topMSum1(arr, l, k);
     }
 }

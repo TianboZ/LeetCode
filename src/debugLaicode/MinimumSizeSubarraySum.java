@@ -1,29 +1,36 @@
 package debugLaicode;
 
+/*
+
+keep a sliding window, [left, right]
+the sum of window >= s
+
+*/
+
 public class MinimumSizeSubarraySum {
     public int minSubArrayLen(int s, int[] nums) {
-        // Write your solution here
+        // santity check
+        if (nums == null || nums.length == 0) return 0;
+
         int sum = 0;
-        int j = 0;
+        int left = 0;
+        int right = 0;
         int min = Integer.MAX_VALUE;
-        for (int i = 0; i < nums.length; i++) {
-            // handle rightmost number
-            sum = sum + nums[i];
 
-            // handle leftmost number
+        while (right < nums.length) {
+            // handle right pointer
+            sum = sum + nums[right];
+
+            // handle left pointer
             while (sum >= s) {
-                // update
-                if (i - j + 1 < min) {
-                    min = i - j + 1;
-                }
-
-                sum = sum - nums[j];
-                j++;
+                // update length of window
+                min = Math.min(min, right - left + 1);
+                sum = sum - nums[left];
+                left++;
             }
+            right++;
         }
-        if (min == Integer.MAX_VALUE) {
-            return 0;
-        }
-        return min;
+
+        return min == Integer.MAX_VALUE ? 0 : min;
     }
 }

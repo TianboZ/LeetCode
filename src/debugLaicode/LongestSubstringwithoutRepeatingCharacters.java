@@ -3,48 +3,59 @@ package debugLaicode;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
+/*
+
+    abcabcbb
+        j
+      i
+
+
+for  each j, find the corresponding i, substring[i, j] without repeating charcater
+
+time O(n)
+space O(n)
+
+
+*/
+
 public class LongestSubstringwithoutRepeatingCharacters {
-    public int longest(String input) {
-        // Write your solution here
+
+    public int lengthOfLongestSubstring(String s) {
+        int slow = 0;
+        int fast = 0;
+        int repeat = 0;
+        int max = 0;
         Map<Character, Integer> map = new HashMap<>();
-        boolean dup = false;
-        int j = 0;
-        int max = -1;
-        for (int i = 0; i < input.length(); i++) {
-            // handle rightmost char
-            char tmpt = input.charAt(i);
-            Integer count = map.get(tmpt);
-            if (count != null) {
-                map.put(tmpt, count + 1);
-                dup = true;
-            } else {
-                map.put(tmpt, 1);
+
+        while (fast < s.length()) {
+            // handle right most pointer
+            char c = s.charAt(fast);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+            if (map.get(c) > 1) repeat++;
+
+            // handle left most pointer
+            while (repeat > 0) {
+                c = s.charAt(slow);
+                Integer count = map.get(c);
+                if (count != null) {
+                    map.put(c, count - 1);
+                    if (map.get(c) == 0) {
+                        map.remove(c);
+                    } else {
+                        repeat--;
+                    }
+                }
+                slow++;
             }
 
-            // handle leftmost char
-            while (dup && j <= i) {
-                tmpt = input.charAt(j);
-                count = map.get(tmpt);
-                if (count == 1) {
-                    map.remove(tmpt);
-                } else {
-                    map.put(tmpt, count - 1);
-                    dup = false;
-                }
-                j++;
-            }
             // update
-            if (i - j + 1>= max) {
-                max = i - j + 1;
-                System.out.println(input.substring(j, i + 1));
-            }
+            // repeat == 0
+            max = Math.max(max, fast - slow + 1);
+
+            fast++;
         }
         return max;
     }
-
-    public static void main(String[] args) {
-        LongestSubstringwithoutRepeatingCharacters longestSubstringwithoutRepeatingCharacters = new LongestSubstringwithoutRepeatingCharacters();
-        longestSubstringwithoutRepeatingCharacters.longest("bcdfbd");
-    }
-
 }

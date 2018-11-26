@@ -4,68 +4,60 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MinimumWindowSubstring {
-    public String minWindow(String S, String T) {
-        if (T == null || T.length() == 0) {
-            return "";
-        }
-        if (T.length() > S.length()) {
-            return "";
-        }
-        // key: character value: number of it
-        Map<Character, Integer> map = countMap(T);
-        // record how many distinct characters have been matched, only when all distinct characters are matched
-        // match == map.size(), we find an anagram
-        int match = 0;
-        int j = 0; // left bound of window
-        int min = 1000;
+    public String minWindow(String s, String t) {
+        // sanity check
+        if (t.length() > s.length()) return "";
+        if (s == null || s.length() == 0 || t == null || t.length() == 0) return "";
+
+        int min = Integer.MAX_VALUE;
         int index = 0;
 
-        for (int i = 0; i < S.length(); i++) {
-            // handle the rightmost character
-            char tmp = S.charAt(i);
-            Integer count = map.get(tmp);
-            if (count != null) {
-                map.put(tmp, count - 1);
-                if (count == 1) {
-                    match++;
-                }
-            }
-            // handle the leftmost character
-            while (match == map.size() && j <= i) {
-                // update
-                if (i - j + 1 < min) {
-                    min = i - j + 1;
-                    index = j;
-                }
-
-                tmp = S.charAt(j);
-                count = map.get(tmp);
-                if (count != null) {
-                    map.put(tmp, count + 1);
-                    if (count == 0) {
-                        match--;
-                    }
-                }
-                j++;
-            }
-        }
-        String res = "";
-        res = S.substring(index, index + min);
-        return res;
-    }
-    private Map<Character, Integer> countMap(String s) {
         Map<Character, Integer> map = new HashMap<>();
-        for (char ch : s.toCharArray()) {
-            Integer i = map.get(ch);
-            if (i == null) {
-                map.put(ch, 1);
-            } else {
-                map.put(ch, i + 1);
-            }
-        }
-        return map;
-    }
+        countMap(map, t);
 
+        int match = 0; // initial
+        int fast = 0;
+        int slow = 0;
+
+        while (fast < s.length()) {
+            // handle right most pointer
+            char c = s.charAt(fast); // add fast
+            // add c to the sliding window
+            Integer count = map.get(c);
+            if (count != null) {
+                map.put(c, count - 1);
+                if (map.get(c) == 0) match++;
+            }
+
+            // handle left most pointer
+            while (match == map.size()) {
+                c = s.charAt(slow);
+                // update shortest window size   [slow, fast]
+                if (fast - slow + 1 < min) {
+                    min = fast - slow + 1;
+                    index = slow;
+                }
+
+                // remove slow from the window
+                count = map.get(c);
+                if (count != null) {
+                    map.put(c, count + 1);
+                    if (map.get(c) > 0) match--;
+                }
+
+                slow++;
+            }
+            fast++;
+        }
+        return min == Integer.MAX_VALUE ? "" : s.substring(index, index + min);
+
+    }
+    private void countMap(Map<Character, Integer> count, String t) {
+        for (int i = 0; i < t.length(); i++) {
+            count.put(t.charAt(i), count.getOrDefault(t.charAt(i), 0) + 1);
+        }
+    }
+    
     public static void main(String[] args) {
         MinimumWindowSubstring minimumWindowSubstring = new MinimumWindowSubstring();
         String res = minimumWindowSubstring.minWindow("AEFBGFCMNDCUIBA","ABCD");

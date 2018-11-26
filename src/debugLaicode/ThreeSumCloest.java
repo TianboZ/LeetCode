@@ -8,7 +8,7 @@ public class ThreeSumCloest {
         Arrays.sort(num);
         int res = 0;
         int min = Integer.MAX_VALUE;
-        for (int i = 0; i < num.length - 2; i++) {
+        for (int i = 0; i < num.length; i++) {
             int left = i + 1;
             int right = num.length - 1;
 

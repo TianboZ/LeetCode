@@ -1,94 +1,128 @@
 package debugLaicode;
 
-//public class SerializeAndDeserializeNaryTree {
 
 import java.util.ArrayList;
 import java.util.List;
 
+// solution1:
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val,List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+}
+
 public class SerializeAndDeserializeNaryTree {
-    static class Node {
-        public int val;
-        public List<Node> children;
 
-        public Node() {}
-
-        public Node(int _val,List<Node> _children) {
-            val = _val;
-            children = _children;
-        }
-    };
 
     // Encodes a tree to a single string.
     public String serialize(Node root) {
-        StringBuilder preSb = new StringBuilder();
-        StringBuilder postSb = new StringBuilder();
-
-        traverse(root, preSb, postSb);
-        preSb.deleteCharAt(preSb.length() - 1);
-        postSb.deleteCharAt(postSb.length() - 1);
-
-        preSb.append("-").append(postSb.toString());
-        return preSb.toString();
+        if (root == null) return null;
+        String res =  preOrder(root);
+        System.out.println(res);
+        return res;
     }
-    private void traverse(Node root, StringBuilder preSb, StringBuilder postSb) {
+    // start root node, reutrn e.g. [1[2][22][222]]
+    private String preOrder(Node root) {
+        // base-case
         if (root == null) {
-            preSb.append("#,");
-            postSb.append("#,");
-            return;
+            return "";
         }
-        preSb.append(root.val + ",");
-        for (Node child : root.children) {
-            traverse(child, preSb, postSb);
+
+        // recursive rule
+        StringBuilder sb = new StringBuilder();
+        sb.append( "[" + root.val);
+        for (Node node : root.children) {
+            sb.append(preOrder(node) );
         }
-        postSb.append(root.val + ",");
+        sb.append("]");
+        return sb.toString();
     }
 
     // Decodes your encoded data to tree.
     public Node deserialize(String data) {
-        System.out.println(data);  // 1,3,5,6,2,4-5,6,3,2,4,1
-        String[] s = data.split("-");
-        String[] pre = s[0].split(",");
-        String[] post = s[1].split(",");
-        System.out.println(s[0]); // 1,3,5,6,2,4
-        System.out.println(s[1]);  //5,6,3,2,4,1
-
-        return construct(pre, post);
+        if (data == null) return null;
+        return reconstruct(data, 0);
     }
-    int preIndex = 0;
-    int postIndex = 0;
-    private Node construct(String[] pre, String[] post) {
-        // base-case
-
+    // reconstruct the tree following the preorder
+    int index = 0;
+    Node reconstruct(String preorder, int depth) {
         // recursive rule
-        Node root = new Node();
-        root.val = Integer.valueOf(pre[preIndex]);
-        root.children = new ArrayList<>();
-        //System.out.println(preIndex + " , " + postIndex);
-        preIndex++;
-        System.out.println(root.val);
-        while (Integer.valueOf(post[postIndex]) != root.val) {
-            root.children.add(construct(pre, post));
+        index++; // skip first [
+        int tmpt = index;
+        while (preorder.charAt(index) >= '0' && preorder.charAt(index) <= '9'){
+            index++;
         }
-        postIndex++;
+        int num = Integer.parseInt(preorder.substring(tmpt, index));
+        Node root = new Node(num, new ArrayList<>());
+        // index is first [
+        while (preorder.charAt(index) != (']')) {
+            root.children.add(reconstruct(preorder, depth + 1));
+        }
+        System.out.println("index: " + index + " depth: " + depth);
+        index++;
         return root;
-    }
-
-    public static void main(String[] args) {
-        Node node1 = new Node(1, new ArrayList<Node>());
-
-        Node node2 = new Node(2, new ArrayList<Node>());
-
-        Node node3 = new Node(3, new ArrayList<Node>());
-
-        node1.children.add(node2);
-        node1.children.add(node3);
-
-        SerializeAndDeserializeNaryTree serializeAndDeserializeNaryTree = new SerializeAndDeserializeNaryTree();
-        String s = serializeAndDeserializeNaryTree.serialize(node1);
-        Node root = serializeAndDeserializeNaryTree.deserialize(s);
     }
 }
 
-// Your Codec object will be instantiated and called as such:
-// Codec codec = new Codec();
-// codec.deserialize(codec.serialize(root));
+// solution2:
+//
+class SerializeAndDeserializeNaryTree2 {
+    // Encodes a tree to a single string.
+    public String serialize(Node root) {
+        // sanity check
+        if (root == null) return "";
+
+        StringBuilder sb = new StringBuilder();
+        preorder(root, sb);
+        sb.deleteCharAt(sb.length() - 1);
+        System.out.println(sb.toString());
+        return sb.toString();
+    }
+
+    private void preorder(Node root, StringBuilder sb) {
+        // base-case
+        if (root == null) return;
+
+        // recursive rule
+        sb.append("" + root.val + ",");
+        sb.append(root.children.size() + ",");
+
+        for (Node node : root.children) {
+            preorder(node, sb);
+        }
+    }
+    // Decodes your encoded data to tree.
+
+    int index;
+
+    public Node deserialize(String data) {
+        // sanity check
+        if (data.equals("")) return null;
+
+        String[] arr = data.split(",");
+        index = 0;
+
+        return construct(arr);
+    }
+    private Node construct(String[] arr) {
+        // base-case
+
+        // recursive rule
+        int val = Integer.parseInt(arr[index]); // current node value
+        index++;
+        int num = Integer.parseInt(arr[index]); // number of children of current node
+        index++;
+
+        Node root = new Node(val, new ArrayList<>());
+        for (int i = 0; i < num; i++) {
+            root.children.add(construct(arr));
+        }
+        return root;
+    }
+}

@@ -1,50 +1,94 @@
 package debugLaicode;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /*
 
-   p2   |   p1
-        |
-        |
+assumptions:
+    position<int, int>
 
-    if p1 and p2 are sysmetric to a line, then (p1.x - p2.x) / 2 + p2.x = (p1.x + p2.x) / 2 , this should be same for other pairs
-    on oters levels
+    could have duplicate points on the same position
 
-    now, assume this line exist, then try to find the leftmost and rightmost x value, add them as "sum"
-    then "sum" should be used as standard
+solution:
 
-    use HashSet<String> to store each point. e.g. "x,y"
+            p1      |      p2(p2.1)     p2, p2.1 same position
+                 p3 | p4
+                    |
+                    |
+                    |
+这条线不存在
 
-    for each point, if (sum - x, y) not exist in hashset, then the line is not exist
 
-    time o(n)
-    space o(n)
+            p1(p1.1)|      p2(p2.1)     p1, p1.1 same position
+                 p3 | p4                p2, p2.1 same position
+                    |
+                    |
+                    |
+
+这条线存在
+
+
+    steps:
+    if there exist a line reflects the points, then p1.x + p2.x = sum, sum should be a constant
+    for other symmetric pairs, sum still should be the same
+
+    assume the line exist, then leftmost.x + rightmost.x  should equal to sum
+    find the sum first
+
+    iterate all the point, check if it has symmetric point
+
+    use Map<key: "x,y",  value: frequency> to store each point
+
+
+    time: O(n)
+    space O(n)
+    n is number of points
 */
 public class LineReflection {
-    public boolean isReflected(int[][] points) {
-        int min = Integer.MAX_VALUE;
-        int max = Integer.MIN_VALUE;
+    public static  boolean isReflected(int[][] points) {
 
-        Set<String> set = new HashSet<>();
-        for (int[] point: points) {
-            min = Math.min(min, point[0]);
-            max = Math.max(max, point[0]);
+        int left = Integer.MAX_VALUE;
+        int right = Integer.MIN_VALUE;
+
+        // key: "x,y"    value: frequency
+        Map<String, Integer> map = new HashMap<>();
+
+        for (int[] point : points) {
             int x = point[0];
             int y = point[1];
-            set.add(x + "," + y); // "1,1"  "-1,1"
+
+            left = Math.min(left, x);
+            right = Math.max(right, x);
+
+            String pos = "" + x + "," + y;
+            map.put(pos, map.getOrDefault(pos, 0) + 1);
         }
 
-        int sum = min + max;
+        int sum = left + right;
 
-        for (int[] point: points) {
+        for (int[] point : points) {
             int x = point[0];
             int y = point[1];
 
             int counterX = sum - x;
-            if (!set.contains(counterX + ","+y)) return false;
+            String pos = "" + counterX + "," + y;
+            Integer count = map.get(pos);
+            if (count == null) {
+                return false;
+            } else {
+                map.put(pos, count - 1);
+                if (map.get(pos) == 0) map.remove(pos);
+            }
         }
         return true;
+    }
+
+    public static void main(String[] args) {
+        int[][] points = {{-1,1}, {1,1}, {-2,2}, {2,21}};
+        boolean res = isReflected(points);
+        System.out.println(res);
     }
 }

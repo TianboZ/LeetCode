@@ -4,9 +4,9 @@ import java.util.*;
 
 public class ShortestSubstringKTypeCharacters {
     public static void main(String[] args) {
-        ShortestSubstringKTypeCharacters shortestSubstringKTypeCharacters= new ShortestSubstringKTypeCharacters();
+        ShortestSubstringKTypeCharacters shortest = new ShortestSubstringKTypeCharacters();
         String input = "aaaaabbdaaaacccdddddeeffbbbbbbf";
-        shortestSubstringKTypeCharacters.shortest(input, 5);
+        shortest.shortest(input, 5);
     }
     public String shortest(String input, int k) {
         // Write your solution here.

@@ -171,3 +171,6 @@ public class MyHashMap1<K, V> {
         System.out.println(map.get(null));
     }
 }
+
+
+

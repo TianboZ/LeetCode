@@ -56,11 +56,18 @@ public class FactorCombinations {
                 set.add(i);
             }
         }
+
         return set;
     }
 
     public static void main(String[] args) {
         FactorCombinations factorCombinations = new FactorCombinations();
         factorCombinations.combinations(24);
+
+
+        int a = 8;
+
     }
+
+
 }

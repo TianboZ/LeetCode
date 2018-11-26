@@ -5,7 +5,7 @@ import java.util.*;
 public class KthSmallestInSortedMatrix {
     public static void main(String[] args) {
         KthSmallestInSortedMatrix kthSmallestInSortedMatrix = new KthSmallestInSortedMatrix();
-        int[][] matrix = {  {1,  3,   5,  7},
+        int[][] matrix = {  {1,  2,   5,  7},
 
                             {2,  4,   8,  9},
 
@@ -15,7 +15,17 @@ public class KthSmallestInSortedMatrix {
         int k = 8;
         int res = kthSmallestInSortedMatrix.kthSmallest(matrix, k);
         System.out.println(res);
+
+        Test test = new Test(1);
+        Test test1 = new Test(2);
+        Test test2 = new Test(1);
+
+        System.out.println(test.equals(test2));
+        Set<Test> set = new HashSet<>(Arrays.asList(test, test1, test2));
+        System.out.println(set);
+        System.out.println(set.contains(test));
     }
+
 
     public int kthSmallest(int[][] matrix, int k) {
         if (k <= 1) {
@@ -25,6 +35,7 @@ public class KthSmallestInSortedMatrix {
         // best first first search
         Queue<Cell> q = new PriorityQueue<>();
         boolean[][] visited = new boolean[matrix.length][matrix[0].length];
+
         // initial
         q.offer(new Cell(0, 0, matrix[0][0]));
         visited[0][0] = true;
@@ -83,6 +94,8 @@ public class KthSmallestInSortedMatrix {
             return this.val < another.val ? -1 : 1;
 
         }
+
+
     }
 
     // if E already implements Comparable<E> class, but still I provide a Comparator, PQ will chose the order
@@ -94,6 +107,12 @@ public class KthSmallestInSortedMatrix {
                 return 0;
             }
             return c1.val < c2.val ? -1 : 1;
+        }
+    }
+    private  static class Test{
+        int val;
+        Test(int v) {
+            val = v;
         }
     }
 }

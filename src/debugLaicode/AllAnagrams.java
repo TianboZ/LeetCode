@@ -6,67 +6,103 @@ import java.util.List;
 import java.util.Map;
 
 public class AllAnagrams {
-    public List<Integer> allAnagrams(String s, String l) {
+    public List<Integer> findAnagrams(String s, String p) {
+        // sanity check
         List<Integer> res = new ArrayList<>();
-        if (l.length() == 0) {
+        if (s.length() == 0) {
             return res;
         }
-        if (s.length() > l.length()) {
+        if (p.length() > s.length()) {
             return res;
         }
-        // key: character       value: frequency
-        Map<Character, Integer> map = countMap(s);
-        // record how many distinct characters have been matched, only when all distinct characters are matched
-        // match == map.size(), we find an anagram
-        int match = 0;
-        // we have a sliding window of size s.length(), and since the size is fixed, we only need to record the end index
-        // of the window by one step from left to right
-        for (int i = 0; i < l.length(); i++) {
-            // handle the rightmost character
-            char tmp = l.charAt(i);
-            Integer count = map.get(tmp);
+
+        Map<Character, Integer> map = new HashMap<>();
+
+        // count the frequency of each character in p
+        for (int i = 0; i < p.length(); i++) {
+            char c = p.charAt(i);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+
+        int match = 0; // initial 0 characters match
+
+        for (int fast = 0;  fast < s.length(); fast++) {
+            // handle fast pointer
+            char c = s.charAt(fast);
+            Integer count = map.get(c);
             if (count != null) {
-                map.put(tmp, count - 1);
-                if (count == 1) {
-                    match++;
-                }
+                map.put(c, count - 1);
+                if (map.get(c) == 0) match++;
             }
-            // handle the leftmost character
-            if (i >= s.length()) {
-                tmp = l.charAt(i - s.length());
-                count = map.get(tmp);
+
+            // 1 2 3 4
+            // s     f
+            // handle left pointer
+            int slow = fast - p.length();
+            if (slow >= 0) {
+                c = s.charAt(slow);
+                count = map.get(c);
                 if (count != null) {
-                    map.put(tmp, count + 1);
-                    if (count == 0) {
-                        match--;
-                    }
+                    map.put(c, count + 1);
+                    if (map.get(c) > 0) match--;
                 }
             }
 
-            // for the current sliding window, if all the distinct characters are matched
+            // for the current window [slow, fast]
             if (match == map.size()) {
-                res.add(i - s.length() + 1);
+                res.add(slow + 1);
             }
         }
-        System.out.println(res);
+        Map<StringBuilder, StringBuilder> map1 = new HashMap<>();
         return res;
     }
-    private Map<Character, Integer> countMap(String s) {
-        Map<Character, Integer> map = new HashMap<>();
-        for (char ch : s.toCharArray()) {
-            Integer i = map.get(ch);
-            if (i == null) {
-                map.put(ch, 1);
-            } else {
-                map.put(ch, i + 1);
+
+    public List<Integer> findAnagrams1(String s, String p) {
+        // sanity check
+        List<Integer> res = new ArrayList<>();
+        if (s.length() == 0) {
+            return res;
+        }
+        if (p.length() > s.length()) {
+            return res;
+        }
+
+        Map<Character, Integer> target = new HashMap<>(); // original target map
+        Map<Character, Integer> window = new HashMap<>(); // sliding window map
+
+        // count the frequency of each character in p
+        for (int i = 0; i < p.length(); i++) {
+            char c = p.charAt(i);
+            target.put(c, target.getOrDefault(c, 0) + 1);
+        }
+
+        int match = 0; // initial 0 characters match
+
+        for (int fast = 0; fast < s.length(); fast++) {
+            // handle fast pointer
+            char c = s.charAt(fast);
+            if (target.containsKey(c)) {
+                window.put(c, window.getOrDefault(c, 0) + 1);
+                if (window.get(c) >= target.get(c)) match++;
+            }
+            // handle left pointer
+            int slow = fast - p.length();
+            if (slow >= 0) {
+                c = s.charAt(slow);
+                if (target.containsKey(c)) {
+                    window.put(c, window.get(c) - 1);
+                    if (window.get(c) < target.get(c)) match--;
+                }
+            }
+            // for the current window [slow, fast]
+            if (match == target.size()) {
+                res.add(slow + 1);
             }
         }
-        return map;
-    }
-
-    public static void main(String[] args) {
-        AllAnagrams allAnagrams = new AllAnagrams();
-        allAnagrams.allAnagrams("abcdadccdbcadccad", "abc");
+        return res;
     }
 
 }
+
+// time o(n)    n is size of l
+// space o(m)   m is size of p

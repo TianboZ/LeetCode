@@ -69,6 +69,7 @@ public class CopyLinkedListWithRandomPointer {
             if (copy == null) {
                 RandomListNode node = new RandomListNode(head.value);
                 map.put(head, node);
+
             }
             head = head.next;
         }

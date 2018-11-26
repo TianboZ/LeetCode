@@ -1,13 +1,10 @@
 package debugLaicode;
 
-import java.util.List;
+import java.util.Set;
 
 public class LCA4 {
-    public TreeNode lowestCommonAncestor(TreeNode root, List<TreeNode> nodes) {
-        return lca(root, nodes);
-    }
-
-    private TreeNode lca(TreeNode root, List<TreeNode> nodes) {
+    // lca of K nodes
+    public TreeNode lca(TreeNode root, Set<TreeNode> nodes) {
         // base-case
         if (root == null) {
             return null;

@@ -31,7 +31,6 @@ public class ScrambleString {
                     || isScramble(arr1, arr2, left1, i - 1, right2 - i + 1, right2) && isScramble(arr1, arr2, i, right1, left2, right2 - i)) {
                 return true;
             }
-
         }
         return false;
     }

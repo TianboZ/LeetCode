@@ -10,6 +10,7 @@ public class SerachInRotatedSortedArray2 {
     private boolean binarySearch(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
+
         while (left + 1 < right) {
             int mid = left + (right - left) / 2;
             if (nums[mid] == target) return true;
@@ -24,6 +25,7 @@ public class SerachInRotatedSortedArray2 {
                 else left = mid;
             }
         }
+
         if (nums[left] == target || nums[right] == target) return true;
         return false;
     }
