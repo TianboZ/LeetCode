@@ -6,7 +6,7 @@ import java.util.List;
 public class Subset {
     public List<String> subSets(String set) {
         // Write your solution here.
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         if (set == null) {
             return result;

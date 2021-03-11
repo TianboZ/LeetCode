@@ -4,6 +4,44 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+
+
+/*
+*
+* sol1:
+* assumptions:
+* optimise time complexity
+*
+* solution:
+* iterate each number, for each iteration
+*       use hashset to record element that we traversed
+*       1. if hashset already contains target - arr[i], which means we find the solution, return
+*       2. add current element to hashset
+*
+*
+* complexity:
+* time o(n)
+* space o(n)
+*
+*
+* sol2:
+* assumptions:
+*
+*
+* solution:
+* - sort
+* - two pointers, left and right points to arr[0] and arr[end]. compare arr[left] + arr[right] and target
+*       if sum < target, left++
+*       if sum > target, right--
+*       if sum == target, return
+*
+*
+*
+* complexity:
+* space o(n)
+* time o(nlogn)
+*
+* */
 public class TwoSum {
     public boolean existSum(int[] array, int target) {
         // Write your solution here.
@@ -12,9 +50,8 @@ public class TwoSum {
         for (int num : array) {
             if (set.contains(target - num)) {
                 return true;
-            } else {
-                set.add(num);
             }
+            set.add(num);
         }
         return false;
     }
@@ -33,5 +70,4 @@ public class TwoSum {
         }
         return false;
     }
-    // time o(n log n)  space o(log n)  Arrays.sort is using quickSort(unstable sorting) for primitive type
 }

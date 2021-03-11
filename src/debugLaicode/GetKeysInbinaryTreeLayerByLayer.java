@@ -7,24 +7,25 @@ import java.util.Queue;
 
 public class GetKeysInbinaryTreeLayerByLayer {
     public List<List<Integer>> layerByLayer(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
-            return new ArrayList<>();
+            return res;
         }
 
-        List<List<Integer>> res = new ArrayList<>();
         Queue<TreeNode> q = new LinkedList<>();
+
         // initial
         q.offer(root);
 
-        // loop
+        // terminate
         while (!q.isEmpty()) {
-            int size = q.size(); // how many nodes on current layer
+            int size = q.size(); // # of nodes on current layer
             List<Integer> tmp = new ArrayList<>();
             for (int i = 0; i < size; i++) {
                 // expand
                 TreeNode curr = q.poll();
                 tmp.add(curr.key);
-                // generate rule
+                // generate
                 if (curr.left != null) {
                     q.offer(curr.left);
                 }
@@ -34,7 +35,6 @@ public class GetKeysInbinaryTreeLayerByLayer {
             }
             res.add(tmp);
         }
-        System.out.println(res);
         return res;
     }
 

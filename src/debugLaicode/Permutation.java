@@ -14,18 +14,18 @@ public class Permutation {
         dfs(0, arr, res);
         return res;
     }
-    private void dfs(int index, char[] arr, List<String> res) {
+    private void dfs(int i, char[] arr, List<String> res) {
         // base-case
-        if (index == arr.length) {
+        if (i == arr.length) {
             res.add(new String(arr));
             return;
         }
         // recursive rule
-        for (int i = index; i < arr.length; i++) {
-            swap(i, index, arr);
-            dfs(index + 1, arr, res);
+        for (int j = i; i < arr.length; i++) {
+            swap(i, j, arr);
+            dfs(i + 1, arr, res);
             // remember to swap back when back track to the previous state
-            swap(i, index, arr);
+            swap(i, j, arr);
         }
     }
     public void swap( int i, int j, char[] arr) {
@@ -35,8 +35,8 @@ public class Permutation {
     }
 
     public static void main(String[] args) {
-        Permutation permutation = new Permutation();
-        System.out.println(permutation.permutations("abcd"));
+        Permutation sol = new Permutation();
+        System.out.println(sol.permutations("abccd"));
 
     }
 }

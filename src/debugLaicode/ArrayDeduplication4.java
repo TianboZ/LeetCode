@@ -9,27 +9,28 @@ public class ArrayDeduplication4 {
         if (array == null || array.length == 0) {
             return new int[] {};
         }
-        Deque<Integer> stack = new LinkedList<>();
-        for (int i = 0; i < array.length; i++) {
-            if (!stack.isEmpty()
-                    && stack.peekFirst() == array[i]) {
+        // Write your solution here
+        Deque<Integer> stack = new LinkedList<>(); // each char store once
+        int i = 0;
+        while (i < array.length) {
+            int num = array[i];
+            if (!stack.isEmpty() && stack.peekFirst() == num) {
                 int j = i;
-                // find the last index of same number subarray
-                while (j + 1 < array.length
-                        && array[j] == array[j + 1]) {
+                while (j < array.length && array[j] == num) {
                     j++;
                 }
                 i = j;
                 stack.pollFirst();
             } else {
-                stack.offerFirst(array[i]);
+                stack.offerFirst(num);
+                i++;
             }
         }
         int[] res = new int[stack.size()];
-        int i = res.length - 1;
+        int k = 0;
         while (!stack.isEmpty()) {
-            res[i] = stack.pollFirst();
-            i--;
+            res[k] = stack.pollLast();
+            k++;
         }
         return res;
     }

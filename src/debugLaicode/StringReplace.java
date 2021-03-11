@@ -1,35 +1,33 @@
 package debugLaicode;
 
+/*
+*
+* solution:
+* use string indexOf() to find all targets
+* use StringBuilder to concatenate all substrings
+*
+*
+* */
 public class StringReplace {
-    public String replace(String input, String s, String t) {
+    public String replace(String input, String source, String target) {
         // Write your solution here
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < input.length(); i++) {
-            if (input.charAt(i) == s.charAt(0)) {
-                // first character matches
-                int j = i;
-                int k = 0;
-                // we want to know if the rest of string still matches
-                while (j < input.length() && k < s.length()) {
-                    if (input.charAt(j) != s.charAt(k)) {
-                        break;
-                    }
-                    j++;
-                    k++;
-                }
-                if (k == s.length()) {
-                    // found the sub-string that needs to be replaced
-                    sb.append(t);
-                    i = j - 1;
-                } else {
-                    // only some characters match
-                    sb.append(input.charAt(i));
-                }
-            } else {
-                // first character does not match, then just append
-                sb.append(input.charAt(i));
-            }
+        int start = 0;
+        int match = input.indexOf(source);
+        while (match != -1) {
+            sb.append(input, start, match).append(target);
+            start = match + source.length();
+            match = input.indexOf(source, start);
+
         }
+        sb.append(input, start, input.length());
         return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        StringReplace sr = new StringReplace();
+        String res= sr.replace("tywjtltyvtyegcboycmqtyq", "ty", "c");
+        System.out.println(res);
+
     }
 }

@@ -6,102 +6,97 @@ import java.util.List;
 import java.util.Map;
 
 public class AllAnagrams {
-    public List<Integer> findAnagrams(String s, String p) {
+    // sol1
+    public List<Integer> allAnagrams(String sh, String lo) {
         // sanity check
+
+        // key: character   value: how many needed
+        Map<Character, Integer> window = new HashMap<>();
+        countFrequency(window, sh);
         List<Integer> res = new ArrayList<>();
-        if (s.length() == 0) {
-            return res;
-        }
-        if (p.length() > s.length()) {
-            return res;
-        }
+        int match = 0;
 
-        Map<Character, Integer> map = new HashMap<>();
+        for (int fast = 0; fast < lo.length(); fast++) {
+            // handle rightmost character at current window
+            char c = lo.charAt(fast);
+            if (window.containsKey(c)) {
+                window.put(c, window.get(c) - 1);
+                if (window.get(c) == 0) {
+                    match++;
+                }
+            }
 
-        // count the frequency of each character in p
-        for (int i = 0; i < p.length(); i++) {
-            char c = p.charAt(i);
+            // handle leftmost character at previous current window
+            int slow = fast - sh.length();
+            if (slow >= 0) {
+                c = lo.charAt(slow);
+                if (window.containsKey(c)) {
+                    window.put(c, window.get(c) + 1);
+                    if (window.get(c) == 1) {
+                        match--;
+                    }
+                }
+            }
+            // current window
+            if (match == window.size()) {
+                res.add(slow + 1);
+            }
+        }
+        return res;
+    }
+
+    // sol2:
+    public List<Integer> allAnagrams2(String sh, String lo) {
+        HashMap<Character, Integer> pattern = new HashMap<>();   // key: char   value: frequency
+        HashMap<Character, Integer> window = new HashMap<>();   // key: char   value: frequency
+        countFrequency(pattern, sh);
+        List<Integer> res = new ArrayList<>();
+
+        int fast = 0;
+        int match = 0;
+
+        while (fast < lo.length()) {
+            // handle fast pointer
+            char ch = lo.charAt(fast);
+            if (pattern.containsKey(ch)) {
+                window.put(ch, window.getOrDefault(ch, 0) + 1);
+                if (window.get(ch) == pattern.get(ch)) {
+                    match++;
+                }
+            }
+
+            // handle leftmost element at previous window
+            int slow = fast - sh.length() + 1; // leftmost element index of window
+            if (slow - 1 >= 0) {
+                ch = lo.charAt(slow - 1);
+                if (pattern.containsKey(ch)) {
+                    window.put(ch, window.get(ch) - 1);
+                    if (window.get(ch) == pattern.get(ch) - 1) {
+                        match--;
+                    }
+                }
+            }
+
+
+            // current window
+            if (match == pattern.size()) {
+                res.add(slow + 1);
+            }
+            fast++;
+        }
+        return res;
+    }
+
+    private void countFrequency(Map<Character, Integer> map, String str) {
+        for (char c : str.toCharArray()) {
             map.put(c, map.getOrDefault(c, 0) + 1);
         }
-
-        int match = 0; // initial 0 characters match
-
-        for (int fast = 0;  fast < s.length(); fast++) {
-            // handle fast pointer
-            char c = s.charAt(fast);
-            Integer count = map.get(c);
-            if (count != null) {
-                map.put(c, count - 1);
-                if (map.get(c) == 0) match++;
-            }
-
-            // 1 2 3 4
-            // s     f
-            // handle left pointer
-            int slow = fast - p.length();
-            if (slow >= 0) {
-                c = s.charAt(slow);
-                count = map.get(c);
-                if (count != null) {
-                    map.put(c, count + 1);
-                    if (map.get(c) > 0) match--;
-                }
-            }
-
-            // for the current window [slow, fast]
-            if (match == map.size()) {
-                res.add(slow + 1);
-            }
-        }
-        Map<StringBuilder, StringBuilder> map1 = new HashMap<>();
-        return res;
     }
 
-    public List<Integer> findAnagrams1(String s, String p) {
-        // sanity check
-        List<Integer> res = new ArrayList<>();
-        if (s.length() == 0) {
-            return res;
-        }
-        if (p.length() > s.length()) {
-            return res;
-        }
-
-        Map<Character, Integer> target = new HashMap<>(); // original target map
-        Map<Character, Integer> window = new HashMap<>(); // sliding window map
-
-        // count the frequency of each character in p
-        for (int i = 0; i < p.length(); i++) {
-            char c = p.charAt(i);
-            target.put(c, target.getOrDefault(c, 0) + 1);
-        }
-
-        int match = 0; // initial 0 characters match
-
-        for (int fast = 0; fast < s.length(); fast++) {
-            // handle fast pointer
-            char c = s.charAt(fast);
-            if (target.containsKey(c)) {
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                if (window.get(c) >= target.get(c)) match++;
-            }
-            // handle left pointer
-            int slow = fast - p.length();
-            if (slow >= 0) {
-                c = s.charAt(slow);
-                if (target.containsKey(c)) {
-                    window.put(c, window.get(c) - 1);
-                    if (window.get(c) < target.get(c)) match--;
-                }
-            }
-            // for the current window [slow, fast]
-            if (match == target.size()) {
-                res.add(slow + 1);
-            }
-        }
-        return res;
+    public static void main(String[] args) {
+        AllAnagrams allAnagrams =new AllAnagrams();
+        System.out.println(allAnagrams.allAnagrams("aab", "ababacbbaac"));
     }
-
 }
 
 // time o(n)    n is size of l

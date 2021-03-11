@@ -27,36 +27,39 @@ public class SortedLinkedListToBST {
         System.out.println(root.key);
     }
 
-    ListNode curr = null;
+    ListNode curr;
     public TreeNode sortedListToBST(ListNode head) {
         curr = head;
-        int length = getLength(head);
-        return inorder(0, length - 1);
+        int len = findSize(head);
+        return helper(0, len - 1);
     }
-
-    private TreeNode inorder(int start, int end) {
-        // base-case
-        if (start > end) return null;
+    // given left and right bound, build balanced BST, return root
+    private TreeNode helper(int lo, int hi) {
+        // base case
+        if (lo > hi) {
+            return null;
+        }
 
         // recursive rule
-        int mid = start + (end - start) / 2;
-        TreeNode left = inorder(start, mid - 1);
+        int mid = (lo + hi) / 2;
+        TreeNode left = helper(lo, mid - 1);
+
         TreeNode root = new TreeNode(curr.val);
         curr = curr.next;
-        TreeNode right = inorder(mid + 1, end);
-
         root.left = left;
+
+
+        TreeNode right = helper(mid + 1, hi);
         root.right = right;
         return root;
     }
-
-
-    private int getLength(ListNode head) {
-        int length = 0;
-        while (head != null) {
-            length++;
-            head = head.next;
+    private int findSize(ListNode head) {
+        ListNode ptr = head;
+        int c = 0;
+        while (ptr != null) {
+            ptr = ptr.next;
+            c += 1;
         }
-        return length;
+        return c;
     }
 }

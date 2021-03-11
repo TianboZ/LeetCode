@@ -7,33 +7,35 @@ import java.util.Queue;
 
 public class MergeKSortedLists {
     public ListNode merge(List<ListNode> listOfLists) {
-        Queue<ListNode> minHeap = new PriorityQueue<>(new MyComparator());
-        ListNode dummy = new ListNode(0);
-        ListNode head = dummy;
+        Queue<ListNode> pq = new PriorityQueue<>((ListNode n1, ListNode n2) -> {
+            return n1.value == n2.value ? 0 : (n1.value < n2.value ? -1 : 1);
+        }); // pq is min heap
+
+        ListNode dummy = new ListNode(1);
+        ListNode currNode = dummy;
+
         // initial
         for (ListNode node : listOfLists) {
-            minHeap.offer(node);
+            pq.offer(node);
         }
 
-        while (!minHeap.isEmpty()) {
+        // terminate condition
+        while (!pq.isEmpty()) {
             // expand
-            ListNode curr = minHeap.poll();
-            head.next = curr;
-            head = head.next;
+            ListNode curr = pq.poll();
+            currNode.next = curr;
+            currNode = currNode.next;
+
+
             // generate
             if (curr.next != null) {
-                minHeap.offer(curr.next);
+                pq.offer(curr.next);
             }
         }
         return dummy.next;
     }
-    class MyComparator implements Comparator<ListNode> {
-        @Override
-        public int compare(ListNode n1, ListNode n2) {
-            if (n1.val == n2.val) {
-                return 0;
-            }
-            return n1.val < n2.val ? -1 : 1;
-        }
-    }
+
 }
+
+// space o(k)
+// time (logk * n)    n is total # of nodes

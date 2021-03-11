@@ -15,12 +15,11 @@ public class PartitionLinkedList {
             if (head.val < target) {
                 cur1.next = head;
                 cur1 = head;
-                head = head.next;
             } else {
                 cur2.next = head;
                 cur2 = head;
-                head = head.next;
             }
+            head = head.next;
         }
 
         // connect

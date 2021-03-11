@@ -1,6 +1,6 @@
 package OOD1;
 
-class Test1 {
+public class Test1 {
     public void print() {
         System.out.println("OOD1, TEST1");
         privateFunc();
@@ -9,6 +9,11 @@ class Test1 {
     }
     private void privateFunc() {
         System.out.println("this is a private function in OOD1 package, Test1 class");
+    }
+
+    public static void add(int x, int y) {
+        System.out.println(x + " + " + y + " = " + (x + y));
+        return;
     }
 
     public static void main(String[] args) {
@@ -22,11 +27,6 @@ class Test1 {
 
 
         add(1,2); // static method can be accessed by static method directly without object
-    }
-
-    public static void add(int x, int y) {
-        System.out.println(x + " + " + y + " = " + (x + y));
-        return;
     }
 }
 

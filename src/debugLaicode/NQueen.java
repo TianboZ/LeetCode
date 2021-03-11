@@ -11,28 +11,30 @@ public class NQueen {
         dfs(res, list, n, 0);
         return res;
     }
-    private void dfs(List<List<Integer>> res, List<Integer> list, int n, int index) {
+    private void dfs(List<List<Integer>> res, List<Integer> list, int n, int i) {
         // base-case
-        if (index == n) {
+        if (i == n) {
             res.add(new ArrayList<>(list));
             return;
         }
         // recursive rule
-        for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             // check if put new queen at column i at current row is valid
-            if (isValid(list, i)) {
-                list.add(i);
-                dfs(res, list, n, index + 1);
+            if (isValid(list, i, j)) {
+                list.add(j);
+                dfs(res, list, n, i + 1);
                 list.remove(list.size() - 1);
             }
         }
     }
-    private boolean isValid(List<Integer> list, int col) {
-        int row = list.size();
-        for (int i = 0; i < row; i++) {
-            if (col == list.get(i) || Math.abs(list.get(i) - col) == (row - i)) {
-                return false;
-            }
+    private boolean isValid(List<Integer> list, int row, int col) {
+        for (int i = 0; i < list.size(); i++) {
+            int col1 = list.get(i);
+            int row1 = i;
+
+            if (col1 == col) return false;
+
+            if (Math.abs(row - row1) == Math.abs(col - col1)) return false;
         }
         return true;
     }
@@ -43,3 +45,6 @@ public class NQueen {
         System.out.println(res);
     }
 }
+
+// time o(n^n)
+// space o(n)

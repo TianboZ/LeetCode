@@ -6,7 +6,11 @@ import java.util.*;
 -4  -1  -1  0   1   2
 0   1    2  3   4   5
 */
+
+
+// find all unique three sum pairs
 public class ThreeSum {
+    // sol1
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
 

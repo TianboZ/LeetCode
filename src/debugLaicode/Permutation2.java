@@ -17,26 +17,27 @@ public class Permutation2 {
         return res;
     }
 
-    private void dfs(List<String> res, char[] arr, int index) {
+    private void dfs(List<String> res, char[] arr, int i) {
         // base-case
-        if (index == arr.length) {
+        if (i == arr.length) {
             res.add(new String(arr));
             return;
         }
         // recursive rule
         Set<Character> set = new HashSet<>();
-        for (int i = index; i < arr.length; i++) {
-            if (set.add(arr[i])) {
-                swap(arr, index, i);
-                dfs(res, arr, index + 1);
-                // back-tracking
-                swap(arr, index, i);
+        for (int j = i; j < arr.length; j++) {
+            if (!set.contains(arr[j])) {
+                swap(arr, i, j);
+                dfs(res, arr, i + 1);
+                swap(arr, i, j);
+                set.add(arr[j]);
             }
         }
+
     }
-    private void swap(char[] arr, int left, int right) {
-        char tmp = arr[left];
-        arr[left] = arr[right];
-        arr[right] = tmp;
+    private void swap(char[] arr, int i, int j) {
+        char tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
 }

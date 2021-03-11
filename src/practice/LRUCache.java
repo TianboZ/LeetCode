@@ -3,118 +3,125 @@ package practice;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
-
-
-use cases:
-1. we need to find out quickly if an entry is in the cache or not --> hashmap
-2. we need to quickly insert an entry into the cache --> linkedlist
-3. we need to quickly delete an entry from the cache --> linkedlist
-4. we need to quickly adjust the priority of each entry in the cache, which means to remove the current node and append it to the head of linledlist --> double linkedlist, head, tail
-
-HashMap<key: Integer, value: ListNode reference>
-
-class ListNode {
-    int key;
-    int value;
-    ListNode next;
-    ListNode prev;
-}
-
-assumptions:
-if the entry not exist, return Integer.MAX_VALUE
-<key, value> : Integer, Integer
-
-*/
-
+// leetcode solution is better than laicode, use dummy head and tail
+// https://leetcode.com/problems/lru-cache/solution/
 public class LRUCache {
     // fields
-    private int capacity;
-    private Map<Integer, Node> map;
-    private Node head;
-    private Node tail;
+    Node head;
+    Node tail;
 
-    private class Node {
+    private static class Node {
+        int val;
         int key;
-        int value;
-        Node next;
         Node prev;
+        Node next;
 
-        Node (int key, int value) {
+        Node(int key, int val) {
+            this.val = val;
             this.key = key;
-            this.value = value;
         }
     }
 
+    private Map<Integer, Node> map;
+
+    private int size;
+
     // constructor
-    LRUCache(int capacity) {
-        this.capacity = capacity;
-        this.map = new HashMap<>();
+    public LRUCache(int capacity) {
+        size = capacity;
+        map = new HashMap<>();
+        head = new Node(1,1); // dummy
+        tail = new Node(1,1); // dummy
+        head.next = tail;
+        tail.prev = head;
     }
 
     // APIs
     public int get(int key) {
-        Node node = map.get(key);
-        if (node == null) {
-            return -1;
-        } else {
-            // update priority
-            remove(node);
-            appendToHead(node);
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
+            remove(node); // remove node from double linked list
+            append(node); // append node to the head of DDL
+            return node.val;
+        }
+        return -1;
+    }
 
-            return node.value;
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
+            node.val = value;
+            remove(node); // remove node from double linked list
+            append(node);
+        } else {
+            Node node = new Node(key, value);
+            if (map.size() == size) {
+                remove(tail.prev);
+                append(node);
+            } else {
+                append(node);
+            }
         }
     }
+    // 2020
+    // helper methods
     private void remove(Node node) {
         map.remove(node.key);
-        if (node.prev != null && node.next != null) {
-            // node is in the middle
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
-            node.next = null;
-            node.prev = null;
-        } else if (node.prev == null && node.next != null) {
-            // node is head
-            node.next.prev = null;
-            head = node.next;
-            node.next = null;
-        } else if (node.prev != null && node.next == null) {
-            // node is tail
-            tail = node.prev;
-            tail.next = null;
-            node.prev = null;
-        } else {
-            // node is only one in the double linked list
-            head = null;
-            tail = null;
-        }
-    }
-    private void appendToHead(Node node) {
-        map.put(node.key, node);
-        if (head == null) {
-            head = node;
-            tail = node;
-        } else {
-            node.next = head;
-            head.prev = node;
-            head = node;
-        }
+
+        Node prev = node.prev;
+        Node next = node.next;
+        prev.next = next;
+        next.prev = prev;
+
+        node.next = null;
+        node.prev = null;
     }
 
-    public void put(int key, int val) {
-        Node node = map.get(key);
-        if (node == null) {
-            node = new Node(key, val);
-            if (map.size() >= capacity) {
-                remove(tail);
-                appendToHead(node);
-            } else {
-                appendToHead(node);
-            }
-        } else {
-            node.value = val;
-            remove(node);
-            appendToHead(node);
-        }
+    // append to head, head node is the most recently one
+    private void append(Node node) {
+        map.put(node.key, node);
+
+        node.prev = head;
+        node.next = head.next;
+
+        head.next.prev = node;
+        head.next = node;
     }
+
+    // 2018
+//    private void remove(Node node) {
+//        map.remove(node.key);
+//        if (node.prev != null && node.next != null) {
+//            // node is in the middle
+//            node.prev.next = node.next;
+//            node.next.prev = node.prev;
+//            node.next = null;
+//            node.prev = null;
+//        } else if (node.prev == null && node.next != null) {
+//            // node is head
+//            node.next.prev = null;
+//            head = node.next;
+//            node.next = null;
+//        } else if (node.prev != null && node.next == null) {
+//            // node is tail
+//            tail = node.prev;
+//            tail.next = null;
+//            node.prev = null;
+//        } else {
+//            // node is only one in the double linked list
+//            head = null;
+//            tail = null;
+//        }
+//    }
+//    private void appendToHead(Node node) {
+//        map.put(node.key, node);
+//        if (head == null) {
+//            head = node;
+//            tail = node;
+//        } else {
+//            node.next = head;
+//            head.prev = node;
+//            head = node;
+//        }
+//    }
 }

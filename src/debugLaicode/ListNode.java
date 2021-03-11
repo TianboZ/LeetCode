@@ -1,10 +1,13 @@
 package debugLaicode;
 
 public class ListNode {
-    ListNode preNode;
+    ListNode prev;
     ListNode next;
     int val;
-    public ListNode (int val) {
-        this.val = val;
+    int value;
+
+    public ListNode (int v) {
+        val = v;
+        value = v;
     }
 }

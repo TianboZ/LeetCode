@@ -2,24 +2,27 @@ package debugLaicode;
 
 import java.util.Arrays;
 
-// keep only one duplicate
+// retain only one duplicate
 public class ArrayDeduplication1 {
     public int[] dedup(int[] array) {
-        // Write your solution here
-        if (array.length <= 1) {
+        // sanity check
+        if (array == null || array.length == 0) {
             return array;
         }
-        int slow = 1;  // [0, slow) : keep    [slow, fast): delete  [fast, end] : to explore
-        for (int fast = 1; fast < array.length; fast++) {
+
+        int slow = 1; // [0, slow): retain    [slow, fast): ignore   [fast, end]: explore
+        int fast = 1;
+
+        while (fast < array.length) {
             if (array[fast] == array[slow - 1]) {
-                continue;
+                fast++;
             } else {
                 array[slow] = array[fast];
                 slow++;
+                fast++;
             }
         }
+
         return Arrays.copyOf(array, slow);
     }
-
-
 }

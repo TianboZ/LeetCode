@@ -1,32 +1,38 @@
 package debugLaicode;
 
 public class MaximumPathSumBinaryTreeIII {
-    int max = Integer.MIN_VALUE;
     // 一条直上直下的path中的一段sub-path(can be only one node), max path sum
     public int maxPathSum(TreeNode root) {
-        findMax(root);
-        return max;
+        int[] max = new int[]{Integer.MIN_VALUE};
+
+        helper(root, max);
+        return max[0];
     }
 
-    // the max single path（从root到leaf） sum from root to leaf
-    private int findMax(TreeNode root) {
-        // base-case
+    // return max path sum from root to some-node
+    private int helper(TreeNode root, int[] max) {
+        // basecase
         if (root == null) {
             return 0;
         }
         // recursive rule
-        int left = findMax(root.left);
-        int right = findMax(root.right);
+        int left = helper(root.left, max);
+        int right = helper(root.right, max);
 
-        max = Math.max(max, left + root.key);
-        max = Math.max(max, right + root.key);
-        max = Math.max(max, root.key);
+        int maxSum = findMax(new int[] {
+                root.key,
+                root.key + left,
+                root.key + right,
+        });
+        max[0] = Math.max(max[0], maxSum);
+        return maxSum;
+    }
 
-        int tmp = Integer.MIN_VALUE;
-        tmp = Math.max(tmp, root.key);
-        tmp = Math.max(tmp, root.key + left);
-        tmp = Math.max(tmp, root.key + right);
-
-        return tmp;
+    private int findMax(int[] arr) {
+        int max = arr[0];
+        for (int ele : arr) {
+            max = Math.max(max, ele);
+        }
+        return max;
     }
 }

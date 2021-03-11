@@ -9,17 +9,17 @@ public class MergeKSortedArray {
     public int[] merge(int[][] arrayOfArrays) {
         // length of each array is different
         List<Integer> res = new ArrayList<>();
-        Queue<Ele> minHeap = new PriorityQueue<>();
+        Queue<Cell> minHeap = new PriorityQueue<>();
         // initial
         for (int i = 0; i < arrayOfArrays.length; i++) {
             if (arrayOfArrays[i].length != 0) {
-                minHeap.offer(new Ele(i, 0, arrayOfArrays[i][0]));
+                minHeap.offer(new Cell(i, 0, arrayOfArrays[i][0]));
             }
         }
 
         while (!minHeap.isEmpty()) {
             // expand
-            Ele curr = minHeap.poll();
+            Cell curr = minHeap.poll();
             res.add(curr.val);
 
             int x = curr.x;
@@ -27,7 +27,7 @@ public class MergeKSortedArray {
 
             // generate
             if (y + 1 < arrayOfArrays[x].length) {
-                minHeap.offer(new Ele(x, y + 1, arrayOfArrays[x][y + 1]));
+                minHeap.offer(new Cell(x, y + 1, arrayOfArrays[x][y + 1]));
             }
         }
 
@@ -39,17 +39,17 @@ public class MergeKSortedArray {
         return sol;
     }
 
-    class Ele implements Comparable<Ele> {
+    class Cell implements Comparable<Cell> {
         int x;
         int y;
         int val;
-        public Ele(int x, int y, int val) {
+        Cell(int x, int y, int val) {
             this.x = x;
             this.y = y;
             this.val = val;
         }
         @Override
-        public int compareTo(Ele another) {
+        public int compareTo(Cell another) {
             if (this.val == another.val) {
                 return 0;
             }

@@ -10,22 +10,25 @@ public class StringAbbreviationMatching {
         int j = 0; // pattern index
 
         while (i < input.length() && j < pattern.length()) {
-            // case1, start with digit
-            if (pattern.charAt(j) >= '0' && pattern.charAt(j) <= '9') {
-                int tmpt = j;
-                while (j < pattern.length() && pattern.charAt(j) >= '0' && pattern.charAt(j) <= '9') {
+            if (Character.isLetter(pattern.charAt(j))) {
+                if (pattern.charAt(j) != input.charAt(i)) {
+                    return false;
+                } else {
+                    i++;
                     j++;
                 }
-                // j is char now
-                int num = Integer.parseInt(pattern.substring(tmpt, j));
-                i = i + num;
             } else {
-                // case2, start with char
-                if (pattern.charAt(j) != input.charAt(i)) return false;
-                i++;
-                j++;
+                int k = j;
+                int num = 0;
+                while (k < pattern.length() && Character.isDigit(pattern.charAt(k))) {
+                    num = 10 * num + pattern.charAt(k) - '0';
+                    k++;
+                }
+                j = k;
+                i = i + num;
             }
         }
+
         return i == input.length() && j == pattern.length();
     }
 

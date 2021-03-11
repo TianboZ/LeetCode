@@ -3,23 +3,23 @@ package debugLaicode;
 public class ReverseLinkedList {
     // iterative
     public ListNode reverse(ListNode head) {
-        ListNode pre = null;
-        ListNode cur = head;
-        ListNode next = null;
-
-        while (cur != null) {
-            next = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = next;
+        // sanity check
+        if (head == null || head.next == null) {
+            return head;
         }
 
-        ListNode node1 = new ListNode(1);
-        ListNode node2 = new ListNode(2);
+        ListNode prev = null;
+        ListNode curr = head;
+        ListNode next = null;
 
-        System.out.println(node1.equals(node2));
-        System.out.println(node1 == node2);
-        return pre;
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
     }
 
     // recursive

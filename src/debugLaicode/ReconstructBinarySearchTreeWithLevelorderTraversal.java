@@ -1,9 +1,6 @@
 package debugLaicode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ReconstructBinarySearchTreeWithLevelorderTraversal {
     public TreeNode reconstruct(int[] in, int[] level) {
@@ -43,5 +40,9 @@ public class ReconstructBinarySearchTreeWithLevelorderTraversal {
         newRoot.right = helper(map, in, index + 1, inR, right);
 
         return newRoot;
+    }
+
+    public static void main(String[] args) {
+
     }
 }

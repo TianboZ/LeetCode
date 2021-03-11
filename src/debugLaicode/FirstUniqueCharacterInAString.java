@@ -17,6 +17,8 @@ iterate the the input string again, find the first character with frequency is 1
 time O(n)
 space O(n)
 
+use this method, leetcode solution!
+
 solution2：
 optimize to one pass
 use a hashset to record all the duplicate character

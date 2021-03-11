@@ -5,22 +5,28 @@ import java.util.Arrays;
 // delete all duplicates
 public class ArrayDeduplication3 {
     public int[] dedup(int[] array) {
+        // sanity check
+        if (array == null || array.length == 0) {
+            return array;
+        }
         int slow = 0;
+        int fast = 0;
         // [0, slow) : retain
-        // [fast, end] : unknow
-        for (int fast = 0; fast < array.length; fast++) {
-            int tmp = fast;
-            while (tmp + 1 < array.length && array[tmp] == array[tmp + 1]) {
-                tmp++;
+        // [slow, fast): ignore
+        // [fast, end] : explore
+        while (fast < array.length) {
+            int fast2 = fast;
+            while (fast2 < array.length && array[fast] == array[fast2]) {
+                fast2++;
             }
-            // tmp is last index that arr[tmp] == arr[fast]
-            if (tmp == fast) {
-                // no duplicate
+            fast2--;
+            if (fast2 == fast) {
+                // no duplicate for array[fast]
                 array[slow] = array[fast];
                 slow++;
+                fast++;
             } else {
-                // duplicate
-                fast = tmp;
+                fast = fast2 + 1;
             }
         }
         return Arrays.copyOf(array, slow);

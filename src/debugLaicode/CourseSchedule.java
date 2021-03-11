@@ -43,11 +43,11 @@ public class CourseSchedule {
         // key: node  value: state
         // 0: visiting
         // 1: visited
-        Map<Integer, Integer> visited = new HashMap<>();
+        Map<Integer, Integer> state = new HashMap<>();
         buildGraph(graph, prerequisites);
 
         for (int i = 0; i < numCourses; i++) {
-            if (hasCycle(i, graph, visited)) return false;
+            if (hasCycle(i, graph, state)) return false;
         }
         return true;
     }
@@ -61,7 +61,7 @@ public class CourseSchedule {
 
         // recursive rule
         visited.put(node, 0);
-        if (graph.containsKey(node)) {
+        if (graph.containsKey(node)) { //
             for (Integer nei : graph.get(node)) {
                 if (hasCycle(nei, graph, visited)) return true;
             }
@@ -71,15 +71,15 @@ public class CourseSchedule {
     }
 
     // build graph
-    private void buildGraph(Map<Integer, List<Integer>> graph, int[][] arr) {
+    private void buildGraph(Map<Integer, List<Integer>> graph, int[][] m) {
         // [0, 1]    1 --> 0
-        for (int[] i : arr) {
-            List<Integer> list = graph.get(i[1]);
+        for (int[] arr : m) {
+            List<Integer> list = graph.get(arr[1]);
             if (list == null) {
                 list = new ArrayList<>();
-                graph.put(i[1], list);
+                graph.put(arr[1], list);
             }
-            list.add(i[0]);
+            list.add(arr[0]);
         }
     }
 }

@@ -3,6 +3,7 @@ package debugLaicode;
 // eliminate all duplicates
 public class RemoveAdjacentRepeatedCharacters3 {
     public String deDup(String input) {
+
         // Write your solution here
         int slow = 0;
         // [0, slow) : retain

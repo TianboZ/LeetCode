@@ -15,10 +15,15 @@ public class GetKeysInBSTInGivenRange {
             return;
         }
         // recursive rule
-        getRange(res, root.left, min, max);
+        if (root.key >= min) {
+            getRange(res, root.left, min, max);
+        }
         if (root.key >= min && root.key <= max) {
             res.add(root.key);
         }
-        getRange(res, root.right, min, max);
+
+        if (root.key <= max) {
+            getRange(res, root.right, min, max);
+        }
     }
 }

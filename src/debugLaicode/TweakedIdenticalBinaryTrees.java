@@ -8,6 +8,8 @@ public class TweakedIdenticalBinaryTrees {
         if (one == null && two == null) {
             return true;
         }
+
+        // rule
         if (one == null || two == null) {
             return false;
         }
@@ -15,9 +17,13 @@ public class TweakedIdenticalBinaryTrees {
         if (one.key != two.key) {
             return false;
         }
-        // rule
+
         return isTweakedIdentical(one.left, two.right) && isTweakedIdentical(one.right, two.left) ||
                 isTweakedIdentical(one.left, two.left) && isTweakedIdentical(one.right, two.right);
 
     }
 }
+
+
+// space o(height)
+// time o(4 ^ logn) = O（2^(2logn)）= o(n^2)

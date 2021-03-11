@@ -5,33 +5,30 @@ public class MaximumPathSumBinaryTreeI {
     //    Find the maximum possible sum from one leaf node to another leaf node.
     //    If there is no such path available, return Integer.MIN_VALUE(Java)/INT_MIN (C++).
 
-    int max = Integer.MIN_VALUE;
-
     public int maxPathSum(TreeNode root) {
         // Write your solution here
-        findRootToLeafPathSum(root);
-        return max;
+        int[] max = new int[]{Integer.MIN_VALUE};
+
+        helper(root, max);
+        return max[0];
     }
 
-    private int findRootToLeafPathSum(TreeNode root) {
-        // base-caes
+    // for each recursion call, return root to leaf path sum
+    private int helper(TreeNode root, int[] max) {
         if (root == null) {
             return 0;
         }
-        // recursive rule
-        int left = findRootToLeafPathSum(root.left);
-        int right = findRootToLeafPathSum(root.right);
 
-        // update only when needed
+        int left = helper(root.left, max);
+        int right = helper(root.right, max);
+
         if (root.left != null && root.right != null) {
-            max = Math.max(max, left + root.key + right);
+            max[0] = Math.max(max[0], root.key + left + right);
+            return Math.max(left, right) + root.key;
+        } else if (root.left == null && root.right == null) {
+            return root.key;
+        } else {
+            return root.left == null ? root.key + right : root.key + left;
         }
-
-        if (root.left == null) {
-            return root.key + right;
-        } else if (root.right == null) {
-            return root.key + left;
-        }
-        return Math.max(left, right) + root.key;
     }
 }

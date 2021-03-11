@@ -1,7 +1,8 @@
 package debugLaicode;
 
+// see https://leetcode.com/problems/powx-n/ more general
 public class AToThePowerOfB {
-    public long power(int a, int b) {
+    public static long power(int a, int b) {
         // Write your solution here
         // base-case
         if (b == 0) {
@@ -13,14 +14,21 @@ public class AToThePowerOfB {
         }
 
         // recursive rule
-        long tmp = power(a, b/2);
+        long half = power(a, b / 2);
         if (b % 2 == 0) {
-            return  tmp * tmp;
+            return  half * half;
         } else {
-            return tmp * tmp * a;
+            if (b < 0) return half * half / a; // !!!
+            return half * half * a;
         }
+    }
+
+    public static void main(String[] args) {
+        long res = power(2, 10);
+        System.out.println(res);
+        System.out.println((double) (3.0 / 2));
     }
 }
 
-// time o(logb)
-// space o(logb)
+// time o(log b)
+// space o(log b)

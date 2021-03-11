@@ -7,37 +7,41 @@ public class SpiralOrderTraverseI {
     public List<Integer> spiral(int[][] matrix) {
         // Write your solution here.
         List<Integer> res = new ArrayList<>();
-        dfs(res, matrix.length, 0, matrix);
+        recursiveTraversal(res, matrix.length, 0, matrix);
         System.out.println(res);
         return res;
     }
-    private void dfs(List<Integer> res, int size, int offset, int[][] a) {
+    private void recursiveTraversal(List<Integer> res, int size, int offset, int[][] m) {
         // base-case
         if (size == 0) {
             return;
         }
         if (size == 1) {
-            res.add(a[offset][offset]);
+            res.add(m[offset][offset]);
             return;
         }
         // recursive rule
-        for (int i = 0; i < size - 1; i++) { // left to right
-            res.add(a[offset][offset + i]);
+        // -->
+        for (int i = 0; i < size - 1; i++) {
+            res.add(m[offset][offset + i]);
         }
 
-        for (int i = 0; i < size - 1; i++) { // up to down
-            res.add(a[offset + i][size  - 1 + offset]);
+        // from top to down
+        for (int i = 0; i < size - 1; i++) {
+            res.add(m[i +  offset][size - 1 + offset]);
+        }
+        // <--
+        for (int i = size - 1; i > 0; i--) {
+            res.add(m[size - 1 + offset][i + offset]);
         }
 
-        for (int i = size - 1; i >= 1; i--) { // right to left
-            res.add(a[offset + size - 1][offset + i]);
+        // from down to top
+        for (int i = size - 1; i > 0; i--) {
+            res.add(m[i +  offset][offset]);
         }
 
-        for (int i = size - 1; i >= 1; i--) { // down to up
-            res.add(a[offset + i][offset]);
-        }
         System.out.println(res);
-        dfs(res, size - 2, offset + 1, a);
+        recursiveTraversal(res, size - 2, offset + 1, m);
     }
 
     public static void main(String[] args) {
