@@ -3,6 +3,11 @@ package debugLaicode;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/*
+* sol1 BFS
+* sol2 DFS
+*
+* */
 public class CheckIfBinaryTreeIsCompleted {
     public boolean isCompleted(TreeNode root) {
         // Write your solution here
@@ -12,38 +17,30 @@ public class CheckIfBinaryTreeIsCompleted {
 
         Queue<TreeNode> q = new LinkedList<>();
 
-        boolean flag = false;
+        boolean flag = false; // mark true when we first seen a non full node
 
         // initial
         q.offer(root);
 
-
         while (!q.isEmpty()) {
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-                // expand
-                TreeNode curr = q.poll();
-                // generate rule
-                // left node
-                if (curr.left != null && flag) {
-                    return false;
-                } else if (curr.left != null && !flag) {
-                    q.offer(curr.left);
-                } else {
-                    flag = true;
-                }
+            // expand
+            TreeNode curr = q.poll();
+            // generate rule
 
-                // right node
-                if (curr.right != null && flag) {
-                    return false;
-                } else if (curr.right != null && !flag) {
-                    q.offer(curr.right);
-                } else {
-                    flag = true;
-                }
+            if (curr.left == null) {
+                flag = true;
+            } else {
+                if (flag) return false;
+                q.offer(curr.left);
+            }
+
+            if (curr.right == null) {
+                flag = true;
+            } else {
+                if (flag) return false;
+                q.offer(curr.right);
             }
         }
-
 
         return true;
     }

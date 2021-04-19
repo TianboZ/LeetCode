@@ -3,54 +3,71 @@ package debugLaicode;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /*
 
-             [ ]
-            /   \
-          w      1
-        /  \
-      wo    w1
-     /   \
-   wor     wo1
-   /\       /   \
- word wor1 wo1r  wo2
+  DFS, backtracking problem
+
+  use `1` to represent character is abbreviated
+           word
+           /  \
+   w      w    1
+          /\    /\
+
+   o    wo  w1  1o 11
+
+
+   ...
+
+
+
+   keep track of path information
+   at all recurstion tree leaf node, we post process e.g.  `111a` --> `3a`
+
+   time o(n * branch ^ level)  =  (n * 2 ^ n)       n  is word length
 
 */
 public class GeneralizedAbbreviation {
+    StringBuilder sb = new StringBuilder();
+    List<String> res = new ArrayList<>();
+
     public List<String> generateAbbreviations(String word) {
-        StringBuilder sb = new StringBuilder();
-        List<String> res = new ArrayList<>();
-        dfs(word, 0, sb, res, 0);
+        dfs(word, 0);
         return res;
     }
-    // count: how many char we abbreviated
-    private void dfs(String s, int index, StringBuilder sb, List<String> res, int count) {
-        // base-case
-        if (index == s.length()) {
-            int len = sb.length();
-            if (count != 0) sb.append(count);
-            res.add(sb.toString());
-            sb.setLength(len);  // this API is O(1)!
+    private void dfs(String w, int i) {
+        // base case
+        if (i >= w.length()) {
+            res.add(process(sb));
             return;
         }
-        // rule
-        // case1 keep
-        char c = s.charAt(index);
-        if (count != 0) {
-            int len = sb.length();
-            sb.append(count).append(c);
-            dfs(s, index + 1, sb, res, 0);
-            sb.setLength(len); // this API is O(1)!
+        // recursive rule
+        char c = w.charAt(i);
+        sb.append(c);
+        dfs(w, i + 1);
+        sb.deleteCharAt(sb.length() - 1);
 
-        } else {
-            sb.append(c);
-            dfs(s, index + 1, sb, res, 0);
-            sb.deleteCharAt(sb.length() - 1);
+        sb.append('1');
+        dfs(w, i + 1);
+        sb.deleteCharAt(sb.length() - 1);
+    }
+    private String process(StringBuilder sb) {
+        // 111a --> 3a
+        StringBuilder  tmp = new StringBuilder();
+
+        int i = 0;
+        while (i < sb.length()) {
+            if (sb.charAt(i) == '1') {
+                int j = i;
+                while (j < sb.length() && sb.charAt(j) == '1') {
+                    j++;
+                }
+                tmp.append(j - i);
+                i = j;
+            } else {
+                tmp.append(sb.charAt(i));
+                i++;
+            }
         }
-
-        // case2 not keep
-        dfs(s, index + 1, sb, res, count + 1);
+        return tmp.toString();
     }
 }
-// time o(2^n)

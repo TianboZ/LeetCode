@@ -10,18 +10,30 @@ BFS time O(v+e) v = m * n   e = m * n * 4
 
 */
 public class ZeroOneMatrix {
-    int[] dx = {1, -1, 0, 0};
-    int[] dy = {0, 0, 1, -1};
+    private static final int[] dx = {1, -1, 0, 0};
+    private static final int[] dy = {0, 0, 1, -1};
+    private static class Cell {
+        int x;
+        int y;
+        Cell(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     public int[][] updateMatrix(int[][] matrix) {
         // sanity check
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return matrix;
 
-        int dis = 0;
-        boolean[][] visited = new boolean[matrix.length][matrix[0].length];
+        int level = 0;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        boolean[][] visited = new boolean[m][n];
         Queue<Cell> q = new LinkedList<>();
-        // intial
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
+
+        // initial
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (matrix[i][j] == 0) {
                     q.offer(new Cell(i, j));
                     visited[i][j] = true;
@@ -35,30 +47,24 @@ public class ZeroOneMatrix {
             for (int i = 0; i < size; i++) {
                 // expand
                 Cell curr = q.poll();
-                if (matrix[curr.x][curr.y] == 1) {
-                    matrix[curr.x][curr.y] = dis;
-                }
+
                 // generate
                 for (int k = 0; k < 4; k++) {
-                    int newx = curr.x + dx[k];
-                    int newy = curr.y + dy[k];
-                    if (newx >= 0 && newy >= 0 && newx < matrix.length && newy < matrix[0].length && !visited[newx][newy]) {
-                        q.offer(new Cell(newx, newy));
-                        visited[newx][newy] = true;
+                    int xx = curr.x + dx[k];
+                    int yy = curr.y + dy[k];
+
+                    boolean inBound = xx >= 0 && yy >= 0 && xx < m && yy < n;
+                    if (inBound && !visited[xx][yy]) {
+                        visited[xx][yy] = true;
+                        q.offer(new Cell(xx, yy));
+                        matrix[xx][yy] = level + 1;
                     }
                 }
             }
-            dis++;
+            level++;
         }
 
         return matrix;
     }
-    class Cell {
-        int x;
-        int y;
-        Cell(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+
 }

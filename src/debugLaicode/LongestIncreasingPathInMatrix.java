@@ -3,6 +3,50 @@ package debugLaicode;
 import java.util.*;
 
 public class LongestIncreasingPathInMatrix {
+    // 2021
+    int[] dx = {1, -1, 0, 0};
+    int[] dy = {0, 0, 1, -1};
+    Integer[][] memo;
+
+    public int longestIncreasingPath2(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int max = 1;
+        memo  = new Integer[m][n]; // used as visited && cache
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                max = Math.max(max, dfs2(matrix, i, j));
+            }
+        }
+        return max;
+    }
+
+    // return longest increasing path starting at (i, j)
+    private int dfs2(int[][] m, int i, int j) {
+        // base case
+        Integer n = memo[i][j];
+        if (n != null) return n;
+
+        // recursive rule
+        memo[i][j] = 1;
+        int max = 0;
+        for (int k = 0; k < 4; k++) {
+            int ii = i + dx[k];
+            int jj = j + dy[k];
+            if (inBound(ii, jj, m) && m[i][j] < m[ii][jj]) {
+                int res = dfs2(m, ii, jj);
+                max = Math.max(max, res);
+            }
+        }
+        memo[i][j] = 1 + max;
+        return memo[i][j];
+    }
+
+    private boolean inBound(int i, int j, int[][] m) {
+        return i >=0 && j >= 0 && i < m.length && j < m[0].length;
+    }
+
+    // old 2018
     public int longestIncreasingPath(int[][] matrix) {
         if (matrix.length == 0 || matrix[0].length == 0) {
             return 0;
@@ -44,10 +88,7 @@ public class LongestIncreasingPathInMatrix {
         return cache[x][y];
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    int[] dx = {1, -1, 0, 0};
-    int[] dy = {0, 0, 1, -1};
-
+    // 2018
     public int longestIncreasingPath1(int[][] matrix) {
         // Write your solution here
         boolean[][] visited = new boolean[matrix.length][matrix[0].length];

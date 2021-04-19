@@ -2,53 +2,41 @@ package debugLaicode;
 
 /*
 
-
             1
            / \
           2   1
          /\   /\
         2  2  1 1
-       /\  /\
-       2 2 2 2
+       /
+       2
 
+getHeight() take o(logn),
+worst case, call getHeight() log(n)  times
 
+time: O(logn * logn)
+space: O(logn)
 * */
 
 public class CountCompleteTreeNodes {
     public int countNodes(TreeNode root) {
         // Write your solution here
-        // base-case
-        if (root == null) {
-            return 0;
+        if (root == null) return 0;
+
+        int leftH = leftHeight(root.left);
+        int rightH = rightHeight(root.right);
+        if (leftH == rightH) {
+            return ((int)Math.pow(2, leftH + 1) - 1);
         }
-        // recursive rule
-        int left = leftDepth(root.left);
-        int right = rightDepth(root.right);
-        if (left == right) {
-            return ((int) Math.pow(2, left + 1) - 1);
-        }
-        return countNodes(root.left) + 1 + countNodes(root.right);
+
+        return countNodes(root.left) + countNodes(root.right)  + 1;
     }
-    private int leftDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int depth = 0;
-        while (root != null) {
-            root = root.left;
-            depth++;
-        }
-        return depth;
+
+    private int leftHeight(TreeNode root){
+        if (root == null) return 0;
+        return leftHeight(root.left) + 1;
     }
-    private int rightDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int depth = 0;
-        while (root != null) {
-            root = root.right;
-            depth++;
-        }
-        return depth;
+    private int rightHeight(TreeNode root){
+        if (root == null) return 0;
+        return rightHeight(root.right) + 1;
     }
 }

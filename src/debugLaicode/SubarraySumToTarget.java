@@ -1,6 +1,25 @@
 package debugLaicode;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SubarraySumToTarget {
+
+    public boolean sumToTarget2(int[] array, int target) {
+        // Write your solution here
+        Set<Integer> ps = new HashSet<>();  // prefix sum, from 0-th to i-th element
+        ps.add(0);
+
+        int sum = 0;
+
+        for (int e : array) {
+            sum += e; // current sum
+            if (ps.contains(sum - target)) return true;
+            ps.add(sum);
+        }
+        return false;
+    }
+
     public boolean sumToTarget(int[] array, int target) {
         // Write your solution here.
         if (array == null || array.length == 0) {

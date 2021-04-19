@@ -3,43 +3,32 @@ package debugLaicode;
 import java.util.*;
 
 public class ReconstructBinarySearchTreeWithLevelorderTraversal {
-    public TreeNode reconstruct(int[] in, int[] level) {
-        // Write your solution here.
-        // key: in[i] value: i
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < in.length; i++) {
-            map.put(in[i], i);
-        }
-        List<Integer> list = new ArrayList<>();
-        for (int j : level) {
-            list.add(j);
-        }
-        return helper(map, in, 0, in.length - 1, list);
-    }
-    private TreeNode helper(Map<Integer, Integer> map, int[] in, int inL, int inR, List<Integer> level) {
-        // baes-caes
-        if(inL > inR) {
-            return null;
-        }
-        // recursive rule
-        TreeNode newRoot = new TreeNode(level.get(0));
-        int index = map.get(level.get(0));
+    public TreeNode reconstruct(int[] level) {
+        // Write your solution here
+        List<Integer> le = new ArrayList<>();
+        for (int l: level) le.add(l);
 
-        List<Integer> left = new ArrayList<>();
+        return dfs(le);
+    }
+    private TreeNode dfs(List<Integer> le) {
+        if (le.size() == 0) return null;
+
+        int rootVal = le.get(0);
+        List<Integer> left = new ArrayList<>();  // store root.left subtree's level order traverse nodes
         List<Integer> right = new ArrayList<>();
 
-        for (int j = 1; j < level.size(); j++) {
-            if (map.get(level.get(j)) < index) {
-                left.add(level.get(j));
+        for (int i = 1; i < le.size(); i++) {
+            if (le.get(i) < rootVal) {
+                left.add(le.get(i));
             } else {
-                right.add(level.get(j));
+                right.add(le.get(i));
             }
         }
 
-        newRoot.left = helper(map, in, inL, index - 1, left);
-        newRoot.right = helper(map, in, index + 1, inR, right);
-
-        return newRoot;
+        TreeNode root = new TreeNode(rootVal);
+        root.left = dfs(left);
+        root.right = dfs(right);
+        return root;
     }
 
     public static void main(String[] args) {

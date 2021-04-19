@@ -3,63 +3,65 @@ package debugLaicode;
 import java.util.*;
 
 public class CheapestFlightsWithinKStops {
-    // BFS
+    Map<Integer, List<int[]>> graph = new HashMap<>();
+
+    int min = Integer.MAX_VALUE;
+    Set<Integer> visit = new HashSet<>();
+
     public int findCheapestPrice2(int n, int[][] flights, int src, int dst, int K) {
-        Map<Integer, List<List<Integer>>> map = new HashMap<>();
-        buildGraph(map,  flights);
-        Queue<int[]> pq = new PriorityQueue<>((int[] arr1, int[] arr2) -> {
-            if (arr1[1] == arr2[1]) return 0;
-            return arr1[1] < arr2[1] ? -1 : 1;
-        }); // min heap, array: [node, cost to this node]
-        Set<Integer> visited = new HashSet<>();
+        buildGraph(flights);
+        //Map<Integer, List<int[]>> graph1 = graph;
+        //System.out.println(graph1);
 
-        // initial
-        pq.offer(new int[]{src, 0});
-        int level = 0;
-        visited.add(src);
-
-        // terminate
-        while (!pq.isEmpty()) {
-            if (level > K) break;
-
-            int size = pq.size();
-            for (int i  = 0; i < size; i++) {
-                // expand
-                int[] curr = pq.poll();
-                if (curr[0] == dst) {
-                    return curr[1];
-                }
-
-                // generate
-                List<List<Integer>> neis = map.get(curr[0]);
-                if (neis != null) {
-                    for (List<Integer> nei : neis) {
-                        int next = nei.get(0);
-                        int cost = nei.get(1);
-                        if (visited.add(next)) {
-                            pq.offer(new int[]{next, cost + curr[1]});
-                        }
-                    }
-                }
-            }
-            level++;
-        }
-        return -1;
+        dfs(src, dst, K + 1, 0, 0);
+        return min == Integer.MAX_VALUE  ? -1 : min;
     }
 
-    private void buildGraph(Map<Integer, List<List<Integer>>> map, int[][] flights) {
+    // depth limit DFS, terminate when count == K
+    private void dfs(int src, int dst, int K, int count, int sumPrice) {
+        // base case
+        if (visit.contains(src)) {
+            return;
+        }
+
+        if (sumPrice > min) return; // prunning
+
+        if (count == K || src == dst) {
+            if (src == dst) {
+                min = Math.min(min, sumPrice);
+            }
+            return;
+        }
+
+        // recursive rule
+        visit.add(src);
+        List<int[]> neis = graph.get(src);
+        if (neis != null) {
+            for (int[] nei: neis) {
+                int next = nei[0];
+                int cost = nei[1];
+                dfs(next, dst, K, count + 1, sumPrice + cost);
+            }
+        }
+        visit.remove(src);
+
+    }
+    private void buildGraph(int[][] flights) {
         for (int[] f : flights) {
-            List<List<Integer>> neis = map.get(f[0]);
+            List<int[]> neis = graph.get(f[0]);
             if (neis == null) {
                 neis = new ArrayList<>();
-                map.put(f[0], neis);
+                graph.put(f[0], neis);
             }
-            neis.add(Arrays.asList(f[1], f[2]));
+
+            graph.get(f[0]).add(new int[]{f[1], f[2]});
         }
+
     }
 
+    // 2018
     // DFS + cache
-    private int min = Integer.MAX_VALUE;
+    //private int min = Integer.MAX_VALUE;
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
         // build graph      key = start   value = list of next stop
         Map<Integer, List<Node>> map = new HashMap<>();

@@ -1,0 +1,180 @@
+
+/**
+Schedule
+Introductions:
+- How did you hear about IXL?
+- Why are you interested in a position at IXL?
+- Why did you start programming?
+Coding question:
+- Strategy/planning
+- Debugging
+- Test planning (TDD, unit tests, ad hok)
+2:00 pt - 2:45
+stop you 2:35
+- hypthoteically how finish
+- you ask me questions
+
+Find the median in a stream of numbers
+Given:
+median - center value in a sorted `list` of numbers
+if `list` is even, it's the average of the 2 middle numbers
+if `list` is odd, it's the middle value.
+
+Inputs:
+List<int> list;
+list.stream()
+  .forEach();
+  stream is another syntax for loop. feel free to use any loop method of your preference.
+
+
+
+ // assumption
+let's use integer for simplicity.
+
+
+
+Output:
+double why?    e.g. 1, 3, 4, 5     median: (3 + 4) / 2      = 3.5
+what are some alternatives?   not int, not long, could be float or double
+
+
+Methods/api:
+APIs:
+- addNum(int n)
+- doulbe findMedian()
+
+
+
+proposed solution:
+
+high level:
+
+
+even:
+xxxxxxxxxxxxx  xxxxxxxxxxxxxx    sorted array
+            \  |
+            x1  x2
+
+
+odd:
+xxxxxxxxxxxxx  xxxxxxxxxxxxxx    sorted array
+            |
+            x
+
+
+ leftlhalf   >= righthalf  by at most 1 element
+
+
+
+data structures:
+we can use heap, we need two operations efficently
+- find min/max    o(1)    heap size k
+- add element to it    o(logk)       heap size k
+
+
+why heap is better array?   if array, sorted everyting, nlogn
+array insertion (not push) is what time?
+heap insertion is what time?
+why? tree
+
+
+            min heap
+
+             1    arr[0]
+           /   \
+          0     4
+         /\
+        3  2
+
+
+        how heap is represented in array
+
+
+        e.g. add 0 to min heap
+        heap swap vs an array insertion.
+
+
+what other data structures?
+
+hint 1 data structure.
+Tree
+- min heap/ maxheap track the
+- middle value? balance binary serach tree
+
+
+goal: find min/max efficiently
+
+
+
+
+stop you 2:40
+- Debugging
+- Test planning (TDD, unit tests, ad hok)
+*/
+
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+import javafx.util.Pair;
+
+
+
+public class Solution {
+    // class fiedls
+    private Queue<Integer> min;   // min heap
+    private Queue<Integer> max;   // max heap
+
+    // constructor
+    public Solution() {
+        min = new PriorityQueue<>( (a, b) -> a - b);   // min heap
+        max = new PriorityQueue<>((a, b) -> b - a);   //  max heap
+    }
+
+    // two apis
+    public void addNum(int n) {
+        max.offer(n);
+        min.offer(max.poll()); //  min heap smallest element is  gurantee is larger than max in max heap
+
+        // balance two heaps, size(max)  >= size(min)
+        if (min.size() > max.size()) {
+            max.offer(min.poll());
+        }
+    }
+
+    public Double median() {
+        // sanity check
+        if (max.size() == 0) return null;
+
+        // two cases
+        if(max.size() == min.size()) {
+            // even
+            return new Double((max.peek() + min.peek()) / 2);
+        } else {
+            // odd
+            return new Double(max.peek());
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+
+        Double res = sol.median();
+        System.out.println(res);
+
+
+        // add some numbers
+        sol.addNum(1);
+        sol.addNum(2);
+        sol.addNum(3);
+
+        res = sol.median();
+        System.out.println(res);  // return 2.0
+   }
+}
+/*
+stop you 2:40
+- Debugging
+- Test planning (TDD, unit tests, ad hok)
+*/

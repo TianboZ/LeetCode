@@ -15,41 +15,42 @@ public class CombinationSum {
 
        if there is candidate value is 1, then there will be at most target branches
 
-       time o(n^target)
-       spce o(n)    n = candidates.length
+       time o(branch ^ level)
+       space o(level)
+
+       level = candidates.length
+       branch = this is dynamical changing, wort case is,
 */
+private List<List<Integer>> res;
+    private List<Integer> path;
+
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> sol = new ArrayList<>();
-        List<List<Integer>> res = new ArrayList<>();
-        List<Integer> count = new ArrayList<>();
-        dfs(candidates, res, count, 0, target);
-        for (List<Integer> list : res) {
-            List<Integer> tmpt = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i) != 0) {
-                    for(int j = 0; j < list.get(i);j++) {
-                        tmpt.add(candidates[i]);
-                    }
-                }
-            }
-            sol.add(tmpt);
-        }
-        return sol;
+        res = new ArrayList<>();
+        path = new ArrayList<>();
+        dfs(candidates, 0, target, 0);
+        return res;
     }
-    private void dfs(int[] candidates, List<List<Integer>> res,List<Integer> count, int index, int target) {
-        // base-case
-        if (index == candidates.length) {
-            if (target == 0) {
-                res.add(new ArrayList<>(count));
+
+    private void dfs(int[] arr, int i, int target, int sum) {
+        // base case
+        if (i == arr.length) {
+            if (sum == target) {
+                res.add(new ArrayList<>(path));
             }
             return;
         }
+
         // recursive rule
-        int num = candidates[index];
-        for (int i = 0; i * num <= target; i++) {
-            count.add(i);
-            dfs(candidates, res, count, index + 1, target - i * num);
-            count.remove(count.size() - 1); // backtracking
+        int num = arr[i];
+
+        for (int k = 0; sum + k * num <= target; k++) {
+            for (int j = 0; j < k; j++) {
+                path.add(num);
+            }
+            dfs(arr, i + 1, target, sum + k * num);
+            for (int j = 0; j < k; j++) {
+                path.remove(path.size() - 1);
+            }
         }
     }
 }

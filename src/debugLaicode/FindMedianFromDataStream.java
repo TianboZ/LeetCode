@@ -21,27 +21,30 @@ xxxxxxxxxxxxxx   xxxxxxxxxxxxxxxx
 
 */
 public class FindMedianFromDataStream {
+    Queue<Integer> min;
+    Queue<Integer> max;
 
-    Queue<Integer> minHeap;
-    Queue<Integer> maxHeap;
     /** initialize your data structure here. */
     public FindMedianFromDataStream() {
-        this.minHeap = new PriorityQueue<>();
-        this.maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        min = new PriorityQueue<>((a, b) -> a - b);
+        max = new PriorityQueue<>((a, b) -> b - a);
     }
 
     public void addNum(int num) {
-        maxHeap.offer(num);
-        minHeap.offer(maxHeap.poll()); // make sure the min element in minHeap is larger then the max element in maxHeap
-        if (maxHeap.size() < minHeap.size()) { // make sure maxHeap.size >= minHeap.size
-            maxHeap.offer(minHeap.poll());
+        max.offer(num);
+        min.offer(max.poll()); // min heap smallest element is larger than max element in max heap
+
+        // balance, make sure max is at most larger than min by 1
+        if (min.size() > max.size()) {
+            max.offer(min.poll());
         }
     }
 
-    // time o(1)
     public double findMedian() {
-        if (maxHeap.size() == minHeap.size()) return (maxHeap.peek() + minHeap.peek())  /2.0;
-        return maxHeap.peek();
+        if (min.size() == max.size()) {
+            return (double)(max.peek() + min.peek()) / 2;
+        }
+        return max.peek();
     }
 
     public static void main(String[] args) {

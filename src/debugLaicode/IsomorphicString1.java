@@ -1,24 +1,26 @@
 package debugLaicode;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class IsomorphicString1 {
-    public boolean isomorphic(String source, String target) {
-        // Write your solution here
-        // sanity check
-        if (source.length() != target.length()) return false;
+    public boolean isomorphic(String s, String t) {
+        // word pattern
+        HashMap<Character, Character> map = new HashMap<Character, Character>();
+        Set<Character> set = new HashSet<>();
 
-        Map<Character, Character> map1 = new HashMap<>();
-        Map<Character, Character> map2 = new HashMap<>();
-
-        for (int i = 0; i < source.length(); i++) {
-            char c1 = source.charAt(i);
-            char c2 = target.charAt(i);
-
-            map1.put(c1, c2);
-            map2.put(c2, c1);
-            if (map1.size() != map2.size()) return false;
+        if (s.length() != t.length()) {
+            return false;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            char c1 = s.charAt(i);
+            char c2 = t.charAt(i);
+            if (map.containsKey(c1)) {
+                if (c2 != map.get(c1)) return false;
+            } else {
+                if (set.contains(c2)) return false;
+                map.put(c1, c2);
+                set.add(c2);
+            }
         }
         return true;
     }

@@ -8,8 +8,8 @@ public class GraphNode {
     int key;
     List<GraphNode> neighbors;
 
-    public GraphNode(int k) {
-        key = k;
+    public GraphNode(int _key) {
+        key = _key;
         neighbors = new ArrayList<>();
     }
 }

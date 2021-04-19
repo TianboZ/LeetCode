@@ -3,17 +3,15 @@ package debugLaicode;
 public class ReverseLinkedList {
     // iterative
     public ListNode reverse(ListNode head) {
-        // sanity check
-        if (head == null || head.next == null) {
-            return head;
-        }
+        // Write your solution here
 
-        ListNode prev = null;
+        if (head == null) return null;
+
         ListNode curr = head;
-        ListNode next = null;
+        ListNode prev = null;
 
         while (curr != null) {
-            next = curr.next;
+            ListNode next = curr.next;
             curr.next = prev;
             prev = curr;
             curr = next;
@@ -25,14 +23,14 @@ public class ReverseLinkedList {
     // recursive
     public ListNode reverse1(ListNode head) {
         // base-case
-        if (head == null || head.next == null) {
+        if (head == null || head.next == null) { /// !!!!!!!!!!
             return head;
         }
 
         // recursive rule
         ListNode next = head.next;
-        ListNode newHead = reverse1(head.next);
         head.next = null;
+        ListNode newHead = reverse1(next);
         next.next = head;
         return newHead;
     }

@@ -36,22 +36,25 @@ public class CopyGraph {
         }
         // key: original node       value: clone node
         Map<GraphNode, GraphNode> visited = new HashMap<>();
-        dfs1(node, visited);
-        return visited.get(node);
+        return dfs1(node, visited);
     }
-    private void dfs1(GraphNode node, Map<GraphNode, GraphNode> visited) {
+
+    private GraphNode dfs1(GraphNode node, Map<GraphNode, GraphNode> visited) {
         // base-case
-        if (visited.containsKey(node)) return;
+        if (visited.containsKey(node)) {
+            return visited.get(node);
+        }
 
         // recursive rule
-        GraphNode cloneNode = new GraphNode(node.key);
-        visited.put(node, cloneNode);
+        GraphNode copy = new GraphNode(node.key);
+        visited.put(node, copy);
         for (GraphNode nei : node.neighbors) {
             dfs1(nei, visited);
             visited.get(node).neighbors.add(visited.get(nei));
         }
+        return copy;
     }
 }
 
 // time O(V + E)
-// space O(V)
+// space O(V)  call stack + hashmap

@@ -4,25 +4,35 @@ import java.util.Stack;
 
 public class EvaluateReversedPolishNotation {
     public int evalRPN(String[] tokens) {
-        // Write your solution here
         Stack<Integer> stack = new Stack<>();
-        for (String s : tokens) {
-            if (s.equals("+")) {
-                stack.push(stack.pop() + stack.pop());
-            } else if (s.equals("-")) {
-                stack.push(-stack.pop() + stack.pop());
-            } else if (s.equals("*")) {
-                stack.push(stack.pop() * stack.pop());
-            } else if (s.equals("/")) {
-                int i = stack.pop();
-                int j = stack.pop();
-                stack.push(j / i);
+        for (String t : tokens) {
+            if (t.equals("*")
+                    || t.equals("/")
+                    || t.equals("+")
+                    || t.equals("-")
+            ) {
+                // operand
+                int num2 = stack.pop();
+                int num1 = stack.pop();
+
+                if (t.equals("*")) {
+                    stack.push(num1 * num2);
+                } else if (t.equals("/")) {
+                    stack.push(num1 / num2);
+                } else if (t.equals("+")) {
+                    stack.push(num1 + num2);
+                } else {
+                    stack.push(num1 - num2);
+                }
+
             } else {
-                stack.push(Integer.parseInt(s));
+                int num = Integer.parseInt(t);
+                stack.push(num);
             }
         }
-        return stack.peek();
+        return stack.pop();
     }
+
     public static void main(String[] args) {
         EvaluateReversedPolishNotation evaluateReversedPolishNotation = new EvaluateReversedPolishNotation();
         String[] tokens = {"11","2","/"};

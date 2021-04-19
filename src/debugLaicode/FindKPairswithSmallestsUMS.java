@@ -15,6 +15,17 @@ total 3 * 2 = 6 pairs
 
 
 public class FindKPairswithSmallestsUMS {
+    class Cell {
+        int x;
+        int y;
+        int sum;
+        Cell(int x, int y, int sum) {
+            this.x = x;
+            this.y = y;
+            this.sum = sum;
+        }
+    }
+
     public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
         List<int[]> res = new ArrayList<int[]>();
         // sanity check
@@ -22,7 +33,8 @@ public class FindKPairswithSmallestsUMS {
             return res;
         }
 
-        Queue<Cell> minHeap = new PriorityQueue<>(new CP());
+        Queue<Cell> minHeap = new PriorityQueue<>((c1, c2) -> c1.sum - c2.sum);
+
         boolean[][] visited = new boolean[nums1.length][nums2.length];
         int count = 0;
         // initial
@@ -51,21 +63,5 @@ public class FindKPairswithSmallestsUMS {
         }
         return res;
     }
-    class Cell {
-        int x;
-        int y;
-        int sum;
-        Cell(int x, int y, int sum) {
-            this.x = x;
-            this.y = y;
-            this.sum = sum;
-        }
-    }
-    class CP implements Comparator<Cell> {
-        @Override
-        public int compare(Cell c1, Cell c2) {
-            if (c1.sum == c2.sum) return 0;
-            return c1.sum < c2.sum ? -1 : 1;  // decreasing order
-        }
-    }
+
 }

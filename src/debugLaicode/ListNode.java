@@ -1,10 +1,10 @@
 package debugLaicode;
 
 public class ListNode {
-    ListNode prev;
-    ListNode next;
-    int val;
-    int value;
+    public ListNode prev;
+    public ListNode next;
+    public int val;
+    public int value;
 
     public ListNode (int v) {
         val = v;

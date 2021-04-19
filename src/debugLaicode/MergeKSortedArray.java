@@ -6,10 +6,21 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class MergeKSortedArray {
+    private static class Cell {
+        int i;
+        int j;
+        int val;
+        Cell(int _i, int _j, int _val) {
+            i = _i;
+            j = _j;
+            val = _val;
+        }
+    }
     public int[] merge(int[][] arrayOfArrays) {
         // length of each array is different
         List<Integer> res = new ArrayList<>();
-        Queue<Cell> minHeap = new PriorityQueue<>();
+        Queue<Cell> minHeap = new PriorityQueue<>((c1, c2) -> c1.val - c2.val);
+
         // initial
         for (int i = 0; i < arrayOfArrays.length; i++) {
             if (arrayOfArrays[i].length != 0) {
@@ -22,12 +33,12 @@ public class MergeKSortedArray {
             Cell curr = minHeap.poll();
             res.add(curr.val);
 
-            int x = curr.x;
-            int y = curr.y;
+            int ii = curr.i;
+            int jj = curr.j;
 
             // generate
-            if (y + 1 < arrayOfArrays[x].length) {
-                minHeap.offer(new Cell(x, y + 1, arrayOfArrays[x][y + 1]));
+            if (jj + 1 < arrayOfArrays[ii].length) {
+                minHeap.offer(new Cell(ii, jj + 1, arrayOfArrays[ii][jj + 1]));
             }
         }
 
@@ -39,21 +50,16 @@ public class MergeKSortedArray {
         return sol;
     }
 
-    class Cell implements Comparable<Cell> {
-        int x;
-        int y;
-        int val;
-        Cell(int x, int y, int val) {
-            this.x = x;
-            this.y = y;
-            this.val = val;
-        }
-        @Override
-        public int compareTo(Cell another) {
-            if (this.val == another.val) {
-                return 0;
-            }
-            return this.val < another.val ? -1 : 1;
-        }
+    public static void main(String[] strings) {
+        MergeKSortedArray sol = new MergeKSortedArray();
+        int[][] arrs = {
+                {1,2,3},
+                {4,5,10},
+                {-10, 100},
+                {}
+        };
+
+        int[] res = sol.merge(arrs);
+        System.out.println(res);
     }
 }

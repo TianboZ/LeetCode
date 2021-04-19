@@ -17,9 +17,12 @@ time o(n)
 space o(n)
 
 
-
 */
 public class ContainsDuplicate2 {
+    // 2021
+    // sliding window
+
+
     // 2020
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         // Write your solution here

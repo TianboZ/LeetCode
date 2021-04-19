@@ -5,7 +5,7 @@ import java.util.*;
 public class CourseSchedule2 {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> graph = new HashMap<>();
-        buildGraph(graph, prerequisites);
+        buildGraph(graph, prerequisites, numCourses);
 
         Map<Integer, Integer> state = new HashMap<>();  // 1: visiting 0: visited
         Deque<Integer> stack = new LinkedList<>();
@@ -41,25 +41,21 @@ public class CourseSchedule2 {
         // recursive rule
         state.put(node, 1);
         List<Integer> neis = graph.get(node);
-        if (neis != null) {
-            for (Integer nei : neis) {
-                if (dfs(graph, state, nei, stack)) {
-                    return true;
-                }
+        for (Integer nei : neis) {
+            if (dfs(graph, state, nei, stack)) {
+                return true;
             }
         }
         state.put(node, 0);
         stack.offerFirst(node);
         return false;
     }
-    private void buildGraph(Map<Integer, List<Integer>> graph, int[][] m) {
+    private void buildGraph(Map<Integer, List<Integer>> graph, int[][] m, int n) {
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new ArrayList<>());
+        }
         for (int[] arr : m) {
-            List<Integer> list = graph.get(arr[1]);
-            if (list == null) {
-                list = new ArrayList<>();
-                graph.put(arr[1], list);
-            }
-            list.add(arr[0]);
+            graph.get(arr[1]).add(arr[0]);
         }
     }
 }

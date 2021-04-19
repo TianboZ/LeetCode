@@ -2,101 +2,86 @@ package debugLaicode;
 
 import java.util.*;
 
+
+/*
+solution:
+this is a graph problem
+
+high level:
+- from pacific, run BFS, find all reachable cells
+- from altlantic, run BFS, find all reachable cells
+- the overlap cells are our solution
+
+use a int[][] to record what cells are both reachable from P and L
+
+
+*/
 public class PacificAtlanticWaterFlow {
+    boolean[][] visit;
+    int[][] overlap; // overlap[i][j] == 2, means overlap; initial is 0
     int[] dx = {1, -1, 0, 0};
     int[] dy = {0, 0, 1, -1};
-    public List<int[]> pacificAtlantic(int[][] matrix) {
-        List<int[]> res = new ArrayList<>();
-        if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
-            return res;
+    int m;
+    int n;
+
+    public List<List<Integer>> pacificAtlantic(int[][] matrix) {
+        m = matrix.length;
+        n = matrix[0].length;
+
+        visit = new boolean[m][n];
+        overlap = new int[m][n];
+
+        // traverse from P
+        for (int i = 0; i < n; i++) {
+            dfs(0, i, matrix);
+        }
+        for (int i = 1 ; i < m; i++) {
+            dfs(i, 0, matrix);
+        }
+        visit = new boolean[m][n];
+
+        // traverse from A
+        for (int i = 0; i < n; i++) {
+            dfs(m - 1, i, matrix);
+        }
+        for (int i = 0; i < m; i++) {
+            dfs(i, n - 1, matrix);
         }
 
-        int n = matrix.length, m = matrix[0].length;
+        // find overlap cells
+        List<List<Integer>> res = new ArrayList<>();
 
-        //One visited map for each ocean
-        boolean[][] pacific = new boolean[n][m];
-        boolean[][] atlantic = new boolean[n][m];
-
-        // from Vertical border traverse
-        for(int i = 0; i < n; i++){
-            bfs(matrix, pacific, i, 0);
-            bfs(matrix, atlantic, i, m - 1);
-
-            // dfs
-//            dfs(matrix, pacific, i, 0);
-//            dfs(matrix, atlantic, i, m - 1);
-        }
-
-        // from Horizontal border traverse
-        for(int i = 0; i < m; i++){
-            bfs(matrix, pacific, 0, i);
-            bfs(matrix, atlantic, n - 1, i);
-
-            // dfs
-//            dfs(matrix, pacific, 0, i);
-//            dfs(matrix, atlantic, n - 1, i);
-        }
-
-        // find the cordinates that belongs to both pacifc and atlantic
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < m; j++){
-                if(pacific[i][j] && atlantic[i][j])
-                    res.add(new int[]{i,j});
-            }
-        }
-
-        return res;
-    }
-
-    // start from the given point, find all connected points that value is larger of equal than
-    // current point value, follow the BFS order
-    private void bfs(int[][]matrix, boolean[][] visited, int x, int y) {
-        if (visited[x][y]) return;
-        Queue<Cell> q = new LinkedList<>();
-        // initial
-        q.offer(new Cell(x, y));
-        visited[x][y] = true;
-
-        // terminate condition
-        while (!q.isEmpty()) {
-            // expand
-            Cell curr = q.poll();
-
-            // generate
-            for (int i = 0; i < 4; i++) {
-                int newX = curr.x + dx[i];
-                int newY = curr.y + dy[i];
-                if (newX >= 0 && newY >= 0 && newX < visited.length && newY < visited[0].length && matrix[newX][newY] >= matrix[curr.x][curr.y] && !visited[newX][newY]) {
-                    q.offer(new Cell(newX, newY));
-                    visited[newX][newY] = true;
+        for (int i = 0;  i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (overlap[i][j] == 2) {
+                    res.add(Arrays.asList(i, j));
                 }
             }
         }
-    }
-    class Cell {
-        int x;
-        int y;
-        Cell (int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
+        return res;
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////
-    // start from the given point, find all connected points that value is larger of equal than
-    // current point value, follow the DFS order
-    public void dfs(int[][]matrix, boolean[][] visited, int x, int y) {
-        // base-case
-        if (visited[x][y]) return;
+    private void dfs(int i, int j, int[][] matrix) {
+        if(visit[i][j]) return;
 
-        // recursive rule
-        visited[x][y] = true;
-        for (int i = 0; i < 4; i++) {
-            int newX = x + dx[i];
-            int newY = y + dy[i];
-            if (newX >= 0 && newY >= 0 && newX < visited.length && newY < visited[0].length && matrix[newX][newY] >= matrix[x][y]) {
-                dfs(matrix, visited, newX, newY);
+        visit[i][j] = true;
+        overlap[i][j] += 1;
+        for (int k = 0; k < 4; k++) {
+            int ii = i + dx[k];
+            int jj = j + dy[k];
+
+            boolean inBound = ii >= 0 && jj >= 0 && ii < m && jj < n;
+            if (inBound && !visit[ii][jj]
+                    && matrix[i][j] <= matrix[ii][jj] ) {
+                dfs(ii ,jj, matrix);
             }
         }
     }
+
+    public static void main(String[] args) {
+        int[][]  heights = {{1,2,2,3,5},{3,2,3,4,4},{2,4,5,3,1},{6,7,1,4,5},{5,1,1,2,4}};
+        PacificAtlanticWaterFlow p = new PacificAtlanticWaterFlow();
+        p.pacificAtlantic(heights);
+    }
+
 }

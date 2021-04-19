@@ -2,12 +2,66 @@ package debugLaicode;
 
 import java.util.LinkedList;
 import java.util.Queue;
-
+/*
+*
+* solution:
+* dfs
+* bfs
+*
+* */
 public class TheMaze {
+
+    boolean[][] visit;
+    boolean hit;
     int[] dx = {1, -1, 0, 0};
     int[] dy = {0, 0, 1, -1};
+    int[][] maze;
 
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        int m = maze.length;
+        int n = maze[0].length;
+        visit = new boolean[m][n];
+        this.maze = maze;
+        dfs(start[0], start[1], destination);
+
+        return hit;
+    }
+    private void dfs(int i, int j, int[] end) {
+        // baes case
+        if (visit[i][j] || hit) return;
+
+        if(i == end[0] && j == end[1]) {
+            hit = true;
+            return;
+        }
+
+        // recursive rule
+        visit[i][j] = true;
+
+        for (int k = 0; k < 4; k++) {  // right, left, down, up
+            int ii = i + dx[k];
+            int jj = j + dy[k];
+
+            while (inbound(ii, jj) && maze[ii][jj] == 0) {
+                ii += dx[k];
+                jj += dy[k];
+            }
+            // go back 1 step
+            ii -= dx[k];
+            jj -= dy[k];
+
+            dfs(ii, jj, end);
+        }
+    }
+
+    private boolean inbound(int i, int j) {
+        return i >= 0 && j >= 0 && i < maze.length && j < maze[0].length;
+    }
+
+
+    // 2018
+
+    public boolean hasPath2(int[][] maze, int[] start, int[] destination) {
         // sanity check
 
         Queue<Cell> q = new LinkedList<>();

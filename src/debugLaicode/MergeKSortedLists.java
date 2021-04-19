@@ -5,14 +5,22 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+/*
+* sol1:
+*
+* pq
+*
+* sol2:
+* iterative
+* */
 public class MergeKSortedLists {
     public ListNode merge(List<ListNode> listOfLists) {
-        Queue<ListNode> pq = new PriorityQueue<>((ListNode n1, ListNode n2) -> {
-            return n1.value == n2.value ? 0 : (n1.value < n2.value ? -1 : 1);
+        Queue<ListNode> pq = new PriorityQueue<>(( n1,  n2) -> {
+            return n1.value - n2.value;
         }); // pq is min heap
 
-        ListNode dummy = new ListNode(1);
-        ListNode currNode = dummy;
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
 
         // initial
         for (ListNode node : listOfLists) {
@@ -22,14 +30,14 @@ public class MergeKSortedLists {
         // terminate condition
         while (!pq.isEmpty()) {
             // expand
-            ListNode curr = pq.poll();
-            currNode.next = curr;
-            currNode = currNode.next;
+            ListNode n = pq.poll();
+            cur.next = n;
+            cur = cur.next;
 
 
             // generate
-            if (curr.next != null) {
-                pq.offer(curr.next);
+            if (n.next != null) {
+                pq.offer(n.next);
             }
         }
         return dummy.next;

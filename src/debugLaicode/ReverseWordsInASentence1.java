@@ -22,6 +22,7 @@ public class ReverseWordsInASentence1 {
         reverse(arr, 0, arr.length - 1);
         return new String(arr);
     }
+
 //    public String reverseWords(String input) {
 //        char[] arr = input.toCharArray();
 //        int slow = 0;
@@ -50,9 +51,10 @@ public class ReverseWordsInASentence1 {
         }
     }
 
+
     public static void main(String[] args) {
-        ReverseWordsInASentence1 reverseWordsInASentence1 = new ReverseWordsInASentence1();
-        String res = reverseWordsInASentence1.reverseWords("i fuck");
+        ReverseWordsInASentence1 sol = new ReverseWordsInASentence1();
+        String res = sol.reverseWords("i fuck");
         System.out.println(res);
     }
 }

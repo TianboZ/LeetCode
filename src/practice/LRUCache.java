@@ -6,86 +6,81 @@ import java.util.Map;
 // leetcode solution is better than laicode, use dummy head and tail
 // https://leetcode.com/problems/lru-cache/solution/
 public class LRUCache {
-    // fields
-    Node head;
-    Node tail;
-
-    private static class Node {
+    class Node {
         int val;
         int key;
-        Node prev;
         Node next;
-
-        Node(int key, int val) {
-            this.val = val;
-            this.key = key;
+        Node prev;
+        Node(int v, int k) {
+            val = v;
+            key = k;
         }
     }
 
-    private Map<Integer, Node> map;
+    Map<Integer, Node> map;
+    int size;
+    Node head;
+    Node tail;
 
-    private int size;
-
-    // constructor
     public LRUCache(int capacity) {
         size = capacity;
         map = new HashMap<>();
-        head = new Node(1,1); // dummy
-        tail = new Node(1,1); // dummy
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+
         head.next = tail;
         tail.prev = head;
     }
 
-    // APIs
     public int get(int key) {
-        if (map.containsKey(key)) {
-            Node node = map.get(key);
-            remove(node); // remove node from double linked list
-            append(node); // append node to the head of DDL
-            return node.val;
+        Node node = map.get(key);
+        if (node == null) {
+            return -1;
         }
-        return -1;
+        // move node to head
+        remove(node);
+        appendHead(node);
+
+        return node.val;
     }
 
     public void put(int key, int value) {
-        if (map.containsKey(key)) {
-            Node node = map.get(key);
-            node.val = value;
-            remove(node); // remove node from double linked list
-            append(node);
-        } else {
-            Node node = new Node(key, value);
-            if (map.size() == size) {
-                remove(tail.prev);
-                append(node);
-            } else {
-                append(node);
+        Node node = map.get(key);
+        if (node == null) {
+            // new node
+            if (size == map.size()) {
+                Node last = tail.prev;
+                remove(last);
+                map.remove(last.key);
             }
+            node = new Node(value, key);
+            appendHead(node);
+            map.put(key, node);
+        } else {
+            node.val = value;
+            remove(node);
+            appendHead(node);
         }
     }
-    // 2020
-    // helper methods
-    private void remove(Node node) {
-        map.remove(node.key);
 
-        Node prev = node.prev;
-        Node next = node.next;
-        prev.next = next;
-        next.prev = prev;
 
-        node.next = null;
-        node.prev = null;
+    private void appendHead(Node node) {
+        Node next = head.next;
+
+        head.next = node;
+        node.next = next;
+
+        next.prev = node;
+        node.prev = head;
     }
 
-    // append to head, head node is the most recently one
-    private void append(Node node) {
-        map.put(node.key, node);
+    // remove node from doulbe linked list
+    private void remove(Node node) {
+        Node prev = node.prev;
+        Node next = node.next;
 
-        node.prev = head;
-        node.next = head.next;
-
-        head.next.prev = node;
-        head.next = node;
+        prev.next = next;
+        next.prev = prev;
     }
 
     // 2018

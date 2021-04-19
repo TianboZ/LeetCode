@@ -5,8 +5,8 @@ import java.util.Arrays;
 public class MedianOfTwoSortedArrays {
     public double median(int[] a, int[] b) {
         // write your solution here
-        Arrays.sort(a);
-        Arrays.sort(b);
+        //Arrays.sort(a);
+        //Arrays.sort(b);
         int len = a.length + b.length;
         //odd
         if (len % 2 == 1) {
@@ -28,6 +28,7 @@ public class MedianOfTwoSortedArrays {
         } else if (k == 1) {
             return Math.min(a[aLeft], b[bLeft]);
         }
+
         //rule
         int aK = aLeft + k / 2 - 1 >= a.length ? Integer.MAX_VALUE : a[aLeft + k / 2 - 1];
         int bK = bLeft + k / 2 - 1 >= b.length ? Integer.MAX_VALUE : b[bLeft + k / 2 - 1];
@@ -36,5 +37,13 @@ public class MedianOfTwoSortedArrays {
         } else {
             return median(a, aLeft, b, bLeft + k / 2, k - k / 2);
         }
+    }
+
+    public static void main(String[] args) {
+        int[] a = {1,2,3,4};
+        int[] b = {-3,3,3,4};
+        MedianOfTwoSortedArrays sol  = new MedianOfTwoSortedArrays();
+        double res = sol.median(a, b);
+        System.out.println(res);
     }
 }

@@ -27,59 +27,50 @@ solution:
 
 */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CourseSchedule {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        // sanity check
-        // TODO: 11/13/18
 
-        // key: node, value: list of next nodes
-        Map<Integer, List<Integer>> graph = new HashMap<>();
+        Map<Integer, Integer> visit = new HashMap<>();
+        // key: node  value: status, 0: visiting  1: visited
 
-        // key: node  value: state
-        // 0: visiting
-        // 1: visited
-        Map<Integer, Integer> state = new HashMap<>();
-        buildGraph(graph, prerequisites);
+        Map<Integer, Set<Integer>> graph = new HashMap<>();
+        buildGrpah(prerequisites, graph, numCourses);
 
         for (int i = 0; i < numCourses; i++) {
-            if (hasCycle(i, graph, state)) return false;
+            if (hasCycle(visit, graph, i)) {
+                return false;
+            }
         }
         return true;
     }
 
-    // if has cycle, return true
-    private boolean hasCycle(int node, Map<Integer, List<Integer>> graph, Map<Integer, Integer> visited) {
-        // base-case
-        Integer state = visited.get(node);
-        if (state != null && state == 0) return true;
-        if (state != null && state == 1) return false;
-
-        // recursive rule
-        visited.put(node, 0);
-        if (graph.containsKey(node)) { //
-            for (Integer nei : graph.get(node)) {
-                if (hasCycle(nei, graph, visited)) return true;
-            }
+    private void buildGrpah(int[][] pre,  Map<Integer, Set<Integer>> graph, int n) {
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new HashSet<>());
         }
-        visited.put(node, 1);
-        return false;
+        // todo
+        for (int[] arr : pre) {
+            graph.get(arr[1]).add(arr[0]);
+        }
     }
 
-    // build graph
-    private void buildGraph(Map<Integer, List<Integer>> graph, int[][] m) {
-        // [0, 1]    1 --> 0
-        for (int[] arr : m) {
-            List<Integer> list = graph.get(arr[1]);
-            if (list == null) {
-                list = new ArrayList<>();
-                graph.put(arr[1], list);
-            }
-            list.add(arr[0]);
+    private boolean hasCycle(Map<Integer, Integer> visit,
+                             Map<Integer, Set<Integer>> graph, int node) {
+        // base case
+        if (visit.get(node) == Integer.valueOf(1)) return false;
+        if (visit.get(node) == Integer.valueOf(0)) return true;
+
+        // recursive rule
+        visit.put(node, 0);
+        Set<Integer> neis = graph.get(node);
+
+        for (Integer nei : neis) {
+            if (hasCycle(visit, graph, nei)) return true;
         }
+
+        visit.put(node, 1);
+        return false;
     }
 }

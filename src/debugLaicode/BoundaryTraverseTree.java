@@ -6,48 +6,70 @@ package debugLaicode;
    and a pointer to right child */
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+// 2021
 public class BoundaryTraverseTree {
-
     public List<Integer> boundaryOfBinaryTree(TreeNode root) {
-        TreeNode curr = root;
-        List<Integer> res = new ArrayList<>();
-        if (root == null) {
-            return res;
+        List<Integer> res = new ArrayList();
+        if (root == null) return res;
+
+        if (!isLeaf(root)) {
+            res.add(root.val);
         }
-        res.add(root.key);
-        leftBoundary(root.left, res);
-        leaves(root.left, res);
-        leaves(root.right, res);
-        rightBoundary(root.right, res);
+
+
+        // add left boundary
+        TreeNode node = root.left;
+        while (node != null) {
+            if (!isLeaf(node)) {
+                res.add(node.val);
+            }
+            if (node.left != null) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+
+        // add leaves
+        helper(res, root);
+
+        // add right boundary
+        Deque<Integer> stack = new LinkedList<>();
+        node = root.right;
+        while (node != null) {
+            if (!isLeaf(node)) {
+                stack.offerFirst(node.val);
+            }
+
+            if (node.right != null) {
+                node = node.right;
+            } else {
+                node = node.left;
+            }
+        }
+
+        // concatenate all
+        while (!stack.isEmpty()) {
+            res.add(stack.pollFirst());
+        }
         return res;
     }
-    // preorder
-    private void leaves(TreeNode root, List<Integer> res) {
-        if (root == null) {
+    private boolean isLeaf(TreeNode root) {
+        return root.left == null && root.right == null;
+    }
+
+    private void helper(List<Integer> res , TreeNode root) {
+        // basecase
+        if (root == null) return;
+        if (isLeaf(root)) {
+            res.add(root.val);
             return;
         }
 
-        if (root.left == null && root.right == null) {
-            res.add(root.key);
-        }
-        leaves(root.left, res);
-        leaves(root.right, res);
-    }
-    // preorder
-    private void leftBoundary(TreeNode root, List<Integer> res) {
-        if(root == null || (root.left == null && root.right == null)) return;
-        res.add(root.key);
-        if(root.left == null) leftBoundary(root.right, res);
-        else leftBoundary(root.left, res);
-    }
-    // post order
-    private void rightBoundary(TreeNode root, List<Integer> res) {
-        if(root == null || (root.right == null && root.left == null)) return;
-        if(root.right == null)rightBoundary(root.left, res);
-        else rightBoundary(root.right, res);
-        res.add(root.key); // add after child visit(reverse)
+        // recursive rule
+        helper(res, root.left);
+        helper(res, root.right);
     }
 }

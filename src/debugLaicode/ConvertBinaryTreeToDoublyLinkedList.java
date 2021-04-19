@@ -66,11 +66,6 @@ public class ConvertBinaryTreeToDoublyLinkedList {
 //        }
 //        pre = root;
 
-
-        // Base case
-        if (root == null)
-            return;
-
         inorder(root.left);
         if (prev == null)
             head = root;

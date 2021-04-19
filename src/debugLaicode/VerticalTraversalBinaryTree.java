@@ -1,18 +1,9 @@
 package debugLaicode;
 
+import practice.MaxHeap;
+
 import java.util.*;
 
-
-/**
- * public class TreeNode {
- *   public int key;
- *   public TreeNode left;
- *   public TreeNode right;
- *   public TreeNode(int key) {
- *     this.key = key;
- *   }
- * }
- */
 public class VerticalTraversalBinaryTree {
     // 2020
     public List<Integer> verticalOrder1(TreeNode root) {
@@ -69,86 +60,77 @@ public class VerticalTraversalBinaryTree {
     private static class Cell {
         TreeNode node;
         int col;
-        Cell(TreeNode node, int col) {
-            this.node = node;
-            this.col = col;
+        int row;
+        Cell(TreeNode n, int c) {
+            node = n;
+            col = c;
+        }
+        Cell(TreeNode n, int c, int r) {
+            node = n;
+            col = c;
+            row = r;
         }
     }
 
 
-
+    // LC 987. Vertical Order Traversal of a Binary Tree
     public List<List<Integer>> verticalOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
             return res;
         }
-        Map<Integer, List<Integer>> map = new TreeMap<>();
-        Queue<Node> q = new LinkedList<>();
+        Map<Integer, List<Cell>> map = new HashMap<>(); // key: col value: tree nodes of column
+        Queue<Cell> q = new LinkedList<>();
+        int left = 0;
+        int right = 0;
+
         // initial
-        q.offer(new Node(root, 0));
+        q.offer(new Cell(root, 0));
 
         while (!q.isEmpty()) {
             // expand
-            Node curr = q.poll();
+            Cell curr = q.poll();
             int col = curr.col;
             TreeNode node = curr.node;
 
-            if (map.containsKey(col)) {
-                map.get(col).add(node.key);
-            } else {
-                List<Integer> list = new ArrayList<>();
-                list.add(node.key);
+            List<Cell> list = map.get(col);
+            if (list == null) {
+                list = new ArrayList<>();
                 map.put(col, list);
             }
+            list.add(curr);
+
             // generate
             if (node.left != null) {
-                q.offer(new Node( node.left, col - 1));
+                left = Math.min(left, col  -1 );
+                q.offer(new Cell( node.left, col - 1));
             }
             if (node.right != null) {
-                q.offer(new Node(node.right, col + 1));
+                right = Math.max(right, col + 1);
+                q.offer(new Cell(node.right, col + 1));
             }
         }
 
-        for (List<Integer> list : map.values()) {
+        for (int i = left; i <= right; i++) {
+            // sort
+            List<Cell> cells = map.get(i);
+            cells.sort((c1, c2) -> {
+                if (c1.row == c2.row) {
+                    return c1.node.val -  c2.node.val;
+                }
+                return c1.row - c2.row;
+            });
+
+            // build result
+            List<Integer> list = new ArrayList<>();
+            for (Cell c : cells) {
+                list.add(c.node.key);
+            }
             res.add(list);
         }
         return res;
     }
-
-    class Node {
-        // fields
-        TreeNode node;
-        int col;
-        // constructor
-        public Node (TreeNode node, int col) {
-            this.node = node;
-            this.col = col;
-        }
-        // API
-    }
-
-    public static void main(String[] args) {
-        VerticalTraversalBinaryTree verticalTraversalBinaryTree = new VerticalTraversalBinaryTree();
-        TreeNode node1 = new TreeNode(1);
-        TreeNode node2 = new TreeNode(2);
-        TreeNode node3 = new TreeNode(3);
-        TreeNode node4 = new TreeNode(4);
-        TreeNode node5 = new TreeNode(5);
-        TreeNode node6 = new TreeNode(6);
-
-        node1.left = node2;
-        node1.right = node3;
-        node2.right = node4;
-        node3.left = node5;
-        node5.left = node6;
-
-        String a = "abc";
-        String b = "abd";
-        System.out.println(a.compareTo(b));
-
-        verticalTraversalBinaryTree.verticalOrder(node1);
-
-    }
 }
 
-
+// time O(n)  n is # of tree nodes
+// space O(n)

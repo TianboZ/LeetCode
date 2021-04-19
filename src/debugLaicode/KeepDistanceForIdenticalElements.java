@@ -6,6 +6,7 @@ import java.util.*;
 public class KeepDistanceForIdenticalElements {
     boolean isFound = false;
     int[] result;
+    int[] used;
 
     public int[] keepDistance(int k) {
         // Write your solution here.
@@ -15,13 +16,14 @@ public class KeepDistanceForIdenticalElements {
             arr[i * 2 + 1] = i + 1;
 
         }
-        Set<Integer> set = new HashSet<>();
 
-        dfs(arr, 0, set);
-        return isFound ? arr : null;
+        used = new int[k + 1];  // used[i]  means  # of times that i is used before
+
+        dfs(arr, 0, k);
+        return isFound ? result : null;
     }
 
-    private void dfs(int[] arr, int index, Set<Integer> set) {
+    private void dfs(int[] arr, int index, int k) {
         // base case
         if (isFound) {
             return;
@@ -33,33 +35,21 @@ public class KeepDistanceForIdenticalElements {
         }
 
         // recursive rule
-        for (int i = index; i < arr.length; i++) {
-            swap(arr, index, i);
-            int distance = arr[index];
-            boolean used = set.contains(distance);
-            if (!used) {
-                set.add(distance);
-            }
-            if (!used || index - distance - 1 >= 0 && arr[index - distance - 1] == arr[index]) {
-                dfs(arr, index + 1, set);
-            }
-            swap(arr, index, i);
-            if (!used) {
-                set.remove(distance);
+        for (int n = 1; n <= k; n++) {
+            if (used[n] == 0) {
+                arr[index] = n;
+                used[n] = 1;
+                dfs(arr, index + 1, k);
+                used[n] = 0;
+            } else if(used[n] == 1) {
+                if (index - n - 1 >= 0 && arr[index - n - 1] == n) {
+                    used[n] = 2;
+                    arr[index] = n;
+                    dfs(arr, index + 1, k);
+                    used[n] = 1;
+                }
             }
         }
-    }
-    private void swap(int[] arr, int i, int j) {
-        int tmpt = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmpt;
-    }
-    private boolean checkContains(int[] arr, int k, int j, int t) {
-        if (j < 0) return false;
-        for (int i = 0; i <= j; i++) {
-            if (arr[i] == t) return true;
-        }
-        return false;
     }
 
     public static void main(String[] args) {

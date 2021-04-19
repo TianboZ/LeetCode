@@ -1,6 +1,49 @@
 package debugLaicode;
 
 public class MaximumPathSumBinaryTreeII {
+    // 2021
+    int max2 = Integer.MIN_VALUE;
+    public int maxPathSum3(TreeNode root) {
+        // Write your solution here
+        helper(root);
+        return max;
+    }
+    // return path sum from root to any node
+    private int helper(TreeNode root) {
+        // basecase
+        if (root == null) {
+            return 0;
+        }
+
+        // recursive rule
+        int left = helper(root.left);
+        int right = helper(root.right);
+
+        // update global max
+        max = Math.max(max, getMax(new int[]{
+                root.key,
+                root.key + left,
+                root.key + right,
+                root.key + left + right
+        }));
+
+        // return value
+        return getMax(new int[]{
+                root.key,
+                root.key + left,
+                root.key + right
+        });
+    }
+
+    private int getMax(int[] arr) {
+        int max = arr[0];
+        for (int i : arr) {
+            max = Math.max(max, i);
+        }
+        return max;
+    }
+
+
     // 2020
     public int maxPathSum2(TreeNode root) {
         // Write your solution here

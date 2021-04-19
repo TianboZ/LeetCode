@@ -3,29 +3,6 @@ package debugLaicode;
 import java.util.*;
 
 public class KthSmallestInSortedMatrix {
-    public static void main(String[] args) {
-        KthSmallestInSortedMatrix kthSmallestInSortedMatrix = new KthSmallestInSortedMatrix();
-        int[][] matrix = {  {1,  2,   5,  7},
-
-                            {2,  4,   8,  9},
-
-                            {3,  5,   11, 15},
-
-                            {6,  8,   13, 18} };
-        int k = 8;
-        int res = kthSmallestInSortedMatrix.kthSmallest(matrix, k);
-        System.out.println(res);
-
-        Test test = new Test(1);
-        Test test1 = new Test(2);
-        Test test2 = new Test(1);
-
-        System.out.println(test.equals(test2));
-        Set<Test> set = new HashSet<>(Arrays.asList(test, test1, test2));
-        System.out.println(set);
-        System.out.println(set.contains(test));
-    }
-
     public int kthSmallest(int[][] matrix, int k) {
         if (k <= 1) {
             return matrix[0][0];
@@ -33,14 +10,14 @@ public class KthSmallestInSortedMatrix {
 
         // best first first search
         Queue<Cell2> qp = new PriorityQueue<>(
-            (Cell2 c1, Cell2 c2) -> {
-                return  c1.val == c2.val ? 0 : (c1.val < c2.val ? -1 : 1);
+            (c1, c2) -> {
+                return  c1.val - c2.val;
             }
 //             // laicode doe not support lambda expression
 //            new Comparator<Cell>() {
 //                @Override
 //                public int compare(Cell c1, Cell c2) {
-//                    return c1.val == c2.val ? 0 : (c1.val < c2.val ? -1 : 1);
+//                    return  c1.val - c2.val;
 //                }
 //            }
         );
@@ -138,4 +115,28 @@ public class KthSmallestInSortedMatrix {
             val = v;
         }
     }
+
+    public static void main(String[] args) {
+        KthSmallestInSortedMatrix sol = new KthSmallestInSortedMatrix();
+        int[][] matrix = {  {1,  2,   5,  7},
+
+                {2,  4,   8,  9},
+
+                {3,  5,   11, 15},
+
+                {6,  8,   13, 18} };
+        int k = 8;
+        int res = sol.kthSmallest(matrix, k);
+        System.out.println(res);
+
+        Test test = new Test(1);
+        Test test1 = new Test(2);
+        Test test2 = new Test(1);
+
+        System.out.println(test.equals(test2));
+        Set<Test> set = new HashSet<>(Arrays.asList(test, test1, test2));
+        System.out.println(set);
+        System.out.println(set.contains(test));
+    }
+
 }

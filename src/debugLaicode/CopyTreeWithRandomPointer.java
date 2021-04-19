@@ -47,7 +47,4 @@ public class CopyTreeWithRandomPointer {
         }
     }
 
-    public static void main(String[] args) {
-
-    }
 }

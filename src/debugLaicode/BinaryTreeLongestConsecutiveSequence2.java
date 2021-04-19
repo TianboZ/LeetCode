@@ -14,47 +14,50 @@ solution:
 
 */
 public class BinaryTreeLongestConsecutiveSequence2 {
-    int len = 0;
+    class Res {
+        int in;
+        int de;
+        Res(int in, int de) {
+            this.in = in;
+            this.de = de;
+        }
+    }
+    int len = 1;
+
     public int longestConsecutive(TreeNode root) {
-        longestLength(root);
+        dfs(root);
         return len;
     }
-    // return the longest increasing sequence length and longest decreasing sequence length
-    private Return longestLength(TreeNode root) {
-        // base-case
-        if (root == null) return new Return(0, 0);
 
-        // rule
-        int in = 1;
-        int de = 1;
+    private Res dfs(TreeNode root) {
+        if (root == null) return null;
+
+        int in = 1; // increasing
+        int de = 1; // decreasing
+
         if (root.left != null) {
-            Return left = longestLength(root.left);
-            if (root.left.key + 1 == root.key) {
-                de = left.de + 1;
-            } else if (root.left.key - 1 == root.key) {
-                in = left.in + 1;
+            Res left = dfs(root.left);
+            if (root.val == root.left.val + 1) {
+                de = 1  + left.de;
+            }
+            if (root.val + 1 == root.left.val) {
+                in = 1 + left.in;
             }
         }
 
         if (root.right != null) {
-            Return right = longestLength(root.right);
-            if (root.right.key + 1 == root.key) {
-                de = Math.max(de, right.de + 1);
-            } else if (root.right.key - 1 == root.key) {
-                in = Math.max(in, right.in + 1);
+            Res right = dfs(root.right);
+            if (root.val == root.right.val + 1) {
+                de = Math.max(de, 1 + right.de);
+            }
+            if (root.val + 1 == root.right.val) {
+                in = Math.max(in, 1 + right.in);
             }
         }
-        //System.out.println(" root.val: " + root.val + " in: " + in + " de: " + de);
-        len = Math.max(len, in + de - 1);
-        return new Return(in, de);
-    }
 
-    class Return {
-        int in; // increasing sequence length
-        int de; // decreasing sequence length
-        Return (int in, int de) {
-            this.in = in;
-            this.de = de;
-        }
+        // update global max
+        len = Math.max(len, in + de - 1);
+
+        return new Res(in, de);
     }
 }

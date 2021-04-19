@@ -35,22 +35,22 @@ public class SmallestRange {
         // Write your solution here.
         int[] res = new int[2];
 
-        // santity check
+        // sanity check
         if (nums == null) return res;
 
-        Queue<Element> minHeap = new PriorityQueue<>(new CP());
+        Queue<Cell> minHeap = new PriorityQueue<>((c1, c2) -> c1.val - c2.val);
         int range = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
 
         // initial
         for (int i = 0; i < nums.size(); i++) {
-            minHeap.offer(new Element(i, 0, nums.get(i).get(0)));
+            minHeap.offer(new Cell(i, 0, nums.get(i).get(0)));
             max = Math.max(max, nums.get(i).get(0));
         }
         // terminate
         while (minHeap.size() == nums.size()) {
             // expand
-            Element curr = minHeap.poll();
+            Cell curr = minHeap.poll();
 
             // update min range
             if (Math.abs(curr.val - max) < range) {
@@ -60,7 +60,7 @@ public class SmallestRange {
             }
             // generate
             if (curr.col + 1 < nums.get(curr.row).size()) {
-                minHeap.offer(new Element(curr.row, curr.col + 1, nums.get(curr.row).get(curr.col + 1)));
+                minHeap.offer(new Cell(curr.row, curr.col + 1, nums.get(curr.row).get(curr.col + 1)));
                 if (nums.get(curr.row).get(curr.col + 1) > max) {
                     max = nums.get(curr.row).get(curr.col + 1);
                 }
@@ -68,21 +68,21 @@ public class SmallestRange {
         }
         return res;
     }
-    class Element {
+    class Cell {
         int row;
         int col;
         int val;
-        public Element(int row, int col, int val) {
+        public Cell(int row, int col, int val) {
             this.row = row;
             this.col = col;
             this.val = val;
         }
     }
-    class CP implements Comparator<Element> {
-        @Override
-        public int compare(Element e1, Element e2) {
-            return e1.val - e2.val;
-        }
-    }
+//    class CP implements Comparator<Cell> {
+//        @Override
+//        public int compare(Cell e1, Cell e2) {
+//            return e1.val - e2.val;
+//        }
+//    }
 
 }

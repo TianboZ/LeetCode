@@ -17,48 +17,54 @@ all operation, time O(1)
 
 */
 public class InsertDeleteGetRandom {
-    Map<Integer, Integer> map;
-    Random random;
-    List<Integer> list;
+
+    private Map<Integer, Integer> map;
+    private List<Integer> list;
+    private Random ran;
+
     /** Initialize your data structure here. */
     public InsertDeleteGetRandom() {
-        map = new HashMap<>();
-        random = new Random();
+        map = new HashMap<>(); // key: num value: index
         list = new ArrayList<>();
+        ran = new Random();
     }
 
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
-        int index = list.size();
         if (!map.containsKey(val)) {
-            map.put(val, index);
+            int idx = list.size();
+            map.put(val, idx);
             list.add(val);
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /** Removes a value from the set. Returns true if the set contained the specified element. */
     public boolean remove(int val) {
         if (map.containsKey(val)) {
-            int index = map.get(val);
-            // to be deleted element is NOT the last one in the list, swap it to the tail
-            if (index != list.size() - 1) {
-                int lastone = list.get(list.size() - 1);
-                map.put(lastone, index); // update lastone's index
-                list.set(index, lastone);
-            }
+            int idx = map.get(val);
             map.remove(val);
+
+            if (idx != list.size() - 1) {
+                int tail = list.get(list.size() - 1);
+                list.set(idx, tail);
+                map.put(tail, idx);
+            }
+
             list.remove(list.size() - 1);
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /** Get a random element from the set. */
     public int getRandom() {
-        int index = random.nextInt(list.size());
-        return list.get(index);
+
+        int i = ran.nextInt(list.size());
+        return list.get(i);
     }
 }
 

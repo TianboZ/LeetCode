@@ -89,20 +89,26 @@ public class MinimumHeightTrees {
         List<Integer> res= new ArrayList<>();
 
         // build graph
-        Map<Integer, Set<Integer>> map = new HashMap<>();
-        buildGraph(edges, map);
+        Map<Integer, Set<Integer>> adj = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            adj.put(i, new HashSet<>());
+        }
+        for (int[] e : edges) {
+            adj.get(e[0]).add(e[1]);
+            adj.get(e[1]).add(e[0]);
+        }
 
         // if a node is leaf, then its neighbor should has only one
         Set<Integer> leaves = new HashSet<>();
-        while (map.size() > 2) {
+        while (adj.size() > 2) {
             leaves.clear();
-            for (Map.Entry<Integer, Set<Integer>> entry : map.entrySet()) {
+            for (Map.Entry<Integer, Set<Integer>> entry : adj.entrySet()) {
                 if (entry.getValue().size() == 1) leaves.add(entry.getKey());
             }
             for (Integer leaf : leaves) {
-                map.remove(leaf);
+                adj.remove(leaf);
             }
-            for (Map.Entry<Integer, Set<Integer>> entry : map.entrySet()) {
+            for (Map.Entry<Integer, Set<Integer>> entry : adj.entrySet()) {
                 for (Integer leaf : leaves) {
                     entry.getValue().remove(leaf);
                 }
@@ -111,26 +117,11 @@ public class MinimumHeightTrees {
 
         // the remains entry in the map will be the solutuion
 
-        for (Map.Entry<Integer, Set<Integer>> entry : map.entrySet()) {
+        for (Map.Entry<Integer, Set<Integer>> entry : adj.entrySet()) {
             res.add(entry.getKey());
         }
         if (res.size() == 0) res.add(0);
         return res;
-    }
-    private void buildGraph(int[][] edges, Map<Integer, Set<Integer>> map) {
-        for (int[] edge : edges) {
-            Set<Integer> neighbor = map.get(edge[0]);
-            if (neighbor == null) {
-                map.put(edge[0], new HashSet<>());
-            }
-            map.get(edge[0]).add(edge[1]);
-
-            neighbor = map.get(edge[1]);
-            if (neighbor == null) {
-                map.put(edge[1], new HashSet<>());
-            }
-            map.get(edge[1]).add(edge[0]);
-        }
     }
 }
 

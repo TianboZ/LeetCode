@@ -2,6 +2,13 @@ package debugLaicode;
 
 import java.util.*;
 
+
+/*
+*
+* solution1: DFS3, find all paths, then find one valid path
+* solution2: post order DFS, see LC solution
+*
+* */
 public class ReconstructIterary {
     boolean found = false;
     List<String> res = null;

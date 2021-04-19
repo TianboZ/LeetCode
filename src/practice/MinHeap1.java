@@ -24,8 +24,7 @@ parent: (i - 1) / 2
 * */
 public class MinHeap1 {
     int[] array;
-    int end; // next element of last element
-
+    int end; // [0, end)  : not including end
 
     public MinHeap1() {
         this.array = new int[1000];
@@ -41,42 +40,39 @@ public class MinHeap1 {
         heapify();
     }
 
-    private void sift_up(int[] array, int index) {
-        int parent = (index - 1) / 2;
-        while (parent >= 0) {
-            if (array[index] < array[parent]) {
-                swap(array, index, parent);
-            } else {
-                break;
-            }
-            index = parent;
-            parent = (index - 1) / 2;
+    private void sift_up(int[] arr, int i) {
+        int pIdx = (i - 1) / 2; // parent index
+        while (pIdx >= 0) {
+            if (arr[i] >= arr[pIdx]) break;
+
+            swap(arr, i, pIdx);
+            i = pIdx;
+            pIdx = (i - 1) / 2;
         }
     }
 
     public void push(int element) {
         array[end] = element;
-        sift_up(array, end);
         end++;
+        sift_up(array, end);
     }
 
-    //
-    private void sift_down(int[] array, int index, int end) {
-        // step 1 : swap the start index with the smaller child until we reach the end of the array
-        while(index < end){
-            int right = index * 2 + 2;
-            int left = index * 2 + 1;
+    // i  is index of element needs to shift down
+    private void sift_down(int[] array, int i) {
+        while(i < end){
+            int right = i * 2 + 2;
+            int left = i * 2 + 1;
             // compare and get the smaller one
-            int smaller = index;
+            int smaller = i;
             if (left < end && array[smaller] > array[left]) {
                 smaller = left;
             }
             if (right < end && array[smaller] > array[right]) {
                 smaller = right;
             }
-            if (smaller != index) {
-                swap(array, index, smaller);
-                index = smaller;
+            if (smaller != i) {
+                swap(array, i, smaller);
+                i = smaller;
             } else {
                 break;
             }
@@ -85,13 +81,13 @@ public class MinHeap1 {
 
     public int pop() {
         // swap the 0 with the index  end - 1
-        int value = array[0];
+        int res = array[0];
         swap(array, 0, end - 1);
         end--;
         // sift down
-        sift_down(array, 0, end);
+        sift_down(array, 0);
 
-        return value;
+        return res;
     }
 
     private void swap(int[] arr, int i, int j) {
@@ -100,12 +96,11 @@ public class MinHeap1 {
         arr[j] = tmpt;
     }
 
-
     // time O(n)
     public void heapify() {
         //int length = arr.length;
         for (int i = end - 1; i >= 0; i--) {
-            sift_down(array, i, end);
+            sift_down(array, i);
         }
     }
 

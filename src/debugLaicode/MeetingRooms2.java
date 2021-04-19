@@ -6,7 +6,33 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class MeetingRooms2 {
+    // 2021
+    public int minMeetingRooms(int[][] intervals) {
+        // sanity check
 
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]); // sort by starting time
+
+        // min heap, sort int[] by meeting ending time in increasing order
+        Queue<int[]> pq  = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+
+        pq.offer(intervals[0]);
+
+        for (int i = 1; i < intervals.length; i++) {
+            int start  = intervals[i][0];
+            if (pq.peek()[1] <= start) {
+                // reuse room
+                pq.poll();
+                pq.offer(intervals[i]);
+            } else {
+                pq.offer(intervals[i]);
+            }
+        }
+
+        return pq.size();
+    }
+
+
+    // 2018
     private class Interval {
         int start;
         int end;
