@@ -7,19 +7,24 @@ time   30: 40
 solution:
 i, j is two pointers to word1 or word2
 
-for each word index pair <i, j>  (i < j)
-try to find the latest index i
-
-2 cases:
-j can be word1 or word2
-if j is word2, find the latest word1's index i
-if j is word2 ....  similar
+linear scan from left to right, i represent the most recent word1's index, j ...
 
 time O(n)
 space O(1)
 
 one pass
 
+
+
+
+sol2:
+two pointers, move smaller pointer
+
+[1, 2, 4, 10]
+ |
+
+[0, 3, 5]
+ |
 */
 
 import java.util.Iterator;
@@ -33,22 +38,16 @@ public class ShortestWordDistance1 {
 
         for (int idx = 0; idx < words.length; idx++) {
             if(words[idx].equals(word1)) {
-                if (j != -1) {
-                    min = Math.min(min, idx - j);
-                }
-
                 // update latest appearence of word1
                 i = idx;
             }
 
             if(words[idx].equals(word2)) {
-                if (i != -1) {
-                    min = Math.min(min, idx - i);
-                }
-
                 // update latest appearence of word1
                 j = idx;
             }
+
+            if (i != -1 && j != -1) min = Math.min(min, Math.abs(i - j + 1));
         }
         return min;
     }

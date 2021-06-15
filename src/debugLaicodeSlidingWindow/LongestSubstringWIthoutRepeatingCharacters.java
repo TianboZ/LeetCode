@@ -1,37 +1,35 @@
-package debugLaicode;
+package debugLaicodeSlidingWindow;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+public class LongestSubstringWIthoutRepeatingCharacters {
 
-public class LongestSubstringwithoutRepeatingCharacters {
-
-    public int longest(String input) {
-        // Write your solution here
-        // sanity check
-        // todo
-
-        int slow = 0;
+    public int longest(String s) {
         int fast = 0;
-        int max = 0;
-        Set<Character> set = new HashSet<>();
+        int slow =0;
+        Map<Character, Integer> map = new HashMap<>();
+        int max = -1;
+        int repeat = 0;
 
-        while (fast < input.length()) {
-            if (set.contains(input.charAt(fast))) {
-                // handle slow pointer
-                set.remove(input.charAt(slow));
+        while (fast < s.length()) {
+            // handle fast
+            char c = s.charAt(fast);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+            if (map.get(c) > 1) repeat++;
+
+            // handle slow
+            while (repeat > 0) {
+                c = s.charAt(slow);
+                map.put(c, map.get(c) - 1);
+                if (map.get(c) == 1) repeat--;
                 slow++;
-            } else {
-                // handle fast pointer
-                set.add(input.charAt(fast));
-                fast++;
-                max = Math.max(max, fast - slow);
             }
+
+            max = Math.max(max, fast - slow + 1);
+            fast++;
         }
 
-        return max;
+        return max == -1 ? 0 : max;
     }
     // time o(n)   slow and fast moves at most n times, n is length of string
 

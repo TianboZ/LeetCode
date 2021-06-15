@@ -3,60 +3,51 @@ package debugLaicode;
 import java.util.*;
 
 public class CheapestFlightsWithinKStops {
-    Map<Integer, List<int[]>> graph = new HashMap<>();
-
-    int min = Integer.MAX_VALUE;
+    Map<Integer, List<int[]>> map = new HashMap<>();
     Set<Integer> visit = new HashSet<>();
+    int min = Integer.MAX_VALUE;
 
-    public int findCheapestPrice2(int n, int[][] flights, int src, int dst, int K) {
+    public int findCheapestPrice2(int n, int[][] flights, int src, int dst, int k) {
         buildGraph(flights);
-        //Map<Integer, List<int[]>> graph1 = graph;
-        //System.out.println(graph1);
-
-        dfs(src, dst, K + 1, 0, 0);
-        return min == Integer.MAX_VALUE  ? -1 : min;
+        //System.out.println(map);
+        dfs(src, dst, k + 1, 0, 0);
+        return min == Integer.MAX_VALUE ? - 1 : min;
     }
 
-    // depth limit DFS, terminate when count == K
-    private void dfs(int src, int dst, int K, int count, int sumPrice) {
-        // base case
-        if (visit.contains(src)) {
-            return;
+    private void buildGraph(int[][] flights) {
+        for (int[] f: flights) {
+            List<int[]> list = map.get(f[0]);
+            if (list == null) {
+                list = new ArrayList<>();
+                map.put(f[0], list);
+            }
+            list.add(new int[] {f[1], f[2]});
         }
+    }
 
-        if (sumPrice > min) return; // prunning
+    private void dfs (int src, int end, int k, int cnt, int sum) {
+        // base case
+        if (sum > min) return; // pruning
 
-        if (count == K || src == dst) {
-            if (src == dst) {
-                min = Math.min(min, sumPrice);
+        if (visit.contains(src)) return;
+
+        if (cnt == k || src == end) {
+            if (src == end) {
+                min = Math.min(min, sum);
             }
             return;
         }
 
         // recursive rule
         visit.add(src);
-        List<int[]> neis = graph.get(src);
+        List<int[]> neis = map.get(src);
         if (neis != null) {
-            for (int[] nei: neis) {
-                int next = nei[0];
-                int cost = nei[1];
-                dfs(next, dst, K, count + 1, sumPrice + cost);
+            for (int[] nei : neis) {
+                dfs(nei[0], end, k, cnt + 1, sum + nei[1]);
             }
         }
+
         visit.remove(src);
-
-    }
-    private void buildGraph(int[][] flights) {
-        for (int[] f : flights) {
-            List<int[]> neis = graph.get(f[0]);
-            if (neis == null) {
-                neis = new ArrayList<>();
-                graph.put(f[0], neis);
-            }
-
-            graph.get(f[0]).add(new int[]{f[1], f[2]});
-        }
-
     }
 
     // 2018

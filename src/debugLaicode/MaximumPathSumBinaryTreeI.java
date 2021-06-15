@@ -1,34 +1,26 @@
 package debugLaicode;
 
 public class MaximumPathSumBinaryTreeI {
-    //    Given a binary tree in which each node contains an integer number.
-    //    Find the maximum possible sum from one leaf node to another leaf node.
-    //    If there is no such path available, return Integer.MIN_VALUE(Java)/INT_MIN (C++).
+    int max = Integer.MIN_VALUE;
 
     public int maxPathSum(TreeNode root) {
-        // Write your solution here
-        int[] max = new int[]{Integer.MIN_VALUE};
-
-        helper(root, max);
-        return max[0];
+        dfs(root);
+        return max;
     }
 
-    // for each recursion call, return root to leaf path sum
-    private int helper(TreeNode root, int[] max) {
-        if (root == null) {
-            return 0;
-        }
+    // return max path sum starting from root
+    private int dfs(TreeNode root) {
+        if (root == null) return 0;
 
-        int left = helper(root.left, max);
-        int right = helper(root.right, max);
+        int left = dfs(root.left);
+        int right = dfs(root.right);
 
-        if (root.left != null && root.right != null) {
-            max[0] = Math.max(max[0], root.key + left + right);
-            return Math.max(left, right) + root.key;
-        } else if (root.left == null && root.right == null) {
-            return root.key;
-        } else {
-            return root.left == null ? root.key + right : root.key + left;
-        }
+
+        int localmax = root.val;
+        if (left > 0) localmax += left;
+        if (right > 0) localmax += right;
+        max = Math.max(max, localmax);
+
+        return Math.max(left, right) > 0 ? root.val + Math.max(left, right) : root.val;
     }
 }

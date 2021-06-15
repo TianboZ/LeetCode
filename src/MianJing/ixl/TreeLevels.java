@@ -46,9 +46,10 @@ public class TreeLevels {
         dfs(root, 0);
         List<String> res = new ArrayList<>();
         // iterate map
-        for (Map.Entry<String, Set<Integer>> e : map.entrySet()) {
-            if (e.getValue().size() == max) {
-                res.add(e.getKey());
+        for (String k : map.keySet()) {
+            Set<Integer> v = map.get(k);
+            if (v.size() == max) {
+                res.add(k);
             }
         }
         System.out.println(res);

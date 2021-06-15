@@ -1,4 +1,4 @@
-package debugLaicode;
+package debugLaicodeSlidingWindow;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +65,38 @@ public class PermutationInString {
             // current window
             if(match == map.size()) return true;
         }
+        return false;
+    }
+
+    // 偷懒写法
+    public boolean checkInclusion2(String s1, String s2) {
+        int size = s1.length();
+        Map<Character, Integer> map = new HashMap<>();
+        Map<Character, Integer> target = new HashMap<>();
+
+        for (int i = 0; i < s1.length(); i++) {
+            char c = s1.charAt(i);
+            target.put(c, target.getOrDefault(c, 0) + 1);
+        }
+
+        for (int i = 0; i < s2.length(); i++) {
+            // handle right most
+            char c = s2.charAt(i);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+
+
+            // handle element before window
+            int j = i - size;
+            if (j >= 0) {
+                c = s2.charAt(j);
+                map.put(c, map.get(c) - 1);
+                if (map.get(c) == 0) map.remove(c);
+            }
+
+            // current window
+            if (map.equals(target)) return true;
+        }
+
         return false;
     }
 }

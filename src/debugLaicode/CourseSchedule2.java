@@ -2,60 +2,74 @@ package debugLaicode;
 
 import java.util.*;
 
-public class CourseSchedule2 {
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        buildGraph(graph, prerequisites, numCourses);
 
-        Map<Integer, Integer> state = new HashMap<>();  // 1: visiting 0: visited
-        Deque<Integer> stack = new LinkedList<>();
+/*
+topological sort
+
+[a, b]
+
+a --> b    a depends on b
+
+
+solution:
+- build dependency graph
+- run topologicial sort
+
+*/
+
+
+public class CourseSchedule2 {
+    Map<Integer, Set<Integer>> map = new HashMap<>();
+    Map<Integer, Integer> state = new HashMap<>(); // key: node  value: 1, visited   0: visiting
+
+    boolean isCycle;
+    List<Integer> res = new ArrayList<>();
+
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        buildGraph(prerequisites, numCourses);
 
         for (int i = 0; i < numCourses; i++) {
-            if (dfs(graph, state, i, stack)) {
-                return new int[]{};
-            }
+            dfs(i);
         }
 
-        int[] res = new int[stack.size()];
-        for (int i = 0; i < res.length; i++) {
-            res[i] = stack.pollFirst();
+        // build ans
+        int[] ans = new int[res.size()];
+
+        if (isCycle) return new int[]{};
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = res.get(i);
         }
-        return res;
+        return ans;
     }
 
-    // return true is has cycle
-    private boolean dfs(
-            Map<Integer, List<Integer>> graph,
-            Map<Integer, Integer> state,
-            int node,
-            Deque<Integer> stack
-
-    ) {
+    // DFS2
+    private void dfs(int n) {
         // base case
-        Integer i = state.get(node);
+        Integer i = state.get(n);
         if (i != null) {
-            if (i == 1) return true;
-            if (i == 0) return false;
+            if (i == 0) {
+                // cycle
+                isCycle = true;
+                return;
+            }
+            return;
         }
 
         // recursive rule
-        state.put(node, 1);
-        List<Integer> neis = graph.get(node);
-        for (Integer nei : neis) {
-            if (dfs(graph, state, nei, stack)) {
-                return true;
-            }
+        state.put(n, 0);
+        for(Integer nei: map.get(n)) {
+            dfs(nei);
         }
-        state.put(node, 0);
-        stack.offerFirst(node);
-        return false;
+        state.put(n, 1);
+        res.add(n);
+
     }
-    private void buildGraph(Map<Integer, List<Integer>> graph, int[][] m, int n) {
+    private void buildGraph(int[][] pre, int n) {
         for (int i = 0; i < n; i++) {
-            graph.put(i, new ArrayList<>());
+            map.put(i, new HashSet<>());
         }
-        for (int[] arr : m) {
-            graph.get(arr[1]).add(arr[0]);
+        for (int[] course: pre) {
+            map.get(course[0]).add(course[1]);
         }
     }
 }

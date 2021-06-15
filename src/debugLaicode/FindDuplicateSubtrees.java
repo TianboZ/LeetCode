@@ -8,50 +8,56 @@ import java.util.Map;
 
 /*
 
-solution2:
+sol2:
+- traverse the tree, record all subtree, serial them. e.g. `1,2,#,`   means
+             1
+            / \
+           2  null
 
-n is number of nodes in binary tree
+- store this serialized subtree to map: <subtree string, frequency>
 
-traverse each node of tree, and for each node, serialize the subtree of this node
 
-serialization follows the preorder traverse, use special character # for null nodes. the seralized tree is a string of size n.
+complexity:
+time O(n ^ 2)
+space O(n)
 
-time O(n^2)   n is # of nodes of binary tree
-space O(n^2)
+
 
 */
 
 public class FindDuplicateSubtrees {
+    // 2021
+    List<TreeNode> res = new ArrayList<>();
+    Map<String, Integer> map = new HashMap<>(); // key: subtree string  value: frequency
+
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-        List<TreeNode> res = new ArrayList<>();
-        Map<String, Integer> map = new HashMap<>();
-        helper(root, map, res);
-        //System.out.println(map);
+        dfs(root);
         return res;
     }
-    // return subtree's string
-    //  1
-    // / \
-    // #  #    1,#,#,
-    private String helper(TreeNode root, Map<String, Integer> map, List<TreeNode> res) {
-        // basecase
+    private String dfs(TreeNode root) {
+        // base case
         if (root == null) return "#,";
 
-        // rule
-        String left = helper(root.left, map, res);
-        String right = helper(root.right, map, res);
+        // recrusive rule
+        String left = dfs(root.left);
+        String right = dfs(root.right);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(root.key +"," + left + right);
-        String curr = sb.toString();
+        sb.append(root.val).append(",");
+        sb.append(left).append(right);
 
-        map.put(curr, map.getOrDefault(curr, 0) + 1);
-        if (map.get(curr) == 2) res.add(root);
+        String s = sb.toString();
 
-        return curr;
+        map.put(s, map.getOrDefault(s, 0) + 1);
+        if (map.get(s) == 2) {
+            res.add(root);
+        }
+        return s;
     }
 
-    // solution2
+
+    // solution1
+    // 2018
     public List<TreeNode> findDuplicateSubtrees1(TreeNode root) {
         List<TreeNode> res = new ArrayList<>();
         Map<String, Integer> map = new HashMap<>();

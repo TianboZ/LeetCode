@@ -1,4 +1,4 @@
-package debugLaicode;
+package debugLaicodeSlidingWindow;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,42 +31,40 @@ time o(n)
 
 public class LongestSubstringWithAtMostKDistinctCharacters {
     public int lengthOfLongestSubstringKDistinct(String s, int k) {
-        // sanity check
-        // todo
-        if (s == null || s.length() == 0) return 0;
-
-        int slow = 0;
         int fast = 0;
-        int max = 0;
-        Map<Character, Integer> map = new HashMap<>();
+        int slow = 0;
+        int len = s.length();
+        int max = -1;
+        Map<Character, Integer> map = new HashMap<>(); // key: char value: freq
 
-        while (fast < s.length()) {
-            // handle right most pointer
+        while (fast < len) {
             char c = s.charAt(fast);
+            // handle fast
             map.put(c, map.getOrDefault(c, 0) + 1);
 
-            // handle left most pointer
-            while (map.size() > k) {
+            // handle slow
+            while (map.size() > k) { // [slow, fast] window not satisfy property
                 c = s.charAt(slow);
-                if (map.containsKey(c)) {
+                if (map.get(c) == 1) {
+                    map.remove(c);
+                } else {
                     map.put(c, map.get(c) - 1);
-                    if (map.get(c) == 0) map.remove(c);
                 }
                 slow++;
             }
 
-            // update
+            // update global max
             max = Math.max(max, fast - slow + 1);
 
             fast++;
         }
+
         return max;
     }
 
     public static void main(String[] args) {
-        LongestSubstringWithAtMostKDistinctCharacters longestSubstringWithAtMostKDistinctCharacters
-                = new LongestSubstringWithAtMostKDistinctCharacters();
-        int res = longestSubstringWithAtMostKDistinctCharacters.lengthOfLongestSubstringKDistinct("eddeffffggg", 2);
+        LongestSubstringWithAtMostKDistinctCharacters sol = new LongestSubstringWithAtMostKDistinctCharacters();
+        int res = sol.lengthOfLongestSubstringKDistinct("eddeffffggg", 2);
         System.out.println(res);
     }
 }

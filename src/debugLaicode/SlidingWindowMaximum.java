@@ -20,6 +20,13 @@ time O(n * logk) !!!!!wrong
 sol2:
 AVL tree
 
+
+sliding window
+map<num, frequency>
+
+
+
+
 */
 public class SlidingWindowMaximum {
     class Cell {
@@ -72,35 +79,38 @@ public class SlidingWindowMaximum {
 
     }
 
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        List<Integer> res = new ArrayList<>();
 
-    public int[] maxSlidingWindow2(int[] nums, int k) {
-        TreeMap<Integer, Integer> map = new TreeMap<>(); // key: nums[i] value: i
-        int[] res = new int[nums.length - k + 1];
-        int index = 0;
+        TreeMap<Integer, Integer> map  = new TreeMap<>();
+        int max = Integer.MIN_VALUE;
 
-        for (int i = 0; i < k; i++) {
-            map.put(nums[i], i);
-        }
+        for (int i = 0; i < nums.length; i++) {
+            // right most elment
+            int n = nums[i];
+            map.put(n, map.getOrDefault(n, 0) + 1);
 
-        res[index] = map.lastKey();
-        index++;
-
-        for (int i = k; i< nums.length; i++) {
-            //add new element into window
-            map.put(nums[i], i);
-
-
-            // remove left element before window boundry
-            int left = nums[i - k];
-            if (map.containsKey(left) && map.get(left) == i - k) {
-                map.remove(left);
+            // remove element before window
+            int j = i - k;
+            if (j >= 0) {
+                n = nums[j];
+                if (map.containsKey(n) ) {
+                    map.put(n, map.get(n) - 1);
+                    if(map.get(n) == 0) map.remove(n);
+                }
             }
 
-            // get largest in current window
-            res[index] = map.lastKey();
-            index++;
+            // update global max
+            if (i >= k - 1) {
+                res.add(map.lastKey());
+            }
         }
-        return res;
 
+        // build result
+        int[] ans = new int[res.size()];
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = res.get(i);
+        }
+        return ans;
     }
 }

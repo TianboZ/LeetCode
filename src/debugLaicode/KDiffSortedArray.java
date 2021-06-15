@@ -4,20 +4,28 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class KDiffSortedArray {
-    public void sortKDiff(int[] arr, int k) {
+    public int[] ksort(int[] array, int k) {
         // sanity check
-        Queue<Integer> minHeap = new PriorityQueue<>();
+        // todo
 
-        // initial: put k+1 elements into minheap
-        for (int i = 0; i <= k && i < arr.length; i++) {
-            minHeap.offer(arr[i]);
+        Queue<Integer> pq = new PriorityQueue<>();
+        int[] res = new int[array.length];
+        int j = 0;
+        for (int i = 0; i < array.length; i++) {
+            pq.offer(array[i]);
+
+            if (pq.size() > k + 1) {
+                res[j] = pq.poll();
+                j++;
+            }
         }
 
-        // determint the arr[i] one by one
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = minHeap.poll();
-            minHeap.offer(arr[i + k + 1]);
+        while (!pq.isEmpty()) {
+            res[j] = pq.poll();
+            j++;
         }
+
+        return res;
     }
 
 
