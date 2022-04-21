@@ -1,7 +1,5 @@
 package MianJing.thumbtack;
 
-import com.sun.tools.internal.ws.wsdl.document.soap.SOAPUse;
-
 import java.util.*;
 
 public class ClueGame {

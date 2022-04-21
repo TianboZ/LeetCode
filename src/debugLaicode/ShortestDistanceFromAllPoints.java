@@ -2,7 +2,6 @@ package debugLaicode;
 
 import java.util.*;
 
-import static sun.text.normalizer.NormalizerImpl.convert;
 
 public class ShortestDistanceFromAllPoints {
     int[] dx = {0,0,1,-1};

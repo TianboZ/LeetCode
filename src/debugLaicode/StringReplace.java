@@ -28,6 +28,5 @@ public class StringReplace {
         StringReplace sr = new StringReplace();
         String res= sr.replace("tywjtltyvtyegcboycmqtyq", "ty", "c");
         System.out.println(res);
-
     }
 }
