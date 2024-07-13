@@ -7,14 +7,15 @@ public class AllPermutationsOfSubsets {
     public List<String> allPermutationsOfSubsets(String set) {
         // Write your solution here
         List<String> res = new ArrayList<>();
-        if (set == null) return res;
+        if (set == null)
+            return res;
 
         char[] arr = set.toCharArray();
-        dfs(res,0, arr);
+        dfs(res, 0, arr);
         return res;
     }
 
-    private void dfs(List<String>  res, int index, char[] arr) {
+    private void dfs(List<String> res, int index, char[] arr) {
         // base case
         res.add(new String(arr, 0, index));
         if (index == arr.length) {
@@ -38,7 +39,7 @@ public class AllPermutationsOfSubsets {
     public static void main(String[] args) {
         List<String> res = new ArrayList<>();
         AllPermutationsOfSubsets sol = new AllPermutationsOfSubsets();
-        res = sol.allPermutationsOfSubsets("abcd");
+        res = sol.allPermutationsOfSubsets("abc");
         System.out.println(res);
     }
 }

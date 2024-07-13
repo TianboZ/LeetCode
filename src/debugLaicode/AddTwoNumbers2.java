@@ -9,10 +9,10 @@ public class AddTwoNumbers2 {
         l1 = reverse(l1);
         l2 = reverse(l2);
 
-        int carry  = 0;
+        int carry = 0;
         ListNode head = null;
 
-        while (l1 != null || l2!= null) {
+        while (l1 != null || l2 != null) {
             int n1 = 0;
             int n2 = 0;
             if (l1 != null) {
@@ -26,7 +26,6 @@ public class AddTwoNumbers2 {
             int sum = n1 + n2 + carry;
             carry = sum / 10;
             ListNode node = new ListNode(sum % 10);
-
 
             node.next = head;
             head = node;
@@ -44,7 +43,7 @@ public class AddTwoNumbers2 {
         ListNode prev = null;
         while (n != null) {
             ListNode next = n.next;
-            n.next  = prev;
+            n.next = prev;
             prev = n;
             n = next;
         }

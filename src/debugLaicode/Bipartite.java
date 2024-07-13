@@ -3,7 +3,6 @@ package debugLaicode;
 import java.util.*;
 
 public class Bipartite {
-
     public boolean isBipartite(List<GraphNode> graph) {
         if (graph == null || graph.size() == 0) {
             return true;
@@ -12,13 +11,13 @@ public class Bipartite {
         // use -1 and 1 to different each node
         Map<GraphNode, Integer> visited = new HashMap<>();
 
-
-        // the graph can ge represented as a path of GraphNode, no matter if it is connected or not
+        // the graph can ge represented as a path of GraphNode, no matter if it is
+        // connected or not
         // bfs to traverse the graph from each node
         for (GraphNode node : graph) {
-//            if (!bfs(node, visited)) {
-//                return false;
-//            }
+            // if (!bfs(node, visited)) {
+            // return false;
+            // }
 
             if (!dfs(visited, node, 1)) {
                 return false;
@@ -33,7 +32,8 @@ public class Bipartite {
         Queue<GraphNode> q = new LinkedList();
         // initial
         q.offer(node);
-        // start bfs from this node, since this node has not been visited, we can assign it to any of the
+        // start bfs from this node, since this node has not been visited, we can assign
+        // it to any of the
         // groups, like group -1
         visited.put(node, -1);
 
@@ -112,22 +112,18 @@ public class Bipartite {
         return true;
     }
 
-
-
     public static void main(String[] args) {
         GraphNode node1 = new GraphNode(1);
         GraphNode node2 = new GraphNode(2);
         GraphNode node3 = new GraphNode(3);
         GraphNode node4 = new GraphNode(4);
 
-
-//        1----2
-//         \
-//          \
-//           \
-//            \
-//        4----3
-
+        // 1----2
+        // \
+        // \
+        // \
+        // \
+        // 4----3
 
         node1.neighbors.add(node2);
         node1.neighbors.add(node3);

@@ -21,7 +21,7 @@ public class PeakElement {
 
     public static void main(String[] args) {
         PeakElement sol = new PeakElement();
-        int[] arr = {1,2,2,2,4,4,10,3,3,3,3};
+        int[] arr = { 1, 2, 2, 2, 4, 4, 10, 3, 3, 3, 3 };
         sol.findPeak(arr);
     }
 }

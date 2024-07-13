@@ -7,7 +7,6 @@ public class CloneNaryTree {
         public int val;
         public List<Node> children;
 
-
         public Node() {
             children = new ArrayList<>();
         }
@@ -17,7 +16,7 @@ public class CloneNaryTree {
             children = new ArrayList<>();
         }
 
-        public Node(int _val,ArrayList<Node> _children) {
+        public Node(int _val, ArrayList<Node> _children) {
             val = _val;
             children = _children;
         }
@@ -31,8 +30,10 @@ public class CloneNaryTree {
 
     private Node dfs(Map<Node, Node> visit, Node node) {
         // base case
-        if (node == null) return null;
-        if (visit.containsKey(node)) return visit.get(node);
+        if (node == null)
+            return null;
+        if (visit.containsKey(node))
+            return visit.get(node);
 
         // recursive rule
         Node copy = new Node(node.val);

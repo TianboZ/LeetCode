@@ -3,8 +3,9 @@ package debugLaicode;
 import java.util.*;
 
 public class NumberOfConnectedComponentsInAnUndirectedGraph {
-    Map<Integer, Set<Integer>> map  = new HashMap<>();
+    Map<Integer, Set<Integer>> map = new HashMap<>();
     Set<Integer> visit = new HashSet<>();
+
     public int countComponents(int n, int[][] edges) {
         // Write your solution here
         buildGraph(edges, n);
@@ -20,10 +21,10 @@ public class NumberOfConnectedComponentsInAnUndirectedGraph {
         return count;
     }
 
-
     // traverse graph
     private void dfs(int n) {
-        if (visit.contains(n)) return;
+        if (visit.contains(n))
+            return;
 
         visit.add(n);
 
@@ -37,7 +38,7 @@ public class NumberOfConnectedComponentsInAnUndirectedGraph {
         for (int i = 0; i < n; i++) {
             map.put(i, new HashSet<>());
         }
-        for (int[] e: edges) {
+        for (int[] e : edges) {
             map.get(e[0]).add(e[1]);
             map.get(e[1]).add(e[0]);
         }

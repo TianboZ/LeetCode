@@ -28,6 +28,7 @@ public class allpermutations2 {
             }
         }
     }
+
     private void swap(char[] arr, int i, int j) {
         char ch = arr[i];
         arr[i] = arr[j];
